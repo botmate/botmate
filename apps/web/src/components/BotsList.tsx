@@ -18,7 +18,7 @@ function BotsList({ bots }: BotsListProps) {
   return (
     <div className="p-4">
       <p className="text-default-500">Here are the bots you have added</p>
-      <div className="grid md:grid-cols-3 grid-cols-1 mt-4">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-4 gap-4">
         {bots.map((bot) => {
           const Icon = PlatformIcon[bot.platform as Platform];
           return (

@@ -1,9 +1,6 @@
-import * as uuid from 'uuid';
 import { z } from 'zod';
 import { protectedProcedure } from '@web/trpc/server/trpc';
-import { PLATFORMS_KEYS } from '@botmate/platforms';
-import { getTemporalClient } from '../temporal';
-import { Errors } from '@botmate/shared';
+import { CreateBot, PLATFORMS_KEYS } from '@botmate/platforms';
 
 export const createBot = protectedProcedure
   .input(
@@ -15,17 +12,12 @@ export const createBot = protectedProcedure
   .mutation(async ({ input, ctx }) => {
     const userId = ctx.session?.user.id as string;
     const { platform, credentials } = input;
-    const temporal = await getTemporalClient();
-
-    const wf = await temporal.workflow.execute('createBot', {
-      workflowId: uuid.v4(),
-      taskQueue: 'botmate',
-      args: [userId, platform, credentials],
-      retry: {
-        maximumAttempts: 2,
-        nonRetryableErrorTypes: [Errors.NotFound],
-      },
-    });
-
-    return wf;
+    try {
+      const bot = await CreateBot(userId, platform, credentials);
+      return bot;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
   });

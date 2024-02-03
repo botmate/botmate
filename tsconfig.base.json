@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@botmate/logger": ["packages/logger/src/index.ts"],
       "@botmate/platforms": ["packages/platforms/src/index.ts"],
       "@botmate/shared": ["packages/shared/src/index.ts"],
       "@web/*": ["apps/web/src/*"]

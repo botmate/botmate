@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { FormBuilder } from './FormBuilder';
 import { useForm } from 'react-hook-form';
 import { trpc } from '@web/trpc/client';
+import { toast } from 'sonner';
 
 type PlatformItemProps = {
   platform: Platform;
@@ -43,13 +44,16 @@ function AddBotModal({ isOpen, onOpenChange }: AddBotModalProps) {
 
   async function handleSubmit(data: Record<string, string>) {
     try {
-      const response = await createBot.mutateAsync({
+      await createBot.mutateAsync({
         platform: selected,
         credentials: data,
       });
-      console.log('response', response);
+      toast.success('Bot created successfully');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (e) {
-      console.error(e);
+      toast.error('An error occurred');
     }
   }
 
@@ -101,7 +105,12 @@ function AddBotModal({ isOpen, onOpenChange }: AddBotModalProps) {
               >
                 Close
               </Button>
-              <Button type="submit" disableRipple color="primary">
+              <Button
+                type="submit"
+                disableRipple
+                color="primary"
+                isLoading={createBot.isLoading}
+              >
                 Confirm
               </Button>
             </ModalFooter>

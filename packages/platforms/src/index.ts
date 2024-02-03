@@ -1,1 +1,1 @@
-export * from './lib/platforms';
+export * from './platforms';

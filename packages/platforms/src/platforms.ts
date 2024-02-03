@@ -2,7 +2,6 @@ import d from 'debug';
 import { IconType } from 'react-icons';
 import { FormInput } from '@botmate/shared';
 import { FaTelegram, FaDiscord, FaSlack } from 'react-icons/fa';
-import { logger } from '@botmate/logger';
 import { Bot as TelegramBot } from 'grammy';
 import prisma from './prisma';
 

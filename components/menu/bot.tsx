@@ -74,6 +74,7 @@ function BotMenu({ botList }: BotMenuProps) {
               r.push(`/bots/${bot.id}`);
             }
           }}
+          value={currentBot?.id}
         >
           <SelectTrigger className="shadow-sm">
             <SelectValue placeholder={currentBot?.name} />

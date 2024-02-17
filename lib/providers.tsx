@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import React, { useEffect, useState } from 'react';
 
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+
 import { trpc } from './trpc/client';
 
 type Props = {
@@ -31,6 +33,13 @@ function Providers({ children, version }: Props) {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+
+      <ProgressBar
+        color="#373636"
+        options={{
+          showSpinner: false,
+        }}
+      />
     </trpc.Provider>
   );
 }

@@ -12,7 +12,7 @@ type Props = {
     id: string;
   };
 };
-async function BotsLayout({ children, params }: Props) {
+async function BotsIdLayout({ children, params }: Props) {
   const bot = await prisma.bot.findFirst({
     where: {
       id: params.id,
@@ -32,7 +32,7 @@ async function BotsLayout({ children, params }: Props) {
   );
 }
 
-export default BotsLayout;
+export default BotsIdLayout;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const bot = await prisma.bot.findFirst({

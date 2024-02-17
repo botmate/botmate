@@ -1,5 +1,6 @@
 'use client';
 
+import { BotList } from '#prisma/validator';
 import { useGlobalStore } from '#store/global';
 import { MenuItem } from '#types';
 import {
@@ -11,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#ui/select';
+import { Bot } from '@prisma/client';
 import React from 'react';
 import {
   HiOutlineCog,
@@ -22,7 +24,7 @@ import {
 } from 'react-icons/hi';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const items: MenuItem[] = [
   {
@@ -47,27 +49,37 @@ const items: MenuItem[] = [
   },
 ];
 
-type BotMenuProps = {};
-function BotMenu({}: BotMenuProps) {
+type BotMenuProps = {
+  botList: Bot[];
+};
+function BotMenu({ botList }: BotMenuProps) {
+  const r = useRouter();
   const pathname = usePathname();
-  const currentBot = useGlobalStore((s) => s.currentBot);
+  const { currentBot, setCurrentBot } = useGlobalStore();
 
   return (
     <div className="flex flex-col h-full w-60 border-r">
       <div className="p-4 border-b">
-        <Select>
+        <Select
+          onValueChange={(v) => {
+            const bot = botList.find((b) => b.id === v);
+            if (bot) {
+              setCurrentBot(bot);
+              r.push(`/bots/${bot.id}`);
+            }
+          }}
+        >
           <SelectTrigger className="shadow-sm">
             <SelectValue placeholder={currentBot?.name} />
           </SelectTrigger>
 
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
+              {botList.map((bot) => (
+                <SelectItem key={bot.id} value={bot.id}>
+                  {bot.name}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>

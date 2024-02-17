@@ -22,7 +22,13 @@ async function BotsLayout({ children, params }: Props) {
     redirect('/');
   }
 
-  return <BotLayout bot={bot}>{children}</BotLayout>;
+  const bots = await prisma.bot.findMany();
+
+  return (
+    <BotLayout bot={bot} bots={bots}>
+      {children}
+    </BotLayout>
+  );
 }
 
 export default BotsLayout;

@@ -9,9 +9,10 @@ import { BotMenu } from '#components/menu';
 
 type Props = {
   bot: Bot;
+  bots: Bot[];
   children: React.ReactNode;
 };
-function BotLayout({ children, bot }: Props) {
+function BotLayout({ children, bot, bots }: Props) {
   const currentBot = useGlobalStore((s) => s.currentBot);
   const setCurrentBot = useGlobalStore((s) => s.setCurrentBot);
 
@@ -29,7 +30,7 @@ function BotLayout({ children, bot }: Props) {
 
   return (
     <div className="flex h-screen">
-      <BotMenu />
+      <BotMenu botList={bots} />
       <div className="flex-1">{children}</div>
     </div>
   );

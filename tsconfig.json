@@ -24,6 +24,7 @@
       "#types": ["./types.ts"],
       "#components/*": ["./components/*"],
       "#prisma": ["./prisma/index.ts"],
+      "#prisma/*": ["./prisma/*"],
       "#store/*": ["./store/*"]
     }
   },

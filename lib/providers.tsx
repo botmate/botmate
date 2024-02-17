@@ -1,9 +1,10 @@
 'use client';
 
+import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
-import { trpc } from './trpc/client';
 import { httpBatchLink } from '@trpc/client';
+
+import { trpc } from './trpc/client';
 
 type Props = {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ function Providers({ children }: Props) {
           url: '/api/trpc',
         }),
       ],
-    })
+    }),
   );
 
   return (

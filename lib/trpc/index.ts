@@ -1,7 +1,7 @@
-import { publicProcedure, router } from './server';
+import * as routes from '#lib/routes';
 
-export const appRouter = router({
-  ping: publicProcedure.query(() => 'pong!'),
-});
+import { router } from './server';
+
+export const appRouter = router(routes);
 
 export type AppRouter = typeof appRouter;

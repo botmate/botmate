@@ -1,4 +1,7 @@
-import { PlatformList } from '#lib/platforms/list';
+'use client';
+
+import { PlatformList } from '#lib/constants';
+import { trpc } from '#lib/trpc/client';
 import { Button } from '#ui/button';
 import {
   Dialog,
@@ -19,7 +22,16 @@ type Props = {
   close: () => void;
 };
 function AddBotModal({ open, close }: Props) {
+  const addBot = trpc.addBot.useMutation();
+  const [credentials, setCredentials] = useState<Record<string, string>>({});
   const [selectedPlatform, setSelectedPlatform] = useState(PlatformList[0]);
+
+  function handleSubmit() {
+    addBot.mutateAsync({
+      platform: selectedPlatform.id,
+      credentials,
+    });
+  }
 
   return (
     <Dialog open={open} onOpenChange={close}>
@@ -49,7 +61,7 @@ function AddBotModal({ open, close }: Props) {
                     width={32}
                     height={32}
                   />
-                  <h2 className="text-lg font-semibold">{platform.name}</h2>
+                  <h2 className="font-semibold">{platform.name}</h2>
                 </div>
               );
             })}
@@ -65,6 +77,12 @@ function AddBotModal({ open, close }: Props) {
                     id={credential.id}
                     placeholder={credential.message}
                     className="col-span-3"
+                    onChange={(e) =>
+                      setCredentials((prev) => ({
+                        ...prev,
+                        [credential.id]: e.target.value,
+                      }))
+                    }
                   />
                 </React.Fragment>
               );
@@ -72,7 +90,13 @@ function AddBotModal({ open, close }: Props) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            isLoading={addBot.isLoading}
+          >
+            Submit
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,6 +1,6 @@
 export const PlatformList = [
   {
-    id: 't',
+    id: 'telegram',
     name: 'Telegram',
     icon: '/assets/telegram.svg',
     credentials: [
@@ -12,7 +12,7 @@ export const PlatformList = [
     ],
   },
   {
-    id: 'd',
+    id: 'discord',
     name: 'Discord',
     icon: '/assets/discord.svg',
     credentials: [
@@ -24,7 +24,7 @@ export const PlatformList = [
     ],
   },
   {
-    id: 's',
+    id: 'slack',
     name: 'Slack',
     icon: '/assets/slack.svg',
     credentials: [

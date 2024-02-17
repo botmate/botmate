@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bot {
+  id          String  @id @default(uuid())
+  name        String
+  avatar      String?
+  credentials Json
+  info        Json
+  platform    String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Command   Command[]
+}
+
+model Command {
+  id      String  @id @default(uuid())
+  match   String
+  reply   String
+  alias   String?
+  params  Json?   @default("{}")
+  enabled Boolean @default(true)
+
+  bot   Bot    @relation(fields: [botId], references: [id])
+  botId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

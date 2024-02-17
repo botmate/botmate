@@ -1,6 +1,5 @@
 'use client';
 
-import { BotList } from '#prisma/validator';
 import { useGlobalStore } from '#store/global';
 import { MenuItem } from '#types';
 import {
@@ -8,7 +7,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '#ui/select';
@@ -16,11 +14,9 @@ import { Bot } from '@prisma/client';
 import React from 'react';
 import {
   HiOutlineCog,
+  HiOutlineDatabase,
   HiOutlineHome,
   HiOutlineTerminal,
-  HiOutlineUser,
-  HiOutlineUsers,
-  HiUsers,
 } from 'react-icons/hi';
 
 import Link from 'next/link';
@@ -33,9 +29,9 @@ const items: MenuItem[] = [
     label: 'Home',
   },
   {
-    path: '/bots/[id]/users',
-    icon: HiOutlineUser,
-    label: 'Users',
+    path: '/bots/[id]/database',
+    icon: HiOutlineDatabase,
+    label: 'Database',
   },
   {
     path: '/bots/[id]/commands',

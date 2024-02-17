@@ -1,7 +1,13 @@
 import React from 'react';
 
-function BotsIdDatabasePage() {
-  return <div>BotsIdDatabasePage</div>;
+import PageTitle from '#components/page-title';
+
+function Page() {
+  return (
+    <>
+      <PageTitle title="Database" />
+    </>
+  );
 }
 
-export default BotsIdDatabasePage;
+export default Page;

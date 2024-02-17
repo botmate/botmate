@@ -1,7 +1,13 @@
 import React from 'react';
 
-function BotsIdCommandsPage() {
-  return <div>BotsIdCommandsPage</div>;
+import PageTitle from '#components/page-title';
+
+function Page() {
+  return (
+    <>
+      <PageTitle title="Commands" />
+    </>
+  );
 }
 
-export default BotsIdCommandsPage;
+export default Page;

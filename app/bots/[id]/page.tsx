@@ -1,7 +1,13 @@
 import React from 'react';
 
-function BotIdPage() {
-  return <div>BotIdPage</div>;
+import PageTitle from '#components/page-title';
+
+function Page() {
+  return (
+    <>
+      <PageTitle title="Home" />
+    </>
+  );
 }
 
-export default BotIdPage;
+export default Page;

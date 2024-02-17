@@ -23,7 +23,8 @@
       "#ui/*": ["./components/ui/*"],
       "#types": ["./types.ts"],
       "#components/*": ["./components/*"],
-      "#prisma": ["./prisma/index.ts"]
+      "#prisma": ["./prisma/index.ts"],
+      "#store/*": ["./store/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

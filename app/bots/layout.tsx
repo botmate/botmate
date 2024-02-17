@@ -1,6 +1,7 @@
 import prisma from '#prisma';
 import React from 'react';
 
+import { Metadata, ResolvingMetadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { BotLayout } from '#components/layouts';
@@ -32,3 +33,15 @@ async function BotsLayout({ children, params }: Props) {
 }
 
 export default BotsLayout;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const bot = await prisma.bot.findFirst({
+    where: {
+      id: params.id,
+    },
+  });
+
+  return {
+    title: bot?.name,
+  };
+}

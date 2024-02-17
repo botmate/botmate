@@ -72,7 +72,7 @@ function AddBotModal({ open, close }: Props) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Submi</Button>
+          <Button type="submit">Submit</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

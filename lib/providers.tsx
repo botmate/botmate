@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useGlobalStore } from '#store/global';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
+import React, { useEffect, useState } from 'react';
 
 import { trpc } from './trpc/client';
 
 type Props = {
   children: React.ReactNode;
+  version: string;
 };
-function Providers({ children }: Props) {
+function Providers({ children, version }: Props) {
+  const setVersion = useGlobalStore((s) => s.setVersion);
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -20,6 +23,10 @@ function Providers({ children }: Props) {
       ],
     }),
   );
+
+  useEffect(() => {
+    setVersion(version);
+  }, [version, setVersion]);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>

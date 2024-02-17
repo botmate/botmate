@@ -53,7 +53,7 @@ type BotMenuProps = {
 function BotMenu({ botList }: BotMenuProps) {
   const r = useRouter();
   const pathname = usePathname();
-  const { currentBot, setCurrentBot } = useGlobalStore();
+  const { currentBot, setCurrentBot, version } = useGlobalStore();
 
   return (
     <div className="flex flex-col h-full w-60 border-r">
@@ -111,7 +111,12 @@ function BotMenu({ botList }: BotMenuProps) {
           );
         })}
       </div>
-      <div></div>
+      <div className="flex-grow"></div>
+      <div>
+        <p className="py-2 text-center text-xs text-gray-500">
+          BotMate v{version}
+        </p>
+      </div>
     </div>
   );
 }

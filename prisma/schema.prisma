@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Bot {
-  id          String  @id @default(uuid())
+  id          String  @id
   name        String
   avatar      String?
   credentials Json
@@ -24,7 +24,7 @@ model Bot {
 }
 
 model Command {
-  id      String  @id @default(uuid())
+  id      String  @id @default(cuid())
   match   String
   reply   String
   alias   String?

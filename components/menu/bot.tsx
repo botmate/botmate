@@ -1,5 +1,6 @@
 'use client';
 
+import botmate from '#public/botmate.svg';
 import { useGlobalStore } from '#store/global';
 import { MenuItem } from '#types';
 import {
@@ -19,6 +20,7 @@ import {
   HiOutlineTerminal,
 } from 'react-icons/hi';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -55,7 +57,15 @@ function BotMenu({ botList }: BotMenuProps) {
 
   return (
     <div className="flex flex-col h-full w-60 border-r">
-      <div className="p-4 border-b">
+      <div className="p-4 border-b space-y-4">
+        <Image
+          alt="logo"
+          src={botmate}
+          width={50}
+          height={50}
+          className="rounded-md"
+        />
+
         <Select
           onValueChange={(v) => {
             const bot = botList.find((b) => b.id === v);

@@ -25,7 +25,8 @@
       "#components/*": ["./components/*"],
       "#prisma": ["./prisma/index.ts"],
       "#prisma/*": ["./prisma/*"],
-      "#store/*": ["./store/*"]
+      "#store/*": ["./store/*"],
+      "#public/*": ["./public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

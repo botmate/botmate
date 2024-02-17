@@ -14,6 +14,7 @@ import {
 import { Bot } from '@prisma/client';
 import React from 'react';
 import {
+  HiOutlineBell,
   HiOutlineCog,
   HiOutlineDatabase,
   HiOutlineHome,
@@ -41,6 +42,11 @@ const items: MenuItem[] = [
     label: 'Commands',
   },
   {
+    label: 'Notifications',
+    path: '/bots/[id]/notifications',
+    icon: HiOutlineBell,
+  },
+  {
     path: '/bots/[id]/settings',
     icon: HiOutlineCog,
     label: 'Settings',
@@ -56,7 +62,7 @@ function BotMenu({ botList }: BotMenuProps) {
   const { currentBot, setCurrentBot, version } = useGlobalStore();
 
   return (
-    <div className="flex flex-col h-full w-60 border-r">
+    <div className="flex flex-col h-full w-72 border-r">
       <div className="p-4 border-b space-y-4">
         <Image
           alt="logo"

@@ -18,11 +18,11 @@
       }
     ],
     "paths": {
-      "#components/*": ["./components/*"],
       "#lib/*": ["./lib/*"],
       "#ui": ["./components/ui"],
       "#ui/*": ["./components/ui/*"],
-      "#types": ["./types.ts"]
+      "#types": ["./types.ts"],
+      "#components/*": ["./components/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

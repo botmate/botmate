@@ -13,12 +13,12 @@ import { AddBotModal } from '#components/modals';
 const items: MenuItem[] = [
   {
     label: 'Home',
-    path: '/bots',
+    path: '/',
     icon: HiOutlineHome,
   },
   {
     label: 'Analytics',
-    path: '/bots/analytics',
+    path: '/analytics',
     icon: HiOutlineChartBar,
   },
 ];

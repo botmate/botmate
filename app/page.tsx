@@ -8,7 +8,7 @@ async function HomePage() {
 
   return (
     <MainLayout>
-      <BotList bots={bots} />;
+      <BotList bots={bots} />
     </MainLayout>
   );
 }

@@ -37,9 +37,10 @@ const items: MenuItem[] = [
     label: 'Database',
   },
   {
-    path: '/bots/[id]/commands',
+    path: '/bots/[id]/workflows',
     icon: HiOutlineTerminal,
-    label: 'Commands',
+    label: 'Workflows',
+    regex: /\/bots\/[a-zA-Z0-9-]+\/workflows/,
   },
   {
     label: 'Notifications',
@@ -62,7 +63,7 @@ function BotMenu({ botList }: BotMenuProps) {
   const { currentBot, setCurrentBot, version } = useGlobalStore();
 
   return (
-    <div className="flex flex-col h-full w-72 border-r">
+    <div className="flex flex-col h-full w-72 border-r bg-white">
       <div className="p-4 border-b space-y-4">
         <Image
           alt="logo"
@@ -101,8 +102,11 @@ function BotMenu({ botList }: BotMenuProps) {
       <div className="flex flex-col p-4">
         {items.map((item, index) => {
           const Icon = item.icon;
-          const active =
-            pathname === item.path.replace('[id]', currentBot?.id || '');
+          const itemPath = item.path.replace('[id]', currentBot?.id || '');
+
+          const active = item.regex
+            ? item.regex.test(pathname)
+            : pathname === itemPath;
 
           return (
             <Link
@@ -121,7 +125,7 @@ function BotMenu({ botList }: BotMenuProps) {
       <div className="flex-grow"></div>
       <div>
         <p className="py-2 text-center text-xs text-gray-500">
-          BotMate v{version}
+          botmate v{version}
         </p>
       </div>
     </div>

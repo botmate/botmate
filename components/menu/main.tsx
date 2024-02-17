@@ -8,7 +8,7 @@ import { useToggle } from 'react-use';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { AddBotModal } from '#components/modals';
+import { AddBotModal } from '#components/add-bot';
 
 const items: MenuItem[] = [
   {

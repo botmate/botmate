@@ -18,15 +18,17 @@ model Bot {
   info        Json
   platform    String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Command   Command[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  workflows Workflow[]
 }
 
-model Command {
-  id      String  @id @default(cuid())
-  match   String
-  reply   String
+model Workflow {
+  id String @id @default(cuid())
+
+  condition Json
+  actions   Json
+
   alias   String?
   params  Json?   @default("{}")
   enabled Boolean @default(true)

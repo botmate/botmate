@@ -4,5 +4,5 @@ export type MenuItem = {
   label: string;
   path: string;
   icon: IconType;
-  exact?: boolean;
+  regex?: RegExp;
 };

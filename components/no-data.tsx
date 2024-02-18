@@ -8,14 +8,12 @@ type NoDataProps = {
 };
 function NoData({ title, subTitle, action }: NoDataProps) {
   return (
-    <Card className="">
-      <CardContent className="flex flex-col justify-center items-center text-center">
-        <HiOutlineExclamation size={40} className="mt-4" />
-        <h1 className="mt-2 text-xl font-semibold">{title}</h1>
-        <p className="text-gray-500 text-sm">{subTitle}</p>
+    <Card className="flex flex-col justify-center items-center text-center py-6">
+      <HiOutlineExclamation size={40} className="mt-4" />
+      <h1 className="mt-2 text-xl font-semibold">{title}</h1>
+      <p className="text-gray-500 text-sm">{subTitle}</p>
 
-        <div className="mt-4">{action}</div>
-      </CardContent>
+      <div className="mt-4">{action}</div>
     </Card>
   );
 }

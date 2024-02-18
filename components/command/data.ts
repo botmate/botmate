@@ -1,21 +1,23 @@
-export const conditionList = [
+import { HiDocumentText, HiFire } from 'react-icons/hi';
+
+export const ConditionList = [
   {
     id: 'text',
-    title: 'Text',
-    description: 'Matches a text message',
+    name: 'Text',
+    description: 'Compare the text of the message',
     inputs: [
       {
-        id: 'message',
+        id: 'text',
         type: 'text',
-        label: 'Message',
-        placeholder: 'Enter message',
+        label: 'Text',
+        placeholder: 'Enter text',
       },
     ],
   },
   {
     id: 'sticker',
-    title: 'Sticker',
-    description: 'Math with a sticker message',
+    name: 'Sticker',
+    description: 'Check if the message is a sticker',
     inputs: [
       {
         id: 'stickerId',
@@ -27,12 +29,13 @@ export const conditionList = [
   },
 ];
 
-export const actionList = [
+export const ActionList = [
   {
     id: 'sendMessage',
-    title: 'Send Message',
+    name: 'Send Message',
     description: 'Send a message to the user',
     displayFields: ['message'],
+    icon: HiDocumentText,
     inputs: [
       {
         id: 'message',
@@ -44,7 +47,8 @@ export const actionList = [
   },
   {
     id: 'sendSticker',
-    title: 'Send Sticker',
+    name: 'Send Sticker',
+    icon: HiFire,
     description: 'Send a sticker to the user',
     displayFields: ['stickerId'],
     inputs: [

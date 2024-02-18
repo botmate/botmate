@@ -13,6 +13,9 @@ export const getCommands = publicProcedure
       where: {
         botId: input.botId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   });
 
@@ -21,15 +24,17 @@ export const createCommand = publicProcedure
     z.object({
       botId: z.string(),
       alias: z.string().optional(),
-      description: z.string(),
-      response: z.string(),
+      actions: z.array(z.any()),
+      condition: z.any(),
     }),
   )
   .mutation(({ input }) => {
-    // return prisma.command.create({
-    //   data: {
-    //     alias: input.alias,
-    //     botId: input.botId,
-    //   },
-    // });
+    return prisma.command.create({
+      data: {
+        alias: input.alias,
+        botId: input.botId,
+        actions: input.actions,
+        condition: input.condition,
+      },
+    });
   });

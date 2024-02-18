@@ -1,20 +1,29 @@
-import React from 'react';
+import prisma from '#prisma';
 
-import ListCommand from '#components/command/list';
-import PageLayout from '#components/layouts/page';
+import { redirect } from 'next/navigation';
 
-function Page({
-  params,
-}: {
+import CommandHero from '#components/command/hero';
+
+type Props = {
   params: {
     id: string;
   };
-}) {
-  return (
-    <PageLayout title="Commands">
-      <ListCommand botId={params.id} />
-    </PageLayout>
-  );
+};
+async function Page({ params }: Props) {
+  const latestCommand = await prisma.command.findFirst({
+    where: {
+      botId: params.id,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  if (latestCommand) {
+    redirect(`/bots/${params.id}/commands/${latestCommand.id}`);
+  }
+
+  return <CommandHero />;
 }
 
 export default Page;

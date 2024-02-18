@@ -12,3 +12,8 @@ export type MenuItem = {
 export type BotData = Bot & {
   info: UserFromGetMe;
 };
+
+export type Condition = {
+  type: string;
+  value: string;
+};

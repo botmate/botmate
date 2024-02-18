@@ -1,11 +1,11 @@
 import React from 'react';
 
-import PageTitle from '#components/page-title';
+import PageLayout from '#components/layouts/page';
 
 function Page() {
   return (
     <>
-      <PageTitle title="Notifications" />
+      <PageLayout title="Notifications" />
     </>
   );
 }

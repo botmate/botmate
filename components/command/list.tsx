@@ -1,54 +1,100 @@
 'use client';
 
-import { trpc } from '#lib/trpc/client';
+import { useCommandStore } from '#store/command';
 import { Button } from '#ui/button';
-import { Skeleton } from '#ui/skeleton';
-import React, { useState } from 'react';
+import { Card } from '#ui/card';
+import { Tooltip } from '#ui/tooltip';
+import { Command } from '@prisma/client';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi';
 
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-import NoData from '#components/no-data';
+import PageLayout from '#components/layouts/page';
+
+dayjs.extend(relativeTime);
 
 type Props = {
-  botId: string;
+  commands: Command[];
 };
-function ListCommand({ botId }: Props) {
-  const { data, isLoading } = trpc.getCommands.useQuery({
-    botId,
-  });
+function CommandList(props: Props) {
+  const params = useParams();
+  const { commands, setCommands } = useCommandStore();
 
-  if (isLoading) {
-    return (
-      <div className="w-80 space-y-2 p-4 overflow-hidden h-[calc(100vh-64px)]">
-        {new Array(10).fill(null).map((_, index) => (
-          <Skeleton key={index} className="h-20" />
-        ))}
+  useEffect(() => {
+    setCommands(props.commands);
+  }, [props.commands, setCommands]);
+
+  const activeCommandId = params.cmdId;
+
+  return (
+    <PageLayout
+      title="Commands"
+      actions={
+        <Tooltip title="Create">
+          <Button size="sm" variant={'ghost'}>
+            <HiOutlinePlus size={18} />
+          </Button>
+        </Tooltip>
+      }
+    >
+      <div className="w-80 p-2 space-y-2 border-r h-full">
+        <AnimatePresence>
+          {commands.map((command, index) => {
+            const ago = dayjs(command.updatedAt).fromNow();
+
+            return (
+              <motion.div
+                key={command.id}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: index * 0.08,
+                  damping: 10,
+                }}
+              >
+                <Link
+                  href={`/bots/${command.botId}/commands/${command.id}`}
+                  className="cursor-default"
+                >
+                  <Card
+                    className={`flex items-start p-4 ${
+                      command.id === activeCommandId ? 'bg-muted' : ''
+                    }`}
+                  >
+                    <div>
+                      <h1 className="font-semibold">{command.alias}</h1>
+                      <div className="flex gap-1 mt-2">
+                        <div className="py-1 px-2 text-xs bg-primary text-primary-foreground rounded-sm">
+                          {/* @ts-ignore */}
+                          {command.actions?.length} action
+                          {/* @ts-ignore */}
+                          {command.actions?.length > 1 ? 's' : ''}
+                        </div>
+                        <div className="py-1 px-2 text-xs bg-blue-500 text-primary-foreground rounded-sm">
+                          {/* @ts-ignore */}
+                          {command.condition.id}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1" />
+                    <div className="flex mt-1">
+                      <div className={`text-xs`}>{ago}</div>
+                    </div>
+                  </Card>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
-    );
-  }
-
-  if (data?.length === 0) {
-    return (
-      <div className="p-4">
-        <div className="mx-auto">
-          <NoData
-            title="No commands"
-            subTitle="Create a new command to get started"
-            action={
-              <Link href={`/bots/${botId}/commands/create`}>
-                <Button size="sm" icon={<HiOutlinePlus size={20} />}>
-                  Create Command
-                </Button>
-              </Link>
-            }
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return <div>CommandList</div>;
+    </PageLayout>
+  );
 }
 
-export default ListCommand;
+export default CommandList;

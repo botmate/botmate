@@ -31,7 +31,7 @@ function BotLayout({ children, bot, bots }: Props) {
   return (
     <div className="flex h-screen">
       <BotMenu botList={bots} />
-      <div className="flex-1 overflow-auto">{children}</div>
+      <div className="flex-1">{children}</div>
     </div>
   );
 }

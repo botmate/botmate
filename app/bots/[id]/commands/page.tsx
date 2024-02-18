@@ -1,7 +1,7 @@
 import React from 'react';
 
+import ListCommand from '#components/command/list';
 import PageLayout from '#components/layouts/page';
-import ListWorkflow from '#components/workflow/list';
 
 function Page({
   params,
@@ -11,8 +11,8 @@ function Page({
   };
 }) {
   return (
-    <PageLayout title="Workflows">
-      <ListWorkflow botId={params.id} />
+    <PageLayout title="Commands">
+      <ListCommand botId={params.id} />
     </PageLayout>
   );
 }

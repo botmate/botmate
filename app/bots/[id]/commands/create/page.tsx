@@ -1,12 +1,12 @@
 import React from 'react';
 
+import CreateCommand from '#components/command/create';
 import PageLayout from '#components/layouts/page';
-import CreateWorkflow from '#components/workflow/create';
 
 function Page() {
   return (
-    <PageLayout title="Create Workflow">
-      <CreateWorkflow />
+    <PageLayout title="Create Command">
+      <CreateCommand />
     </PageLayout>
   );
 }

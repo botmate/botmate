@@ -11,19 +11,19 @@ datasource db {
 }
 
 model Bot {
-  id          String  @id
-  name        String
-  avatar      String?
-  credentials Json
-  info        Json
-  platform    String
+  id     String  @id
+  name   String
+  avatar String?
+  token  String
+  info   Json
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  workflows Workflow[]
+  commands Command[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Workflow {
+model Command {
   id String @id @default(cuid())
 
   condition Json

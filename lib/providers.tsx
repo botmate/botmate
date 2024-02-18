@@ -4,6 +4,7 @@ import { useGlobalStore } from '#store/global';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import React, { useEffect, useState } from 'react';
+import { Toaster } from 'sonner';
 
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
@@ -40,6 +41,7 @@ function Providers({ children, version }: Props) {
           showSpinner: false,
         }}
       />
+      <Toaster />
     </trpc.Provider>
   );
 }

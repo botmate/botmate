@@ -1,6 +1,5 @@
 'use client';
 
-import { PlatformList } from '#lib/constants';
 import { trpc } from '#lib/trpc/client';
 import { Button } from '#ui/button';
 import {
@@ -12,83 +11,47 @@ import {
   DialogTitle,
 } from '#ui/dialog';
 import { Input } from '#ui/input';
-import { Label } from '#ui/label';
 import React, { useState } from 'react';
-
-import Image from 'next/image';
+import { toast } from 'sonner';
 
 type Props = {
   open: boolean;
   close: () => void;
 };
 function AddBotModal({ open, close }: Props) {
+  const utils = trpc.useUtils();
   const addBot = trpc.addBot.useMutation();
-  const [credentials, setCredentials] = useState<Record<string, string>>({});
-  const [selectedPlatform, setSelectedPlatform] = useState(PlatformList[0]);
+  const [token, setToken] = useState('');
 
   function handleSubmit() {
-    addBot.mutateAsync({
-      platform: selectedPlatform.id,
-      credentials,
-    });
+    addBot
+      .mutateAsync({
+        token,
+      })
+      .then(() => {
+        utils.getBots.invalidate();
+        toast.success('Bot added');
+        close();
+      });
   }
 
   return (
     <Dialog open={open} onOpenChange={close}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add bot</DialogTitle>
+          <DialogTitle>Enter token</DialogTitle>
           <DialogDescription>
-            Select your platform and enter your bot credentials
+            You can get bot token from @BotFather
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-3 gap-4">
-            {PlatformList.map((platform) => {
-              return (
-                <div
-                  key={platform.id}
-                  className={`flex flex-col items-center p-3 border-2 rounded-xl bg-neutral-100 ${
-                    selectedPlatform.id === platform.id
-                      ? 'border-primary-700'
-                      : 'border-transparent'
-                  }`}
-                  onClick={() => setSelectedPlatform(platform)}
-                >
-                  <Image
-                    src={platform.icon}
-                    alt={platform.name}
-                    width={32}
-                    height={32}
-                  />
-                  <h2 className="font-semibold">{platform.name}</h2>
-                </div>
-              );
-            })}
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            {selectedPlatform.credentials.map((credential) => {
-              return (
-                <React.Fragment key={credential.id}>
-                  <Label htmlFor={credential.id} className="text-right">
-                    {credential.title}
-                  </Label>
-                  <Input
-                    id={credential.id}
-                    placeholder={credential.message}
-                    className="col-span-3"
-                    onChange={(e) =>
-                      setCredentials((prev) => ({
-                        ...prev,
-                        [credential.id]: e.target.value,
-                      }))
-                    }
-                  />
-                </React.Fragment>
-              );
-            })}
-          </div>
+        <div>
+          <Input
+            id={'token'}
+            placeholder={'203719024:AAGgO9n000000000'}
+            onChange={(e) => setToken(e.target.value)}
+          />
         </div>
+
         <DialogFooter>
           <Button
             type="submit"

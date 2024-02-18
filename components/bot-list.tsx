@@ -1,23 +1,27 @@
 'use client';
 
+import { trpc } from '#lib/trpc/client';
+import { Spinner } from '#ui/spinner';
 import { Bot } from '@prisma/client';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React from 'react';
 
 import BotCard from './bot-card';
 
-type Props = {
-  bots: Bot[];
-};
-function BotList(props: Props) {
-  const [bots, setBots] = useState(props.bots);
+function BotList() {
+  const getBots = trpc.getBots.useQuery();
+
+  if (getBots.isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="space-y-4">
       <AnimatePresence>
-        {bots.map((bot, index) => (
+        {getBots.data?.map((bot, index) => (
           <motion.div
             key={bot.id}
+            layout
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
@@ -30,12 +34,7 @@ function BotList(props: Props) {
               type: 'spring',
             }}
           >
-            <BotCard
-              bot={bot}
-              onDelete={() => {
-                setBots((prev) => prev.filter((b) => b.id !== bot.id));
-              }}
-            />
+            <BotCard id={bot.id} name={bot.name} onDelete={() => {}} />
           </motion.div>
         ))}
       </AnimatePresence>

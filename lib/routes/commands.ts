@@ -2,21 +2,21 @@ import { publicProcedure } from '#lib/trpc/server';
 import prisma from '#prisma';
 import { z } from 'zod';
 
-export const getWorkflows = publicProcedure
+export const getCommands = publicProcedure
   .input(
     z.object({
       botId: z.string(),
     }),
   )
   .query(({ input }) => {
-    return prisma.workflow.findMany({
+    return prisma.command.findMany({
       where: {
         botId: input.botId,
       },
     });
   });
 
-export const createWorkflow = publicProcedure
+export const createCommand = publicProcedure
   .input(
     z.object({
       botId: z.string(),
@@ -26,7 +26,7 @@ export const createWorkflow = publicProcedure
     }),
   )
   .mutation(({ input }) => {
-    // return prisma.workflow.create({
+    // return prisma.command.create({
     //   data: {
     //     alias: input.alias,
     //     botId: input.botId,

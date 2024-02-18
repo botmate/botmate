@@ -13,8 +13,8 @@ import NoData from '#components/no-data';
 type Props = {
   botId: string;
 };
-function ListWorkflow({ botId }: Props) {
-  const { data, isLoading } = trpc.getWorkflows.useQuery({
+function ListCommand({ botId }: Props) {
+  const { data, isLoading } = trpc.getCommands.useQuery({
     botId,
   });
 
@@ -33,12 +33,12 @@ function ListWorkflow({ botId }: Props) {
       <div className="p-4">
         <div className="mx-auto">
           <NoData
-            title="No workflows"
-            subTitle="Create a new workflow to get started"
+            title="No commands"
+            subTitle="Create a new command to get started"
             action={
-              <Link href={`/bots/${botId}/workflows/create`}>
+              <Link href={`/bots/${botId}/commands/create`}>
                 <Button size="sm" icon={<HiOutlinePlus size={20} />}>
-                  Create Workflow
+                  Create Command
                 </Button>
               </Link>
             }
@@ -51,4 +51,4 @@ function ListWorkflow({ botId }: Props) {
   return <div>CommandList</div>;
 }
 
-export default ListWorkflow;
+export default ListCommand;

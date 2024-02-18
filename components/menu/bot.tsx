@@ -37,10 +37,10 @@ const items: MenuItem[] = [
     label: 'Database',
   },
   {
-    path: '/bots/[id]/workflows',
+    path: '/bots/[id]/commands',
     icon: HiOutlineTerminal,
-    label: 'Workflows',
-    regex: /\/bots\/[a-zA-Z0-9-]+\/workflows/,
+    label: 'Commands',
+    regex: /\/bots\/[a-zA-Z0-9-]+\/commands/,
   },
   {
     label: 'Notifications',
@@ -65,13 +65,15 @@ function BotMenu({ botList }: BotMenuProps) {
   return (
     <div className="flex flex-col h-full w-72 border-r bg-white">
       <div className="p-4 border-b space-y-4">
-        <Image
-          alt="logo"
-          src={botmate}
-          width={50}
-          height={50}
-          className="rounded-md"
-        />
+        <Link href="/">
+          <Image
+            alt="logo"
+            src={botmate}
+            width={50}
+            height={50}
+            className="rounded-md"
+          />
+        </Link>
 
         <Select
           onValueChange={(v) => {

@@ -1,2 +1,2 @@
 export * from './bots';
-export * from './workflows';
+export * from './commands';

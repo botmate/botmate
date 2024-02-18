@@ -1,33 +1,29 @@
-import { platforms } from '#lib/platforms';
+import { telegram } from '#lib/telegram';
 import { publicProcedure } from '#lib/trpc/server';
 import prisma from '#prisma';
+import { BotData } from '#types';
 import { z } from 'zod';
+
+export const getBots = publicProcedure.query(async () => {
+  const bots = await prisma.bot.findMany();
+  return bots as BotData[];
+});
 
 export const addBot = publicProcedure
   .input(
     z.object({
-      platform: z.string(),
-      credentials: z.any({}),
+      token: z.string({}),
     }),
   )
   .mutation(async ({ input }) => {
-    switch (input.platform) {
-      case 'telegram': {
-        const botInfo = await platforms.telegram.getBotInfo(
-          input.credentials.token,
-        );
+    const botInfo = await telegram.getBotInfo(input.token);
 
-        return prisma.bot.create({
-          data: {
-            id: botInfo.id.toString(),
-            platform: 'telegram',
-            name: botInfo.first_name,
-            info: botInfo as {},
-            credentials: input.credentials,
-          },
-        });
-      }
-    }
-
-    throw new Error('Invalid platform');
+    return prisma.bot.create({
+      data: {
+        id: botInfo.id.toString(),
+        name: botInfo.first_name,
+        info: botInfo as {},
+        token: input.token,
+      },
+    });
   });

@@ -32,9 +32,7 @@ function MainMenu({}: Props) {
     <>
       <div className="flex items-center gap-2 border-b-2">
         {items.map((item) => {
-          const active = !item.exact
-            ? pathname === item.path
-            : pathname.startsWith(item.path);
+          const active = pathname === item.path;
           return (
             <Link key={item.path} href={item.path}>
               <div

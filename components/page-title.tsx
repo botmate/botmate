@@ -5,8 +5,10 @@ type Props = {
 };
 function PageTitle({ title }: Props) {
   return (
-    <div className="flex items-center px-4 h-16 border-b bg-white">
-      <h1 className="text-xl font-semibold">{title}</h1>
+    <div className="border-b bg-white sticky top-0">
+      <div className="flex items-center px-4 h-16 border-b bg-white sticky top-0">
+        <h1 className="text-xl font-semibold">{title}</h1>
+      </div>
     </div>
   );
 }

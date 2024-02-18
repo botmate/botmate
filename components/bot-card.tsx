@@ -1,25 +1,26 @@
+import { BotData } from '#types';
 import { Button } from '#ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '#ui/card';
-import { Bot } from '@prisma/client';
 import React from 'react';
 
 import Link from 'next/link';
 
 type Props = {
-  bot: Bot;
+  id: string;
+  name: string;
   onDelete: () => void;
 };
-function BotCard({ bot, onDelete }: Props) {
+function BotCard({ name, id, onDelete }: Props) {
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between">
           <div>
-            <CardTitle>{bot.name}</CardTitle>
-            <CardDescription>{bot.id}</CardDescription>
+            <CardTitle>{name}</CardTitle>
+            <CardDescription>{id}</CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <Link href={`/bots/${bot.id}`}>
+            <Link href={`/bots/${id}`}>
               <Button size="sm" variant={'outline'}>
                 Manage
               </Button>

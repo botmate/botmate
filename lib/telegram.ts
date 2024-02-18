@@ -6,3 +6,5 @@ export class Telegram {
     return bot.telegram.getMe();
   }
 }
+
+export const telegram = new Telegram();

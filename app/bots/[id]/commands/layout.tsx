@@ -16,6 +16,9 @@ async function Layout({ params, children }: Props) {
     where: {
       botId,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
   return (

@@ -71,8 +71,14 @@ function BotMenu({ botList }: BotMenuProps) {
   return (
     <div className="flex flex-col h-full w-72 border-r">
       <div className="p-4 border-b space-y-4">
-        <Link href="/">
-          <Image alt="logo" src={botmate} width={50} height={50} />
+        <Link href="/" className="text-gray-50">
+          <Image
+            alt="logo"
+            src={botmate}
+            width={50}
+            height={50}
+            className="p-4 bg-muted rounded-xl"
+          />
         </Link>
 
         <Select

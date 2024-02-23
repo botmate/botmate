@@ -6,6 +6,7 @@ export const getCommands = publicProcedure
   .input(
     z.object({
       botId: z.string(),
+      sort: z.enum(['asc', 'desc']).optional(),
     }),
   )
   .query(({ input }) => {
@@ -14,7 +15,7 @@ export const getCommands = publicProcedure
         botId: input.botId,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: input.sort ?? 'desc',
       },
     });
   });

@@ -23,7 +23,7 @@ async function Layout({ params, children }: Props) {
 
   return (
     <div className="flex h-full">
-      <CommandList commands={commands} />
+      <CommandList commands={commands} botId={botId} />
       <div className="flex-1">{children}</div>
     </div>
   );

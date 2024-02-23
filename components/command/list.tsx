@@ -1,5 +1,6 @@
 'use client';
 
+import { trpc } from '#lib/trpc/client';
 import { useCommandStore } from '#store/command';
 import { Button } from '#ui/button';
 import { Card } from '#ui/card';
@@ -8,7 +9,8 @@ import { Command } from '@prisma/client';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { SortAscIcon, SortDescIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi';
 
 import Link from 'next/link';
@@ -21,14 +23,28 @@ dayjs.extend(relativeTime);
 
 type Props = {
   commands: Command[];
+  botId: string;
 };
 function CommandList(props: Props) {
   const params = useParams();
+  const [sort, setSort] = useState<'asc' | 'desc'>('desc');
   const { commands, setCommands } = useCommandStore();
 
   useEffect(() => {
     setCommands(props.commands);
   }, [props.commands, setCommands]);
+
+  useEffect(() => {
+    const copy = [...props.commands];
+    if (sort === 'asc') {
+      copy.reverse();
+    } else {
+      copy.sort((a, b) => {
+        return dayjs(a.updatedAt).isBefore(dayjs(b.updatedAt)) ? 1 : -1;
+      });
+    }
+    setCommands(copy);
+  }, [props.commands, setCommands, sort]);
 
   const activeCommandId = params.cmdId;
 
@@ -36,13 +52,30 @@ function CommandList(props: Props) {
     <PageLayout
       title="Commands"
       actions={
-        <Tooltip title="Create">
-          <Link href={`/bots/${params.id}/commands/create`}>
-            <Button size="sm" variant={'ghost'}>
-              <HiOutlinePlus size={18} />
+        <>
+          <Tooltip title="Create">
+            <Link href={`/bots/${params.id}/commands/create`}>
+              <Button size="sm" variant={'ghost'}>
+                <HiOutlinePlus size={18} />
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip title={sort === 'asc' ? 'New First' : 'Old First'}>
+            <Button
+              size="sm"
+              variant={'ghost'}
+              onClick={() => {
+                setSort(sort === 'asc' ? 'desc' : 'asc');
+              }}
+            >
+              {sort === 'asc' ? (
+                <SortDescIcon size={18} />
+              ) : (
+                <SortAscIcon size={18} />
+              )}
             </Button>
-          </Link>
-        </Tooltip>
+          </Tooltip>
+        </>
       }
     >
       <div className="w-80 p-2 space-y-2 border-r h-full">

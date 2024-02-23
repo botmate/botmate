@@ -35,6 +35,7 @@
     "react-icons": "^5.0.1",
     "react-resizable-panels": "^2.0.9",
     "react-use": "^17.5.0",
+    "reactflow": "^11.10.4",
     "sonner": "^1.4.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",

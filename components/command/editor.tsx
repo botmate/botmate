@@ -17,6 +17,7 @@ import { HiOutlinePlay, HiOutlineSearch, HiOutlineTrash } from 'react-icons/hi';
 
 import PageLayout from '#components/layouts/page';
 
+import ActionBuilder from './action-builder';
 import { ActionList } from './data';
 
 type Props = {
@@ -52,7 +53,8 @@ function CommandEditor({ command }: Props) {
         </div>
       }
     >
-      <div className="grid grid-cols-12 h-full">
+      <ActionBuilder />
+      {/* <div className="grid grid-cols-12 h-full">
         <div className="col-span-8 p-4 border-r">
           <div className="flex flex-col max-w-lg mx-auto">
             <div className="flex justify-center">
@@ -113,7 +115,7 @@ function CommandEditor({ command }: Props) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </PageLayout>
   );
 }

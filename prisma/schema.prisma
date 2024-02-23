@@ -26,12 +26,13 @@ model Bot {
 model Command {
   id String @id @default(cuid())
 
-  condition Json
-  actions   Json
+  name        String
+  enabled     Boolean @default(true)
+  description String?
 
-  alias   String?
-  params  Json?   @default("{}")
-  enabled Boolean @default(true)
+  condition Json? @default("{}")
+  actions   Json? @default("{}")
+  settings  Json? @default("{}")
 
   bot   Bot    @relation(fields: [botId], references: [id])
   botId String

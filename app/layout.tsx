@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={`${poppins.className} dark`}>
         <Providers version={config.publicRuntimeConfig.version}>
           {children}
         </Providers>

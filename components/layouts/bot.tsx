@@ -5,6 +5,8 @@ import { Bot } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
 import React, { useEffect } from 'react';
 
+import { useTheme } from 'next-themes';
+
 import { BotMenu } from '#components/menu';
 
 type Props = {

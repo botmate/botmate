@@ -18,6 +18,7 @@ import {
   HiOutlineCog,
   HiOutlineDatabase,
   HiOutlineHome,
+  HiOutlineShieldCheck,
   HiOutlineTerminal,
 } from 'react-icons/hi';
 
@@ -43,6 +44,11 @@ const items: MenuItem[] = [
     regex: /\/bots\/[a-zA-Z0-9-]+\/commands/,
   },
   {
+    label: 'Moderations',
+    path: '/bots/[id]/moderations',
+    icon: HiOutlineShieldCheck,
+  },
+  {
     label: 'Notifications',
     path: '/bots/[id]/notifications',
     icon: HiOutlineBell,
@@ -63,16 +69,10 @@ function BotMenu({ botList }: BotMenuProps) {
   const { currentBot, setCurrentBot, version } = useGlobalStore();
 
   return (
-    <div className="flex flex-col h-full w-72 border-r bg-white">
+    <div className="flex flex-col h-full w-72 border-r">
       <div className="p-4 border-b space-y-4">
         <Link href="/">
-          <Image
-            alt="logo"
-            src={botmate}
-            width={50}
-            height={50}
-            className="rounded-md"
-          />
+          <Image alt="logo" src={botmate} width={50} height={50} />
         </Link>
 
         <Select

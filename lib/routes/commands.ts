@@ -23,18 +23,16 @@ export const createCommand = publicProcedure
   .input(
     z.object({
       botId: z.string(),
-      alias: z.string().optional(),
-      actions: z.array(z.any()),
-      condition: z.any(),
+      name: z.string(),
+      description: z.string().optional(),
     }),
   )
   .mutation(({ input }) => {
     return prisma.command.create({
       data: {
-        alias: input.alias,
+        name: input.name,
+        description: input.description,
         botId: input.botId,
-        actions: input.actions,
-        condition: input.condition,
       },
     });
   });

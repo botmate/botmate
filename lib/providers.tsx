@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
 
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
 import { trpc } from './trpc/client';
 
@@ -32,17 +33,21 @@ function Providers({ children, version }: Props) {
   }, [version, setVersion]);
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <NextThemesProvider defaultTheme="dark" attribute="class">
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
 
-      <ProgressBar
-        color="#373636"
-        options={{
-          showSpinner: false,
-        }}
-      />
-      <Toaster />
-    </trpc.Provider>
+        <ProgressBar
+          color="#373636"
+          options={{
+            showSpinner: false,
+          }}
+        />
+        <Toaster />
+      </trpc.Provider>
+    </NextThemesProvider>
   );
 }
 

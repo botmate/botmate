@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 import PageLayout from '#components/layouts/page';
+import NoData from '#components/no-data';
 
 dayjs.extend(relativeTime);
 
@@ -36,13 +37,16 @@ function CommandList(props: Props) {
       title="Commands"
       actions={
         <Tooltip title="Create">
-          <Button size="sm" variant={'ghost'}>
-            <HiOutlinePlus size={18} />
-          </Button>
+          <Link href={`/bots/${params.id}/commands/create`}>
+            <Button size="sm" variant={'ghost'}>
+              <HiOutlinePlus size={18} />
+            </Button>
+          </Link>
         </Tooltip>
       }
     >
       <div className="w-80 p-2 space-y-2 border-r h-full">
+        {props.commands.length === 0 && <NoData title="No Commands" />}
         <AnimatePresence>
           {commands.map((command, index) => {
             const ago = dayjs(command.updatedAt).fromNow();
@@ -68,24 +72,21 @@ function CommandList(props: Props) {
                     }`}
                   >
                     <div>
-                      <h1 className="font-semibold">{command.alias}</h1>
-                      <div className="flex gap-1 mt-2">
+                      <h1 className="font-semibold">{command.name}</h1>
+                      <p className="text-xs">{command.description}</p>
+                      <div className="flex gap-1 mt-3">
                         <div className="py-1 px-2 text-xs bg-primary text-primary-foreground rounded-sm">
                           {/* @ts-ignore */}
-                          {command.actions?.length} action
+                          {command.actions?.length ?? '0'} action
                           {/* @ts-ignore */}
                           {command.actions?.length > 1 ? 's' : ''}
                         </div>
-                        <div className="py-1 px-2 text-xs bg-blue-500 text-primary-foreground rounded-sm">
-                          {/* @ts-ignore */}
-                          {command.condition.id}
+                        <div className="py-1 px-2 text-xs bg-muted rounded-sm">
+                          {ago}
                         </div>
                       </div>
                     </div>
                     <div className="flex-1" />
-                    <div className="flex mt-1">
-                      <div className={`text-xs`}>{ago}</div>
-                    </div>
                   </Card>
                 </Link>
               </motion.div>

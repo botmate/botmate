@@ -6,6 +6,7 @@ import { Switch } from '#ui/switch';
 import { Tooltip } from '#ui/tooltip';
 import { Command } from '@prisma/client';
 import {
+  HammerIcon,
   LucideDelete,
   LucidePlay,
   LucideTrash,
@@ -22,18 +23,24 @@ type Props = {
   command: Command;
 };
 function CommandEditor({ command }: Props) {
-  const { alias } = command;
+  const { name } = command;
 
   const condition = parseCondition(command.condition);
 
   return (
     <PageLayout
-      title={alias ?? ''}
+      title={name}
       actions={
         <div className="flex items-center gap-2">
-          <Tooltip title="Run">
+          <Tooltip title="Condition">
             <Button variant="ghost">
-              <LucidePlay size={20} />
+              <HammerIcon size={20} />
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <Button variant="ghost">
+              <LucideTrash2 size={20} />
             </Button>
           </Tooltip>
 

@@ -109,8 +109,7 @@ function CommandList(props: Props) {
                       <p className="text-xs">{command.description}</p>
                       <div className="flex gap-1 mt-3">
                         <div className="py-1 px-2 text-xs bg-primary text-primary-foreground rounded-sm">
-                          {/* @ts-ignore */}
-                          {command.actions?.length ?? '0'} action
+                          enabled
                           {/* @ts-ignore */}
                           {command.actions?.length > 1 ? 's' : ''}
                         </div>

@@ -1,4 +1,5 @@
-import { HiDocumentText, HiFire } from 'react-icons/hi';
+import { ActionListItem } from '#types';
+import { HiDocumentText, HiFire, HiPhotograph } from 'react-icons/hi';
 
 export const ConditionList = [
   {
@@ -29,11 +30,11 @@ export const ConditionList = [
   },
 ];
 
-export const ActionList = [
+export const actionList: ActionListItem[] = [
   {
     id: 'sendMessage',
     name: 'Send Message',
-    description: 'Send a message to the user',
+    description: 'Send a message in chat',
     displayFields: ['message'],
     icon: HiDocumentText,
     inputs: [
@@ -49,7 +50,7 @@ export const ActionList = [
     id: 'sendSticker',
     name: 'Send Sticker',
     icon: HiFire,
-    description: 'Send a sticker to the user',
+    description: 'Send a sticker in the chat',
     displayFields: ['stickerId'],
     inputs: [
       {
@@ -57,6 +58,26 @@ export const ActionList = [
         type: 'text',
         label: 'Sticker ID',
         placeholder: 'Enter sticker ID',
+      },
+    ],
+  },
+  {
+    id: 'sendPhoto',
+    name: 'Send Photo',
+    icon: HiPhotograph,
+    description: 'Send a image in the chat',
+    inputs: [
+      {
+        id: 'imageURL',
+        type: 'text',
+        label: 'Image URL',
+        placeholder: 'Enter image URL',
+      },
+      {
+        id: 'imageID',
+        type: 'text',
+        label: 'Image ID',
+        placeholder: 'Enter Telegram Image ID',
       },
     ],
   },

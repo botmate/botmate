@@ -6,11 +6,15 @@ import { Switch } from '#ui/switch';
 import { Tooltip } from '#ui/tooltip';
 import { Command } from '@prisma/client';
 import {
+  Edit2Icon,
+  EditIcon,
   HammerIcon,
   LucideDelete,
   LucidePlay,
   LucideTrash,
   LucideTrash2,
+  SwitchCameraIcon,
+  ToggleLeftIcon,
 } from 'lucide-react';
 import React from 'react';
 import { HiOutlinePlay, HiOutlineSearch, HiOutlineTrash } from 'react-icons/hi';
@@ -18,14 +22,13 @@ import { HiOutlinePlay, HiOutlineSearch, HiOutlineTrash } from 'react-icons/hi';
 import PageLayout from '#components/layouts/page';
 
 import ActionBuilder from './action-builder';
-import { ActionList } from './data';
+import { actionList } from './data';
 
 type Props = {
   command: Command;
 };
 function CommandEditor({ command }: Props) {
   const { name } = command;
-
   const condition = parseCondition(command.condition);
 
   return (
@@ -33,15 +36,15 @@ function CommandEditor({ command }: Props) {
       title={name}
       actions={
         <div className="flex items-center gap-2">
-          <Tooltip title="Condition">
+          <Tooltip title="Edit Condition">
             <Button variant="ghost">
-              <HammerIcon size={20} />
+              <Edit2Icon size={20} />
             </Button>
           </Tooltip>
 
-          <Tooltip title="Delete">
+          <Tooltip title="Run">
             <Button variant="ghost">
-              <LucideTrash2 size={20} />
+              <LucidePlay size={20} />
             </Button>
           </Tooltip>
 

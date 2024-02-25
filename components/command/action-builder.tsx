@@ -4,7 +4,7 @@ import { ActionListItem } from '#types';
 import { Button } from '#ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '#ui/card';
 import { Input } from '#ui/input';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import ReactFlow, {
   Background,
   Connection,
@@ -22,6 +22,7 @@ import 'reactflow/dist/style.css';
 
 import ActionList from './action-list';
 import { actionList } from './data';
+import { DefaultNode, SelectedNode } from './flow/nodes';
 
 function ActionBuilder() {
   // States
@@ -31,14 +32,13 @@ function ActionBuilder() {
       data: { label: 'INIT' },
       position: { x: 0, y: 0 },
       draggable: false,
+      type: 'init',
     },
   ]);
 
   const [edges, setEdges] = useState<Edge[]>([]);
 
-  const [selectedAction, setSelectedAction] = useState<ActionListItem | null>(
-    null,
-  );
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   // Callbacks
   const onNodesChange = useCallback(
@@ -55,7 +55,7 @@ function ActionBuilder() {
 
   const onConnect = useCallback(
     (connection: Connection) => {
-      const edge = { ...connection, type: 'custom-edge' };
+      const edge = { ...connection };
       setEdges((eds) => addEdge(edge, eds));
     },
     [setEdges],
@@ -83,7 +83,7 @@ function ActionBuilder() {
         method: actionItem.id,
       },
       position: { x: lastNode.position.x, y: lastNode.position.y + 70 },
-      type: 'default',
+      type: 'selected',
     };
 
     setNodes((prevNodes) => [...prevNodes, newNode]);
@@ -94,12 +94,26 @@ function ActionBuilder() {
   function handleNodeClick(event: React.MouseEvent, node: Node) {
     const action = actionList.find((a) => a.id === node.data.method);
     if (!action) {
-      setSelectedAction(null);
+      setSelectedNode(null);
+      setNodes((prevNodes) =>
+        prevNodes.map((n) => ({ ...n, type: 'default' })),
+      );
       return;
     }
 
-    setSelectedAction(action);
+    setSelectedNode(node);
   }
+
+  // Memos
+  const nodeTypes = useMemo(
+    () => ({ inactive: DefaultNode, active: SelectedNode }),
+    [],
+  );
+
+  const selectedNodeAction = useMemo(() => {
+    if (!selectedNode) return null;
+    return actionList.find((a) => a.id === selectedNode.data.method);
+  }, [selectedNode]);
 
   return (
     <div className="h-full">
@@ -110,6 +124,7 @@ function ActionBuilder() {
         onEdgesChange={onEdgesChange}
         onNodeClick={handleNodeClick}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{
           duration: 0.5,
@@ -132,14 +147,14 @@ function ActionBuilder() {
             </CardContent>
           </Card>
 
-          {selectedAction && (
+          {selectedNodeAction && (
             <Card>
               <CardHeader>
-                <h3 className="font-semibold">{selectedAction.name}</h3>
-                <p className="text-sm">{selectedAction.description}</p>
+                <h3 className="font-semibold">{selectedNodeAction.name}</h3>
+                <p className="text-sm">{selectedNodeAction.description}</p>
               </CardHeader>
               <CardContent className="space-y-2">
-                {selectedAction.inputs?.map((input, index) => (
+                {selectedNodeAction.inputs?.map((input, index) => (
                   <Input key={index} placeholder={input.placeholder} />
                 ))}
               </CardContent>

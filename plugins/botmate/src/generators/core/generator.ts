@@ -23,18 +23,6 @@ export async function coreGenerator(tree: Tree, options: CoreGeneratorSchema) {
     JSON.stringify(projectJson, null, 2)
   );
 
-  const eslintJson = JSON.parse(
-    tree.read(`packages/core/${options.name}/.eslintrc.json`).toString()
-  );
-  const jsoncParser = eslintJson.overrides.findIndex(
-    (override: { parser: string }) => override.parser === 'jsonc-eslint-parser'
-  );
-  eslintJson.overrides[jsoncParser].rules.ignoredDependencies = ['tslib'];
-  tree.write(
-    `packages/core/${options.name}/.eslintrc.json`,
-    JSON.stringify(eslintJson, null, 2)
-  );
-
   await formatFiles(tree);
 }
 

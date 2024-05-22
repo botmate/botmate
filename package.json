@@ -2,7 +2,9 @@
   "name": "botmate-root",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "botmate": "tsx --tsconfig ./tsconfig.base.json packages/core/cli/src/index.ts"
+  },
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",
@@ -22,6 +24,7 @@
     "@swc/helpers": "~0.5.2",
     "@types/ejs": "^3.1.5",
     "@types/jest": "^29.4.0",
+    "@types/koa": "^2.15.0",
     "@types/node": "18.16.9",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
@@ -44,6 +47,7 @@
     "prettier": "^2.6.2",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
+    "tsx": "^4.10.5",
     "typescript": "~5.4.2",
     "verdaccio": "^5.0.4",
     "vite": "~5.0.0",

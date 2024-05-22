@@ -1,0 +1,9 @@
+{
+  "name": "@botmate/utils",
+  "version": "0.0.1",
+  "dependencies": {
+    "pino": "^9.1.0",
+    "pino-pretty": "^11.0.0",
+    "tslib": "^2.3.0"
+  }
+}

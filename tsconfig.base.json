@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -13,13 +13,17 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "composite": true,
     "baseUrl": ".",
     "paths": {
+      "@botmate/cli": ["packages/core/cli/src/index.ts"],
+      "@botmate/client": ["packages/core/client/src/index.ts"],
       "@botmate/database": ["packages/core/database/src/index.ts"],
       "@botmate/plugin-auth": [
         "packages/plugins/@botmate/plugin-auth/src/index.ts"
       ],
       "@botmate/server": ["packages/core/server/src/index.ts"],
+      "@botmate/utils": ["packages/core/utils/src/index.ts"],
       "botmate": ["plugins/botmate/src/index.ts"]
     }
   },

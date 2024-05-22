@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "core": {
+      "factory": "./src/generators/core/generator",
+      "schema": "./src/generators/core/schema.json",
+      "description": "core generator"
+    }
+  }
+}

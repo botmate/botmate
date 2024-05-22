@@ -26,7 +26,7 @@ export class PluginManager {
   logger: Logger;
 
   constructor(private app: Application) {
-    this.logger = app.logger;
+    this.logger = createLogger('plugin-manager');
   }
 
   async initialize() {

@@ -22,7 +22,7 @@ export class Application {
   constructor(private options: ApplicationOptions = {}) {
     this.http = new Http();
     this.database = new Database({
-      logger: this.logger,
+      logger: createLogger('database'),
     });
     this.pluginManager = new PluginManager(this);
   }

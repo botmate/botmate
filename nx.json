@@ -1,0 +1,5 @@
+{
+  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudAccessToken": "M2M2NGFiM2QtZDU0OC00ZWZlLThiMDktYTBhNzIzNTYxZjQwfHJlYWQtd3JpdGU="
+}

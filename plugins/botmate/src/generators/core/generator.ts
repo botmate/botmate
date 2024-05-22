@@ -1,6 +1,7 @@
-import { formatFiles, ProjectConfiguration, Tree } from '@nx/devkit';
-import { CoreGeneratorSchema } from './schema';
+import { ProjectConfiguration, Tree, formatFiles } from '@nx/devkit';
 import { libraryGenerator } from '@nx/node';
+
+import { CoreGeneratorSchema } from './schema';
 
 export async function coreGenerator(tree: Tree, options: CoreGeneratorSchema) {
   await libraryGenerator(tree, {
@@ -14,13 +15,13 @@ export async function coreGenerator(tree: Tree, options: CoreGeneratorSchema) {
   });
 
   const projectJson = JSON.parse(
-    tree.read(`packages/core/${options.name}/project.json`).toString()
+    tree.read(`packages/core/${options.name}/project.json`).toString(),
   ) as ProjectConfiguration;
   projectJson.sourceRoot = projectJson.sourceRoot.replace('/src', '');
   projectJson.targets.build.options.rootDir = `packages/core/${options.name}/src`;
   tree.write(
     `packages/core/${options.name}/project.json`,
-    JSON.stringify(projectJson, null, 2)
+    JSON.stringify(projectJson, null, 2),
   );
 
   await formatFiles(tree);

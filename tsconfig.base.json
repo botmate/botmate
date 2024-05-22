@@ -22,6 +22,9 @@
       "@botmate/plugin-auth": [
         "packages/plugins/@botmate/plugin-auth/src/index.ts"
       ],
+      "@botmate/plugin-users": [
+        "packages/plugins/@botmate/plugin-users/src/index.ts"
+      ],
       "@botmate/server": ["packages/core/server/src/index.ts"],
       "@botmate/utils": ["packages/core/utils/src/index.ts"],
       "botmate": ["plugins/botmate/src/index.ts"]

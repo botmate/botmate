@@ -4,6 +4,16 @@
       "factory": "./src/generators/core/generator",
       "schema": "./src/generators/core/schema.json",
       "description": "core generator"
+    },
+    "plugin": {
+      "factory": "./src/generators/plugin/generator",
+      "schema": "./src/generators/plugin/schema.json",
+      "description": "plugin generator"
+    },
+    "pluginx": {
+      "factory": "./src/generators/pluginx/generator",
+      "schema": "./src/generators/pluginx/schema.json",
+      "description": "pluginx generator"
     }
   }
 }

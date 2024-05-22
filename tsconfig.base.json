@@ -16,6 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@botmate/database": ["packages/core/database/src/index.ts"],
+      "@botmate/plugin-auth": [
+        "packages/plugins/@botmate/plugin-auth/src/index.ts"
+      ],
       "@botmate/server": ["packages/core/server/src/index.ts"],
       "botmate": ["plugins/botmate/src/index.ts"]
     }

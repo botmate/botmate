@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "commander": "^12.1.0",
+    "execa": "^5.1.1",
     "tslib": "^2.3.0"
   }
 }

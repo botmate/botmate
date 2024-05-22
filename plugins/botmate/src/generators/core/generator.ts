@@ -1,4 +1,4 @@
-import { formatFiles, Tree } from '@nx/devkit';
+import { formatFiles, ProjectConfiguration, Tree } from '@nx/devkit';
 import { CoreGeneratorSchema } from './schema';
 import { libraryGenerator } from '@nx/node';
 
@@ -12,6 +12,18 @@ export async function coreGenerator(tree: Tree, options: CoreGeneratorSchema) {
     importPath: `@botmate/${options.name}`,
     compiler: 'tsc',
   });
+  const projectJson = JSON.parse(
+    tree.read(`packages/core/${options.name}/project.json`).toString()
+  ) as ProjectConfiguration;
+
+  projectJson.sourceRoot = projectJson.sourceRoot.replace('/src', '');
+  projectJson.targets.build.options.rootDir = `packages/core/${options.name}/src`;
+
+  tree.write(
+    `packages/core/${options.name}/project.json`,
+    JSON.stringify(projectJson, null, 2)
+  );
+
   await formatFiles(tree);
 }
 

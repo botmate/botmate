@@ -1,0 +1,21 @@
+{
+  "name": "app",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/core/app/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": ["server"]
+        }
+      ],
+      "options": {
+        "outputPath": "dist/packages/core/server/public"
+      }
+    }
+  }
+}

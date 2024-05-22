@@ -1,7 +1,7 @@
 {
   "name": "server",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/core/server/src",
+  "sourceRoot": "packages/core/server",
   "projectType": "library",
   "release": {
     "version": {
@@ -21,7 +21,8 @@
         "tsConfig": "packages/core/server/tsconfig.lib.json",
         "packageJson": "packages/core/server/package.json",
         "main": "packages/core/server/src/index.ts",
-        "assets": ["packages/core/server/*.md"]
+        "assets": ["packages/core/server/*.md"],
+        "rootDir": "packages/core/server/src"
       }
     },
     "nx-release-publish": {

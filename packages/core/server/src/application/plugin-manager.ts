@@ -14,7 +14,7 @@ type PluginMeta = {
   packageName: string;
   description: string;
   version: string;
-  dependencies: string[];
+  dependencies: Record<string, string>;
   localPath: string;
 };
 
@@ -30,22 +30,51 @@ export class PluginManager {
   }
 
   async initialize() {
-    this.logger.debug('Initializing plugin manager...');
+    this.logger.debug('Initializing...');
 
     this.model = initModel(this.app.db);
-    await this.initializePlugins();
+    await this.model.sync();
+    await this.prepare();
+    await this.sync();
+  }
+
+  async getPlugins() {
+    return this.model.findAll();
+  }
+
+  async sync() {
+    for (const plugin of this.plugins) {
+      const exist = await this.model.findOne({
+        where: { name: plugin.name },
+      });
+      if (!exist) {
+        await this.model.create({
+          name: plugin.name,
+          packageName: plugin.packageName,
+          builtin: plugin.localPath.includes('packages/plugins/@botmate'),
+          version: plugin.version,
+          description: plugin.description,
+          options: {},
+          enabled: true,
+          installed: true,
+          path: plugin.localPath,
+          dependencies: plugin.dependencies,
+        });
+      }
+    }
   }
 
   /**
-   * Initialize all plugins.
+   * Fetch all plugins from the given folder and prepare them.
    */
-  async initializePlugins() {
-    const storagePlugins = await this.getPlugins('storage/plugins');
-    const corePlugins = await this.getPlugins('packages/plugins/@botmate');
+  async prepare() {
+    const storagePlugins = await this.getLocalPlugins('storage/plugins');
+    const corePlugins = await this.getLocalPlugins('packages/plugins/@botmate');
 
-    this.logger.debug('Syncing plugins...');
+    this.plugins = [...corePlugins, ...storagePlugins];
+
     for (const plugin of [...corePlugins, ...storagePlugins]) {
-      this.logger.debug(`Loading ${colors.bold(plugin.packageName)}`);
+      this.logger.debug(`Processing ${colors.bold(plugin.packageName)}`);
 
       const serverEntry = join(
         plugin.localPath,
@@ -57,7 +86,7 @@ export class PluginManager {
         const exportKey = Object.keys(module)[0];
         if (!exportKey) {
           this.logger.error(
-            `Failed to load plugin ${colors.bold(
+            `Failed to prepare plugin ${colors.bold(
               plugin.name,
             )}: No export found`,
           );
@@ -68,20 +97,22 @@ export class PluginManager {
         const pluginLogger = createLogger(plugin.name);
         const instance = new PluginClass(this.app, pluginLogger);
         await instance.beforeLoad();
-        this.instanes.set(plugin.name, instance);
+        this.instanes.set(plugin.packageName, instance);
       } catch (e) {
-        this.logger.error(`Failed to load plugin ${colors.bold(plugin.name)}`);
+        this.logger.error(
+          `Failed to prepare plugin ${colors.bold(plugin.name)}`,
+        );
         this.logger.error(e);
       }
     }
 
-    this.logger.debug('Syncing plugins done.');
+    this.logger.debug('Plugins are initialized');
   }
 
   /**
    * Get all plugins from the given folder.
    */
-  async getPlugins(pluginFolder: string) {
+  async getLocalPlugins(pluginFolder: string) {
     this.logger.debug(`Reading plugins from "${colors.bold(pluginFolder)}"`);
 
     if (!existsSync(pluginFolder)) {
@@ -110,7 +141,7 @@ export class PluginManager {
           packageName: pkg.name,
           description: pkg.description,
           version: pkg.version,
-          dependencies: Object.keys(pkg.botmate?.dependencies || {}),
+          dependencies: pkg.botmate?.dependencies || {},
           localPath: pluginPath,
         });
       }

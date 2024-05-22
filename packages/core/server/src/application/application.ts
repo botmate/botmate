@@ -4,6 +4,7 @@ import colors from 'colors';
 
 import { Http } from './http';
 import { PluginManager } from './plugin-manager';
+import { registerCoreRoutes } from './routes';
 
 interface ApplicationOptions {
   port?: number;
@@ -12,12 +13,12 @@ interface ApplicationOptions {
 export class Application {
   protected http: Http;
   protected database: Database;
-  protected pluginManager: PluginManager;
 
-  logger: Logger = createLogger();
-  isDev = env.NODE_ENV === 'development';
   started = false;
   initialized = false;
+  isDev = env.NODE_ENV === 'development';
+  pluginManager: PluginManager;
+  logger: Logger = createLogger();
 
   constructor(private options: ApplicationOptions = {}) {
     this.http = new Http();
@@ -41,6 +42,9 @@ export class Application {
     await this.pluginManager.initialize();
 
     await this.db.sync();
+    this.logger.debug('Database synchronized');
+
+    await registerCoreRoutes(this, this.http);
 
     this.initialized = true;
   }

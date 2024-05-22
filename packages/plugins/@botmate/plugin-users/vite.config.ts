@@ -39,6 +39,7 @@ export default defineConfig({
         'react/jsx-runtime',
         '@botmate/client',
         '@botmate/server',
+        '@botmate/database',
       ],
     },
   },

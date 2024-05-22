@@ -13,7 +13,6 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@botmate/cli": ["packages/core/cli/src/index.ts"],
@@ -26,6 +25,7 @@
         "packages/plugins/@botmate/plugin-users/src/index.ts"
       ],
       "@botmate/server": ["packages/core/server/src/index.ts"],
+      "@botmate/ui": ["packages/shared/ui/src/index.ts"],
       "@botmate/utils": ["packages/core/utils/src/index.ts"],
       "botmate": ["plugins/botmate/src/index.ts"]
     }

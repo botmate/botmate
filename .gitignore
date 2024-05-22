@@ -42,3 +42,4 @@ Thumbs.db
 
 storage/*
 !storage/.gitkeep
+packages/core/app/src/plugins.ts

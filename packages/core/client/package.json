@@ -2,6 +2,10 @@
   "name": "@botmate/client",
   "version": "0.0.1",
   "dependencies": {
+    "@botmate/ui": "0.0.1",
+    "axios": "^1.7.2",
+    "react-router-dom": "^6.23.1",
+    "sonner": "^1.4.41",
     "tslib": "^2.3.0"
   }
 }

@@ -22,6 +22,7 @@ export class PluginModel extends Model<
   declare builtin: boolean;
   declare installed: boolean;
   declare options: Record<string, unknown> | null;
+  declare dependencies: Record<string, string> | null;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -72,6 +73,10 @@ export function initModel(db: Sequelize): ModelStatic<PluginModel> {
         defaultValue: false,
       },
       options: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      dependencies: {
         type: DataTypes.JSON,
         allowNull: true,
       },

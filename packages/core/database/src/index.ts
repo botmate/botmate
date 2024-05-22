@@ -1,1 +1,2 @@
-export * from './lib/core-database';
+export * from './database';
+export * from 'sequelize';

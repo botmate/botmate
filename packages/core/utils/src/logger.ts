@@ -1,15 +1,31 @@
-import 'pino-pretty';
-import { pino } from 'pino';
+import { createLogger as CreateLogger, format, transports } from 'winston';
 
-export function createLogger() {
-  return pino({
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        colorize: true,
-        messageFormat: '{msg}',
-        ignore: 'pid,hostname',
-      },
-    },
+import { env } from './env';
+
+export function createLogger(name = 'server') {
+  const logger = CreateLogger({
+    level: env.NODE_ENV === 'development' ? 'debug' : 'info',
+    transports: [
+      new transports.Console({
+        format: format.combine(
+          format.simple(),
+          format.colorize({
+            all: true,
+          }),
+          format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss',
+          }),
+          format.printf(
+            (info) =>
+              `${info['timestamp']} : ${info.level} \t[${name}] ${info.message}`,
+          ),
+          format.errors({ stack: true }),
+        ),
+      }),
+    ],
   });
+
+  return logger;
 }
+
+export type Logger = ReturnType<typeof createLogger>;

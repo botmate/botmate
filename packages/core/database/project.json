@@ -1,5 +1,5 @@
 {
-  "name": "core-database",
+  "name": "database",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/core/database/src",
   "projectType": "library",

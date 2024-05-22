@@ -1,2 +1,2 @@
-import 'koa';
 export * from './application';
+export * from './plugin';

@@ -11,7 +11,7 @@ import { PluginModel, initModel } from './plugin-model';
 
 type PluginMeta = {
   name: string;
-  packageName: string;
+  displayName: string;
   description: string;
   version: string;
   dependencies: Record<string, string>;
@@ -27,19 +27,39 @@ export class PluginManager {
 
   constructor(private app: Application) {
     this.logger = createLogger('plugin-manager');
+    this.model = initModel(this.app.db);
   }
 
   async initialize() {
     this.logger.debug('Initializing...');
-
-    this.model = initModel(this.app.db);
     await this.model.sync();
     await this.prepare();
     await this.sync();
   }
 
   async getPlugins() {
-    return this.model.findAll();
+    return this.plugins;
+  }
+
+  async resolvePlugin(name: string) {
+    try {
+      const m = await import(name);
+      console.log('m', m);
+    } catch (e) {
+      this.logger.error(e);
+    }
+  }
+
+  async buildPlugins() {
+    this.logger.info('Building plugins...');
+
+    const plugins = await this.getPlugins();
+    console.log('plugins', plugins);
+    // for (const plugin of plugins) {
+    //   this.logger.info(`Building ${colors.bold(plugin.name)}`);
+    //   const pluginPath = await readdir(plugin.path);
+    //   console.log('pluginPath', pluginPath);
+    // }
   }
 
   async sync() {
@@ -48,20 +68,69 @@ export class PluginManager {
         where: { name: plugin.name },
       });
       if (!exist) {
-        await this.model.create({
-          name: plugin.name,
-          packageName: plugin.packageName,
-          builtin: plugin.localPath.includes('packages/plugins/@botmate'),
-          version: plugin.version,
-          description: plugin.description,
-          options: {},
-          enabled: true,
-          installed: true,
-          path: plugin.localPath,
-          dependencies: plugin.dependencies,
+        // await this.model.create({
+        //   name: plugin.name,
+        //   packageName: plugin.packageName,
+        //   builtin: plugin.localPath.includes('packages/plugins/@botmate'),
+        //   version: plugin.version,
+        //   description: plugin.description,
+        //   options: {},
+        //   enabled: true,
+        //   installed: true,
+        //   dependencies: plugin.dependencies,
+        // });
+      }
+    }
+  }
+
+  async getInstalledPlugins() {
+    const pkgJsonPath = join(process.cwd(), 'package.json');
+
+    if (!existsSync(pkgJsonPath)) {
+      this.logger.debug('No package.json found');
+      return [];
+    }
+
+    this.logger.debug('Reading plugins from package.json');
+    const pkgJson = await readFile('package.json', 'utf-8').then((data) =>
+      JSON.parse(data),
+    );
+
+    const dependencies = Object.keys(pkgJson.dependencies || {});
+
+    if (!dependencies.length) {
+      this.logger.debug('No dependencies found in package.json');
+      return [];
+    }
+
+    const plugins: PluginMeta[] = [];
+
+    for (const dep of dependencies) {
+      if (dep.startsWith('@botmate/plugin-')) {
+        const pluginPath = join(process.cwd(), 'node_modules', dep);
+        const pkgJSON = join(pluginPath, 'package.json');
+        const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
+          JSON.parse(data),
+        );
+
+        plugins.push({
+          name: pkg.name,
+          displayName: pkg.displayName || pkg.name,
+          description: pkg.description,
+          version: pkg.version,
+          dependencies: pkg.botmate?.dependencies || {},
+          localPath: pluginPath,
         });
       }
     }
+
+    if (plugins.length > 0) {
+      this.logger.info(
+        `Found ${plugins.map((p) => colors.bold(p.displayName)).join(', ')}`,
+      );
+    }
+
+    return plugins;
   }
 
   /**
@@ -70,11 +139,12 @@ export class PluginManager {
   async prepare() {
     const storagePlugins = await this.getLocalPlugins('storage/plugins');
     const corePlugins = await this.getLocalPlugins('packages/plugins/@botmate');
+    const installedPlugins = await this.getInstalledPlugins();
 
-    this.plugins = [...corePlugins, ...storagePlugins];
+    this.plugins = [...corePlugins, ...storagePlugins, ...installedPlugins];
 
-    for (const plugin of [...corePlugins, ...storagePlugins]) {
-      this.logger.debug(`Processing ${colors.bold(plugin.packageName)}`);
+    for (const plugin of this.plugins) {
+      this.logger.debug(`Processing ${colors.bold(plugin.displayName)}`);
 
       const serverEntry = join(
         plugin.localPath,
@@ -97,7 +167,7 @@ export class PluginManager {
         const pluginLogger = createLogger(plugin.name);
         const instance = new PluginClass(this.app, pluginLogger);
         await instance.beforeLoad();
-        this.instanes.set(plugin.packageName, instance);
+        this.instanes.set(plugin.displayName, instance);
       } catch (e) {
         this.logger.error(
           `Failed to prepare plugin ${colors.bold(plugin.name)}`,
@@ -137,8 +207,8 @@ export class PluginManager {
         );
 
         plugins.push({
-          name: pkg.displayName || pkg.name,
-          packageName: pkg.name,
+          name: pkg.name,
+          displayName: pkg.displayName || pkg.name,
           description: pkg.description,
           version: pkg.version,
           dependencies: pkg.botmate?.dependencies || {},
@@ -148,7 +218,7 @@ export class PluginManager {
     }
 
     this.logger.info(
-      `Found ${plugins.map((p) => colors.bold(p.packageName)).join(', ')}`,
+      `Found ${plugins.map((p) => colors.bold(p.displayName)).join(', ')}`,
     );
 
     return plugins;

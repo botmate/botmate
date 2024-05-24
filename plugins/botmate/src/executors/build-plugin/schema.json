@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "BuildPlugin executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "textToEcho": {
+      "type": "string",
+      "description": "Text To Echo"
+    }
+  },
+  "required": []
+}

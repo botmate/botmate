@@ -3,9 +3,8 @@ import { Logger } from '@botmate/utils';
 import { Application } from './application';
 
 export class Plugin {
+  app: Application;
   logger: Logger;
-
-  protected app: Application;
 
   constructor(app: Application, logger: Logger) {
     this.app = app;

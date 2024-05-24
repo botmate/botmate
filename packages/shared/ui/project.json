@@ -11,6 +11,11 @@
       "options": {
         "outputPath": "dist/packages/shared/ui"
       }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
     }
   }
 }

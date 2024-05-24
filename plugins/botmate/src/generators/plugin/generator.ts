@@ -1,31 +1,37 @@
-import { formatFiles, generateFiles, Tree } from '@nx/devkit';
-import { PluginGeneratorSchema } from './schema';
-import { libraryGenerator } from '@nx/react';
-import { Linter } from '@nx/eslint';
-import { join } from 'path';
+import { ProjectConfiguration, Tree, formatFiles } from '@nx/devkit';
+import { libraryGenerator } from '@nx/node';
 
-export async function pluginGenerator(
+import { PluginGeneratorSchema } from './schema';
+
+export async function coreGenerator(
   tree: Tree,
-  options: PluginGeneratorSchema
+  options: PluginGeneratorSchema,
 ) {
-  const projectName = `plugin-${options.name}`;
-  const projectRoot = `packages/plugins/@botmate/${projectName}`;
+  const projectRoot = `packages/plugins/@botmate`;
+
+  options.name = `plugin-${options.name}`;
 
   await libraryGenerator(tree, {
-    name: projectName,
-    directory: projectRoot,
+    name: options.name,
+    directory: `${projectRoot}/${options.name}`,
     projectNameAndRootFormat: 'as-provided',
-    buildable: true,
-    bundler: 'vite',
-    linter: Linter.EsLint,
     publishable: true,
-    style: 'none',
-    importPath: `@botmate/${projectName}`,
+    buildable: true,
+    importPath: `@botmate/${options.name}`,
+    compiler: 'tsc',
   });
 
-  generateFiles(tree, join(__dirname, 'files'), projectRoot, options);
+  const projectJson = JSON.parse(
+    tree.read(`${projectRoot}/${options.name}/project.json`).toString(),
+  ) as ProjectConfiguration;
+  projectJson.sourceRoot = projectJson.sourceRoot.replace('/src', '');
+  projectJson.targets.build.options.rootDir = `${projectRoot}/${options.name}/src`;
+  tree.write(
+    `${projectRoot}/${options.name}/project.json`,
+    JSON.stringify(projectJson, null, 2),
+  );
 
   await formatFiles(tree);
 }
 
-export default pluginGenerator;
+export default coreGenerator;

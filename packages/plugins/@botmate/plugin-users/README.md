@@ -1,7 +1,11 @@
-# plugin-users
+# users
 
 This library was generated with [Nx](https://nx.dev).
 
+## Building
+
+Run `nx build users` to build the library.
+
 ## Running unit tests
 
-Run `nx test plugin-users` to execute the unit tests via [Vitest](https://vitest.dev/).
+Run `nx test users` to execute the unit tests via [Jest](https://jestjs.io).

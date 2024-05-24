@@ -1,5 +1,5 @@
 {
-  "extends": ["../../../.eslintrc.json"],
+  "extends": ["plugin:@nx/react", "../../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
@@ -15,7 +15,7 @@
       "rules": {}
     },
     {
-      "files": ["*.json"],
+      "files": ["pacakges/**/*.json"],
       "parser": "jsonc-eslint-parser",
       "rules": {
         "@nx/dependency-checks": "error"

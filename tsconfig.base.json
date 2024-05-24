@@ -13,14 +13,12 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@botmate/cli": ["packages/core/cli/src/index.ts"],
       "@botmate/client": ["packages/core/client/src/index.ts"],
       "@botmate/database": ["packages/core/database/src/index.ts"],
-      "@botmate/plugin-auth": [
-        "packages/plugins/@botmate/plugin-auth/src/index.ts"
-      ],
       "@botmate/plugin-users": [
         "packages/plugins/@botmate/plugin-users/src/index.ts"
       ],

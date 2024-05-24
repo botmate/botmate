@@ -14,10 +14,9 @@ export class PluginModel extends Model<
 > {
   declare id: CreationOptional<string>;
   declare name: string;
-  declare packageName: string;
+  declare displayName: string;
   declare version: string;
   declare description: string | null;
-  declare path: string;
   declare enabled: boolean;
   declare builtin: boolean;
   declare installed: boolean;
@@ -41,7 +40,7 @@ export function initModel(db: Sequelize): ModelStatic<PluginModel> {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      packageName: {
+      displayName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -50,10 +49,6 @@ export function initModel(db: Sequelize): ModelStatic<PluginModel> {
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      path: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -94,3 +89,5 @@ export function initModel(db: Sequelize): ModelStatic<PluginModel> {
     },
   );
 }
+
+export type IPlugin = InferAttributes<PluginModel>;

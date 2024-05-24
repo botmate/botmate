@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "build-plugin": {
+      "implementation": "./executors/build-plugin/executor",
+      "schema": "./executors/build-plugin/schema.json",
+      "description": "build-plugin executor"
+    }
+  }
+}

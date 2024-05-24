@@ -21,7 +21,8 @@
         "tsConfig": "packages/core/database/tsconfig.lib.json",
         "packageJson": "packages/core/database/package.json",
         "main": "packages/core/database/src/index.ts",
-        "assets": ["packages/core/database/*.md"]
+        "assets": ["packages/core/database/*.md"],
+        "rootDir": "packages/core/database/src"
       }
     },
     "nx-release-publish": {

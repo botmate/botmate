@@ -15,7 +15,7 @@
       "rules": {}
     },
     {
-      "files": ["pacakges/**/*.json"],
+      "files": ["*.json"],
       "parser": "jsonc-eslint-parser",
       "rules": {
         "@nx/dependency-checks": "error"

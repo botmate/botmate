@@ -3,25 +3,45 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/plugins/@botmate/plugin-users/src",
   "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
   "tags": [],
   "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/plugins/@botmate/plugin-users",
+        "tsConfig": "packages/plugins/@botmate/plugin-users/tsconfig.lib.json",
+        "packageJson": "packages/plugins/@botmate/plugin-users/package.json",
+        "main": "packages/plugins/@botmate/plugin-users/src/index.ts",
+        "assets": ["packages/plugins/@botmate/plugin-users/*.md"],
+        "rootDir": "packages/plugins/@botmate/plugin-users/src"
+      }
+    },
+    "build:client": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/packages/plugins/@botmate/plugin-users"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/plugins/@botmate/plugin-users/jest.config.ts"
       }
     }
   }

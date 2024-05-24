@@ -8,14 +8,14 @@ uplinks:
     maxage: 60m
 
 packages:
+  '@botmate/*':
+    access: $all
+    publish: $all
+
   '**':
-    # give all users (including non-authenticated users) full access
-    # because it is a local registry
     access: $all
     publish: $all
     unpublish: $all
-
-    # if package is not available locally, proxy requests to npm registry
     proxy: npmjs
 
 # log settings

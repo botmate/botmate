@@ -1,24 +1,20 @@
-import {
-  RouteObject,
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 
 import NotFound from './components/not-found';
 import { PluginManager } from './plugin-manager';
+import AppProvider from './provider';
 
 export class Application {
-  private routes: RouteObject[] = [
+  routes: RouteObject[] = [
     {
       path: '*',
       element: <NotFound />,
     },
   ];
-  private pluginManager: PluginManager;
+  pluginManager: PluginManager;
 
   constructor() {
     this.pluginManager = new PluginManager(this);
-    this.pluginManager.initialize();
   }
 
   get addPlugin() {
@@ -26,13 +22,7 @@ export class Application {
   }
 
   async getRootComponent() {
-    const router = createBrowserRouter(this.routes);
-
-    return (
-      <>
-        <RouterProvider router={router} />
-      </>
-    );
+    return <AppProvider app={this} />;
   }
 
   addRoute(route: RouteObject) {

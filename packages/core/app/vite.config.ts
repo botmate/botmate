@@ -2,6 +2,7 @@
 import react from '@vitejs/plugin-react';
 
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import federation from '@originjs/vite-plugin-federation';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -23,14 +24,28 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(), nxViteTsPaths()],
+  plugins: [
+    react(),
+    nxViteTsPaths(),
+    federation({
+      name: 'app',
+      remotes: {
+        remoteApp: 'http://localhost:3000/assets/remoteEntry.js',
+      },
+      shared: ['react', 'react-dom'],
+    }),
+  ],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+  resolve: {
+    alias: {
+      '@botmate/ui': 'packages/shared/ui/src/index.ts',
+      '@botmate/client': 'packages/core/client/src/index.ts',
+    },
+  },
 
   build: {
+    target: 'esnext',
+    modulePreload: false,
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {

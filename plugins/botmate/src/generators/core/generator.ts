@@ -4,9 +4,11 @@ import { libraryGenerator } from '@nx/node';
 import { CoreGeneratorSchema } from './schema';
 
 export async function coreGenerator(tree: Tree, options: CoreGeneratorSchema) {
+  const projectRoot = `packages/core/${options.name}`;
+
   await libraryGenerator(tree, {
     name: options.name,
-    directory: `packages/core/${options.name}`,
+    directory: `${projectRoot}/${options.name}`,
     projectNameAndRootFormat: 'as-provided',
     publishable: true,
     buildable: true,
@@ -15,12 +17,12 @@ export async function coreGenerator(tree: Tree, options: CoreGeneratorSchema) {
   });
 
   const projectJson = JSON.parse(
-    tree.read(`packages/core/${options.name}/project.json`).toString(),
+    tree.read(`${projectRoot}/${options.name}/project.json`).toString(),
   ) as ProjectConfiguration;
   projectJson.sourceRoot = projectJson.sourceRoot.replace('/src', '');
-  projectJson.targets.build.options.rootDir = `packages/core/${options.name}/src`;
+  projectJson.targets.build.options.rootDir = `${projectRoot}/${options.name}/src`;
   tree.write(
-    `packages/core/${options.name}/project.json`,
+    `${projectRoot}/${options.name}/project.json`,
     JSON.stringify(projectJson, null, 2),
   );
 

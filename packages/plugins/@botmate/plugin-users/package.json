@@ -1,14 +1,10 @@
 {
   "name": "@botmate/plugin-users",
-  "displayName": "Users Plugin",
-  "description": "A plugin for managing users in BotMate",
   "version": "0.0.1",
-  "main": "./index.js",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.js"
-    }
+  "main": "./server/index.js",
+  "dependencies": {
+    "@botmate/database": "0.0.1",
+    "@botmate/server": "0.0.1",
+    "tslib": "^2.3.0"
   }
 }

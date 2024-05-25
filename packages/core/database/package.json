@@ -1,6 +1,6 @@
 {
   "name": "@botmate/database",
-  "version": "1.0.0-alpha.1",
+  "version": "0.0.1",
   "dependencies": {
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",

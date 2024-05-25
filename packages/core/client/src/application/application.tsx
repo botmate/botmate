@@ -21,6 +21,10 @@ export class Application {
     return this.pluginManager.add;
   }
 
+  get plugins() {
+    return this.pluginManager.plugins;
+  }
+
   async getRootComponent() {
     return <AppProvider app={this} />;
   }

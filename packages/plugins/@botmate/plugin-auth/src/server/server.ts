@@ -2,8 +2,10 @@ import type { ModelStatic } from '@botmate/database';
 import type { UserModel } from '@botmate/plugin-users';
 import { Plugin } from '@botmate/server';
 import { env } from '@botmate/utils';
-import * as jsonwebtoken from 'jsonwebtoken';
 import { z } from '@botmate/utils';
+import * as jsonwebtoken from 'jsonwebtoken';
+
+import { hashPassword, verifyPassword } from './hash';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -18,8 +20,6 @@ const registerSchema = z.object({
 });
 type RegisterSchema = z.infer<typeof registerSchema>;
 
-import { hashPassword, verifyPassword } from './hash';
-
 export class AuthPlugin extends Plugin {
   override async load() {
     const model = this.db.models['users'] as unknown as ModelStatic<UserModel>;
@@ -27,19 +27,16 @@ export class AuthPlugin extends Plugin {
       throw new Error('Users model not found');
     }
 
-    
-    this.router.post('/auth/login', async (ctx) => {
-      const { email,password } = <LoginSchema>ctx.request.body;
+    this.router.post('/auth/login', async (req, res) => {
+      const { email, password } = req.body as LoginSchema;
       const user = await model.findOne({ where: { email } });
 
       if (!user) {
-        ctx.body = { error: 'Invalid email or password' };
-        ctx.status = 400;
+        res.status(400).json({ error: 'Invalid email or password' });
         return;
       }
       if (!verifyPassword(password, user.password)) {
-        ctx.body = { error: 'Invalid email or password' };
-        ctx.status = 400;
+        res.status(400).json({ error: 'Invalid email or password' });
         return;
       }
 
@@ -49,23 +46,21 @@ export class AuthPlugin extends Plugin {
         { expiresIn: '7d' },
       );
 
-      ctx.cookies.set('token', token, {
-        httpOnly: true,
+      res.cookie('token', token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
-      ctx.body = { token };
+      res.json({ data: token });
     });
 
-    this.router.post('/auth/register', async (ctx) => {
-      const { name, email, password } = <RegisterSchema>ctx.request.body;
+    this.router.post('/auth/register', async (req, res) => {
+      const { name, email, password } = req.body as RegisterSchema;
       const exist = await model.findOne({ where: { email } });
       if (exist) {
-        ctx.body = { error: 'User already exists' };
-        ctx.status = 400;
+        res.status(400).json({ error: 'Email already exists' });
         return;
       }
-      const data = await model.create({
+      await model.create({
         name,
         email,
         password: hashPassword(password),
@@ -73,24 +68,13 @@ export class AuthPlugin extends Plugin {
         enabled: true,
       });
 
-      const token = jsonwebtoken.sign(
-        { id: data.id, role: data.role },
-        env.JWT_SECRET,
-        { expiresIn: '7d' },
-      );
-
-      ctx.cookies.set('token', token, {
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      ctx.body = { data: token };
+      res.json({ data: true });
     });
 
-    this.app.router.get('/auth/me', async (ctx) => {
-      const token = ctx.headers.authorization?.split(' ')[1];
+    this.app.router.get('/auth/me', async (req, res) => {
+      const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
-        return ctx.throw(401, 'Unauthorized');
+        return res.status(401).json({ error: 'Unauthorized' });
       }
       try {
         const decoded = jsonwebtoken.verify(token, env.JWT_SECRET) as {
@@ -98,11 +82,11 @@ export class AuthPlugin extends Plugin {
         };
         const user = await model.findByPk(decoded.id);
         if (!user) {
-          ctx.throw(401, 'Unauthorized');
+          return res.status(401).json({ error: 'Unauthorized' });
         }
-        ctx.body = { data: user };
+        req.body = { data: user };
       } catch (error) {
-        return ctx.throw(401, 'Unauthorized');
+        return res.status(401).json({ error: 'Unauthorized' });
       }
     });
   }

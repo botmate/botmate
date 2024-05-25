@@ -1,17 +1,20 @@
 import { Application } from './application';
 import { Http } from './http';
 
-export async function registerCoreRoutes(app: Application, { router }: Http) {
+export async function registerCoreRoutes(
+  app: Application,
+  { apiRouter: router }: Http,
+) {
   app.logger.info('Registering core routes...');
 
   // health check
-  router.get('/health', (ctx) => {
-    ctx.body = 'OK';
+  router.get('/health', (req, res) => {
+    res.send('OK');
   });
 
   // list all plugins
-  router.get('/plugins', async (ctx) => {
+  router.get('/plugins', async (_, res) => {
     const plugins = await app.pluginManager.getPlugins();
-    ctx.body = plugins;
+    res.json(plugins);
   });
 }

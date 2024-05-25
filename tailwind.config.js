@@ -20,7 +20,7 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['Rubik', 'cursive'],
+      sans: ['Rubik', 'sans-serif'],
     },
     extend: {
       colors: {

@@ -1,41 +1,30 @@
 import { createLogger } from '@botmate/utils';
-import { bodyParser } from '@koa/bodyparser';
-import cors from '@koa/cors';
-import Router from '@koa/router';
-import koa from 'koa';
-import koaLogger from 'koa-logger';
-import serve from 'koa-static';
-import { join } from 'path';
+import express from 'express';
+import expressLogger from 'express-winston';
 
 export class Http {
-  app: koa;
-  router = new Router({
-    prefix: '/api',
-  });
+  app: express.Application;
+  apiRouter: express.Router;
 
   constructor(private isDev = true) {
-    this.app = new koa();
+    this.app = express();
+    this.apiRouter = express.Router();
+
     const logger = createLogger('http');
 
-    this.app.use(cors());
-    this.app.use(
-      koaLogger({
-        transporter(str, args) {
-          logger.debug(str, {
-            args,
-          });
-        },
-      }),
-    );
-    this.router.use(bodyParser());
+    this.app.use(expressLogger.logger({ winstonInstance: logger }));
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+  }
 
+  async init() {
     if (this.isDev) {
-      this.app.use(serve(join(__dirname, 'dist')));
+      //
     }
   }
 
   public listen(port: number) {
-    this.app.use(this.router.routes()).use(this.router.allowedMethods());
+    this.app.use('/api', this.apiRouter);
     this.app.listen(port);
   }
 }

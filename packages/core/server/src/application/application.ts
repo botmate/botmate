@@ -44,13 +44,10 @@ export class Application {
     await this.db.sync();
     this.logger.debug('Database synchronized');
 
+    await this.http.init();
     await registerCoreRoutes(this, this.http);
 
     this.initialized = true;
-  }
-
-  get router() {
-    return this.http.router;
   }
 
   async start() {
@@ -70,5 +67,19 @@ export class Application {
     );
 
     this.started = true;
+  }
+
+  async install() {
+    this.logger.info('Installing plugins...');
+
+    const plugins = await this.pluginManager.getPlugins();
+    for (const plugin of plugins) {
+      this.logger.info(`Installing ${colors.bold(plugin.name)}`);
+      await this.pluginManager.install(plugin.name);
+    }
+  }
+
+  get router() {
+    return this.http.apiRouter;
   }
 }

@@ -1,6 +1,4 @@
-import { useRef } from 'react';
-
-import { ApiError, api, toast, useNavigate } from '@botmate/client';
+import { ApiError, api, toast, useForm, useNavigate } from '@botmate/client';
 import {
   Button,
   Card,
@@ -14,12 +12,11 @@ import {
 
 function LoginPage() {
   const nav = useNavigate();
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const form = useForm();
 
-  function handleLogin() {
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+  function handleLogin(data: Record<string, string>) {
+    const email = data.email;
+    const password = data.password;
 
     if (!email || !password) {
       alert('Please fill in all fields');
@@ -43,7 +40,10 @@ function LoginPage() {
   }
 
   return (
-    <form className="h-screen flex justify-center items-center px-4">
+    <form
+      className="h-screen flex justify-center items-center px-4"
+      onSubmit={form.handleSubmit(handleLogin)}
+    >
       <Card className="w-[24rem]">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -52,16 +52,16 @@ function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <Input placeholder="Email" type="email" ref={emailRef} />
+          <Input placeholder="Email" type="email" {...form.register('email')} />
           <Input
             placeholder="Password"
             type="password"
-            ref={passwordRef}
+            {...form.register('password')}
             autoComplete="off"
           />
         </CardContent>
         <CardFooter>
-          <Button className="w-full" onClick={handleLogin}>
+          <Button className="w-full" type="submit">
             Login
           </Button>
         </CardFooter>

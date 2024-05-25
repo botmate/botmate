@@ -34,7 +34,6 @@ export class PluginManager {
     this.logger.debug('Initializing...');
     await this.model.sync();
     await this.prepare();
-    await this.sync();
   }
 
   async getPlugins() {
@@ -62,25 +61,51 @@ export class PluginManager {
     // }
   }
 
-  async sync() {
-    for (const plugin of this.plugins) {
-      const exist = await this.model.findOne({
-        where: { name: plugin.name },
-      });
-      if (!exist) {
-        // await this.model.create({
-        //   name: plugin.name,
-        //   packageName: plugin.packageName,
-        //   builtin: plugin.localPath.includes('packages/plugins/@botmate'),
-        //   version: plugin.version,
-        //   description: plugin.description,
-        //   options: {},
-        //   enabled: true,
-        //   installed: true,
-        //   dependencies: plugin.dependencies,
-        // });
-      }
+  /**
+   * Install a plugin by name [local]
+   * @param pluginName
+   * @returns
+   */
+  async install(pluginName: string) {
+    const plugin = this.plugins.find((p) => p.name === pluginName);
+    if (!plugin) {
+      this.logger.warn(`Plugin ${colors.bold(pluginName)} not found`);
+      return;
     }
+
+    const exist = await this.model.findOne({
+      where: { name: plugin.name },
+    });
+    if (!exist) {
+      await this.model.create({
+        name: plugin.name,
+        displayName: plugin.displayName,
+        builtin: plugin.localPath.includes('packages/plugins/@botmate'),
+        version: plugin.version,
+        description: plugin.description,
+        options: {},
+        enabled: true,
+        installed: true,
+        dependencies: plugin.dependencies,
+      });
+    }
+  }
+
+  /**
+   * Uninstall a plugin by name
+   * @param pluginName
+   * @returns
+   */
+  async uninstall(pluginName: string) {
+    const plugin = this.plugins.find((p) => p.name === pluginName);
+    if (!plugin) {
+      this.logger.error(`Plugin ${colors.bold(pluginName)} not found`);
+      return;
+    }
+
+    await this.model.destroy({
+      where: { name: plugin.name },
+    });
   }
 
   async getInstalledPlugins() {
@@ -186,13 +211,17 @@ export class PluginManager {
     this.logger.debug(`Reading plugins from "${colors.bold(pluginFolder)}"`);
 
     if (!existsSync(pluginFolder)) {
-      this.logger.warn(`No plugins found in "${colors.bold(pluginFolder)}"`);
       return [];
     }
 
     const path = join(process.cwd(), pluginFolder);
 
     const list = await readdir(path);
+
+    if (list.length === 0) {
+      this.logger.debug('No plugins found');
+      return [];
+    }
 
     const plugins: PluginMeta[] = [];
 

@@ -1,5 +1,12 @@
-import { ProjectConfiguration, Tree, formatFiles } from '@nx/devkit';
+import {
+  ProjectConfiguration,
+  Tree,
+  formatFiles,
+  generateFiles,
+} from '@nx/devkit';
 import { libraryGenerator } from '@nx/node';
+import { rmdir } from 'fs/promises';
+import { camelCase, capitalize } from 'lodash/fp';
 
 import { PluginGeneratorSchema } from './schema';
 
@@ -30,6 +37,15 @@ export async function coreGenerator(
     `${projectRoot}/${options.name}/project.json`,
     JSON.stringify(projectJson, null, 2),
   );
+
+  const className =
+    capitalize(camelCase(options.name.replace('plugin-', ''))) + 'Plugin';
+
+  generateFiles(tree, `${__dirname}/files`, `${projectRoot}/${options.name}`, {
+    className,
+  });
+
+  await rmdir(`${projectRoot}/${options.name}/src/lib`, { recursive: true });
 
   await formatFiles(tree);
 }

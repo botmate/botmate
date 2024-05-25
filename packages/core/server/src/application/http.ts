@@ -18,7 +18,6 @@ export class Http {
     const logger = createLogger('http');
 
     this.app.use(cors());
-    this.app.use(bodyParser());
     this.app.use(
       koaLogger({
         transporter(str, args) {
@@ -28,6 +27,7 @@ export class Http {
         },
       }),
     );
+    this.router.use(bodyParser());
 
     if (this.isDev) {
       this.app.use(serve(join(__dirname, 'dist')));

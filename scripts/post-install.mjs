@@ -1,7 +1,8 @@
-import { readdir, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
+
+const corePlugins = ['plugin-auth', 'plugin-users'];
 
 async function generatePlugins() {
-  const corePlugins = await readdir('packages/plugins/@botmate');
   let content = '/* eslint-disable @nx/enforce-module-boundaries */\n';
 
   for (const plugin of corePlugins) {

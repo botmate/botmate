@@ -1,0 +1,41 @@
+{
+  "name": "plugin-auth",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/plugins/@botmate/plugin-auth",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/plugins/@botmate/plugin-auth",
+        "tsConfig": "packages/plugins/@botmate/plugin-auth/tsconfig.lib.json",
+        "packageJson": "packages/plugins/@botmate/plugin-auth/package.json",
+        "main": "packages/plugins/@botmate/plugin-auth/src/index.ts",
+        "assets": ["packages/plugins/@botmate/plugin-auth/*.md"],
+        "rootDir": "packages/plugins/@botmate/plugin-auth/src"
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/plugins/@botmate/plugin-auth/jest.config.ts"
+      }
+    }
+  }
+}

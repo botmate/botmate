@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react';
 
-import federation from '@originjs/vite-plugin-federation';
 import { Command } from 'commander';
 import exca from 'execa';
 import { readdir } from 'fs/promises';
@@ -12,12 +11,12 @@ export function build(cmd: Command) {
     .command('build')
     .description('Build the application')
     .action(async () => {
-      // const mainPkgs = ['server', 'client', 'cli'];
-      // for (const pkg of mainPkgs) {
-      //   await exca('nx', ['build', pkg], {
-      //     stdio: 'inherit',
-      //   });
-      // }
+      const mainPkgs = ['server', 'client', 'cli'];
+      for (const pkg of mainPkgs) {
+        await exca('nx', ['build', pkg], {
+          stdio: 'inherit',
+        });
+      }
 
       const pluginsDir = join(process.cwd(), 'packages/plugins/@botmate');
       const plugins = await readdir(pluginsDir);
@@ -27,23 +26,8 @@ export function build(cmd: Command) {
           stdio: 'inherit',
         });
 
-        const exposes = {
-          [plugin]: join(
-            process.cwd(),
-            `packages/plugins/@botmate/${plugin}/src/client/client.ts`,
-          ),
-        };
-
         await viteBuild({
-          plugins: [
-            react(),
-            // federation({
-            //   name: plugin,
-            //   filename: `remote-entry.${plugin}.js`,
-            //   exposes,
-            //   shared: ['react', 'react-dom'],
-            // }),
-          ],
+          plugins: [react()],
           build: {
             modulePreload: false,
             target: 'esnext',

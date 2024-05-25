@@ -21,7 +21,7 @@
         "tsConfig": "packages/core/server/tsconfig.lib.json",
         "packageJson": "packages/core/server/package.json",
         "main": "packages/core/server/src/index.ts",
-        "assets": ["packages/core/server/*.md"],
+        "assets": ["packages/core/server/*.md", "packages/core/server/*.html"],
         "rootDir": "packages/core/server/src"
       }
     },

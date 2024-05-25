@@ -15,47 +15,29 @@ function AppProvider({ app }: { app: Application }) {
   useEffect(() => {
     app.pluginManager.initialize().then(async () => {
       const plugins = app.pluginManager.plugins;
-      const { __federation_method_getRemote } =
-        // @ts-expect-error - this is a dynamic import
-        await import('__federation__');
 
       for (const plugin of plugins) {
-        try {
-          const remotePlugin = await __federation_method_getRemote(
-            'remoteApp',
-            plugin.name,
-          );
-          console.log('remotePlugin', remotePlugin);
-        } catch (error) {
-          console.error('Failed to load remote plugin:', plugin.name);
+        if (plugin.clientPath) {
+          const module = await import(/* @vite-ignore */ plugin.clientPath);
+          const [key] = Object.keys(module);
+          console.debug('loading plugin', key);
+          const instance = new module[key](app);
+          await instance.beforeLoad();
         }
       }
-      //   const [key] = Object.keys(remotePlugin);
-      //   const instance = new remotePlugin[key](app);
-      //   console.debug('Running beforeLoad for plugin:', key);
-      //   await instance.beforeLoad();
-      // }
 
       const router = createBrowserRouter(app.routes);
       setRouter(router);
       setLoading(false);
     });
-  }, [app.pluginManager, app.routes]);
-
-  if (loading) {
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
+  }, [app]);
 
   if (!router) {
-    return (
-      <div className="h-screen flex justify-center items-center">
-        No router found
-      </div>
-    );
+    return null;
+  }
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (

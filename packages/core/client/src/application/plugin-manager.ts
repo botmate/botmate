@@ -1,16 +1,16 @@
-import type { IPlugin } from '@botmate/server';
+import type { PluginMeta } from '@botmate/server';
 
 import { Plugin } from '../plugin';
 import { api } from './api';
 import { Application } from './application';
 
 export class PluginManager {
-  plugins: IPlugin[] = [];
+  plugins: PluginMeta[] = [];
 
   constructor(private app: Application) {}
 
   async initialize() {
-    const plugins = await api.get<IPlugin[]>('/plugins');
+    const plugins = await api.get<PluginMeta[]>('/plugins');
     this.plugins = plugins.data;
   }
 

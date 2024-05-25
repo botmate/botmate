@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react';
 
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { Command } from 'commander';
 import exca from 'execa';
 import { readdir } from 'fs/promises';
@@ -11,58 +12,70 @@ export function build(cmd: Command) {
     .command('build')
     .description('Build the application')
     .action(async () => {
-      const mainPkgs = ['server', 'client', 'cli'];
-      for (const pkg of mainPkgs) {
-        await exca('nx', ['build', pkg], {
-          stdio: 'inherit',
-        });
-      }
+      // const mainPkgs = ['server', 'client', 'cli'];
+      // for (const pkg of mainPkgs) {
+      //   await exca('nx', ['build', pkg], {
+      //     stdio: 'inherit',
+      //   });
+      // }
 
-      const pluginsDir = join(process.cwd(), 'packages/plugins/@botmate');
-      const plugins = await readdir(pluginsDir);
+      // const pluginsDir = join(process.cwd(), 'packages/plugins/@botmate');
+      // const plugins = await readdir(pluginsDir);
 
-      for (const plugin of plugins) {
-        await exca('nx', ['build', plugin], {
-          stdio: 'inherit',
-        });
+      // for (const plugin of plugins) {
+      //   await exca('nx', ['build', plugin], {
+      //     stdio: 'inherit',
+      //   });
 
-        await viteBuild({
-          plugins: [react()],
-          build: {
-            modulePreload: false,
-            target: 'esnext',
-            minify: false,
-            cssCodeSplit: false,
-            outDir: 'dist/packages/plugins/@botmate/' + plugin + '/client',
-            rollupOptions: {
-              external: [
-                'react',
-                'react-dom',
-                'react/jsx-runtime',
-                '@botmate/client',
-                '@botmate/ui',
-              ],
-            },
-            lib: {
-              entry: `packages/plugins/@botmate/${plugin}/src/client/client.ts`,
-              formats: ['es'],
-              fileName() {
-                return `index.js`;
-              },
-            },
+      //   await viteBuild({
+      //     plugins: [react()],
+      //     build: {
+      //       modulePreload: false,
+      //       target: 'esnext',
+      //       minify: false,
+      //       cssCodeSplit: false,
+      //       outDir: 'dist/packages/plugins/@botmate/' + plugin + '/client',
+      //       rollupOptions: {
+      //         external: [
+      //           'react',
+      //           'react-dom',
+      //           'react/jsx-runtime',
+      //           '@botmate/client',
+      //           '@botmate/ui',
+      //         ],
+      //       },
+      //       lib: {
+      //         entry: `packages/plugins/@botmate/${plugin}/src/client/client.ts`,
+      //         formats: ['es'],
+      //         fileName() {
+      //           return `index.js`;
+      //         },
+      //       },
+      //     },
+      //     resolve: {
+      //       alias: {
+      //         '@botmate/client': join(
+      //           process.cwd(),
+      //           'packages/core/client/src',
+      //         ),
+      //         '@botmate/ui': join(process.cwd(), 'packages/shared/ui/src'),
+      //         __federation__: join(process.cwd(), 'mock.ts'),
+      //       },
+      //     },
+      //   });
+      // }
+      await viteBuild({
+        plugins: [react(), nxViteTsPaths()],
+        resolve: {
+          alias: {
+            '@botmate/ui': 'packages/shared/ui/src/index.ts',
+            '@botmate/client': 'packages/core/client/src/index.ts',
           },
-          resolve: {
-            alias: {
-              '@botmate/client': join(
-                process.cwd(),
-                'packages/core/client/src',
-              ),
-              '@botmate/ui': join(process.cwd(), 'packages/shared/ui/src'),
-              __federation__: join(process.cwd(), 'mock.ts'),
-            },
-          },
-        });
-      }
+        },
+        build: {
+          outDir: 'dist/packages/core/server/build',
+        },
+      });
 
       // const app = new Application();
       // await app.initialize();

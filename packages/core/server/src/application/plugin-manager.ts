@@ -9,13 +9,14 @@ import { Plugin } from '../plugin';
 import { Application } from './application';
 import { PluginModel, initModel } from './plugin-model';
 
-type PluginMeta = {
+export type PluginMeta = {
   name: string;
   displayName: string;
   description: string;
   version: string;
   dependencies: Record<string, string>;
   localPath: string;
+  clientPath?: string;
 };
 
 export class PluginManager {
@@ -145,6 +146,9 @@ export class PluginManager {
           version: pkg.version,
           dependencies: pkg.botmate?.dependencies || {},
           localPath: pluginPath,
+          clientPath: this.app.isDev
+            ? `${pluginPath}/src/client/index.ts`
+            : `${pluginPath}/client.js`,
         });
       }
     }
@@ -242,6 +246,9 @@ export class PluginManager {
           version: pkg.version,
           dependencies: pkg.botmate?.dependencies || {},
           localPath: pluginPath,
+          clientPath: this.app.isDev
+            ? `${pluginPath}/src/client/index.ts`
+            : `${pluginPath}/client.js`,
         });
       }
     }

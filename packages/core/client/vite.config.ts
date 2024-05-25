@@ -36,7 +36,7 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'client',
-      formats: ['cjs'],
+      formats: ['es'],
       fileName() {
         return 'index.js';
       },

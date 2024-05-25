@@ -4,6 +4,7 @@
   "main": "./server/index.js",
   "types": "./server/index.d.ts",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
     "tslib": "^2.3.0",
     "winston": "^3.13.0",

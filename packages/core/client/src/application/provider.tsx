@@ -5,12 +5,16 @@ import { Toaster } from 'sonner';
 
 import { Application } from './application';
 import Loader from './components/loader';
+import NotFoundPage from './components/not-found';
+
+const notFoundRoute = {
+  path: '*',
+  element: <NotFoundPage />,
+};
 
 function AppProvider({ app }: { app: Application }) {
-  const [router, setRouter] = useState<ReturnType<
-    typeof createBrowserRouter
-  > | null>(null);
   const [loading, setLoading] = useState(true);
+  const [router, setRouter] = useState(createBrowserRouter([notFoundRoute]));
 
   useEffect(() => {
     app.pluginManager.initialize().then(async () => {
@@ -26,15 +30,11 @@ function AppProvider({ app }: { app: Application }) {
         }
       }
 
-      const router = createBrowserRouter(app.routes);
+      const router = createBrowserRouter([...app.routes, notFoundRoute]);
       setRouter(router);
       setLoading(false);
     });
   }, [app]);
-
-  if (!router) {
-    return null;
-  }
 
   if (loading) {
     return <Loader />;

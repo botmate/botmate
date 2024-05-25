@@ -1,16 +1,10 @@
 import { RouteObject } from 'react-router-dom';
 
-import NotFound from './components/not-found';
 import { PluginManager } from './plugin-manager';
 import AppProvider from './provider';
 
 export class Application {
-  routes: RouteObject[] = [
-    {
-      path: '*',
-      element: <NotFound />,
-    },
-  ];
+  routes: RouteObject[] = [];
   pluginManager: PluginManager;
 
   constructor() {

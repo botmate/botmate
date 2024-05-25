@@ -1,6 +1,6 @@
-import { Plugin } from '@botmate/client';
+import { Plugin, loadable } from '@botmate/client';
 
-import UsersPage from './components/users-page';
+const UsersPage = loadable(() => import('./components/users-page'));
 
 export class UsersPlugin extends Plugin {
   async beforeLoad() {

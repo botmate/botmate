@@ -5,7 +5,7 @@ export async function registerCoreRoutes(
   app: Application,
   { apiRouter: router }: Http,
 ) {
-  app.logger.info('Registering core routes...');
+  app.logger.debug('Registering core routes...');
 
   // health check
   router.get('/health', (req, res) => {

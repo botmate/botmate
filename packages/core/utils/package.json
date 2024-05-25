@@ -1,8 +1,8 @@
 {
   "name": "@botmate/utils",
-  "version": "0.0.1",
-  "main": "./server/index.js",
-  "types": "./server/index.d.ts",
+  "version": "1.0.0-alpha.1",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "dependencies": {
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",

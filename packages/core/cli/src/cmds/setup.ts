@@ -8,6 +8,6 @@ export function setup(cmd: Command) {
     .action(async () => {
       const app = new Application();
       await app.initialize();
-      await app.pluginManager.buildPlugins();
+      await app.pluginManager.setup();
     });
 }

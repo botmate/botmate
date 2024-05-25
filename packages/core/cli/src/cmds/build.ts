@@ -7,91 +7,103 @@ import { readdir } from 'fs/promises';
 import { join } from 'path';
 import { build as viteBuild } from 'vite';
 
+type BuildOptions = {
+  packages?: string;
+};
+
+const mainPkgs = ['server', 'client', 'cli'];
 export function build(cmd: Command) {
   cmd
     .command('build')
     .description('Build the application')
-    .action(async () => {
-      // const mainPkgs = ['server', 'client', 'cli'];
-      // for (const pkg of mainPkgs) {
-      //   await exca('nx', ['build', pkg], {
-      //     stdio: 'inherit',
-      //   });
-      // }
+    .option('-pkgs, --packages <package>', 'Packages to build, comma separated')
+    .action(async (opts: BuildOptions) => {
+      const pkgsToBuild = [];
+      if (opts.packages) {
+        const pkgs = opts.packages.split(',');
 
-      // const pluginsDir = join(process.cwd(), 'packages/plugins/@botmate');
-      // const plugins = await readdir(pluginsDir);
+        let found = false;
+        for (const pkg of pkgs) {
+          if (!mainPkgs.includes(pkg)) {
+            found = true;
+            break;
+          }
+        }
 
-      // for (const plugin of plugins) {
-      //   await exca('nx', ['build', plugin], {
-      //     stdio: 'inherit',
-      //   });
+        if (found) {
+          pkgsToBuild.push(pkgs);
+        }
+      } else {
+        pkgsToBuild.push(...mainPkgs);
+      }
 
-      //   await viteBuild({
-      //     plugins: [react()],
-      //     build: {
-      //       modulePreload: false,
-      //       target: 'esnext',
-      //       minify: false,
-      //       cssCodeSplit: false,
-      //       outDir: 'dist/packages/plugins/@botmate/' + plugin + '/client',
-      //       rollupOptions: {
-      //         external: [
-      //           'react',
-      //           'react-dom',
-      //           'react/jsx-runtime',
-      //           '@botmate/client',
-      //           '@botmate/ui',
-      //         ],
-      //       },
-      //       lib: {
-      //         entry: `packages/plugins/@botmate/${plugin}/src/client/client.ts`,
-      //         formats: ['es'],
-      //         fileName() {
-      //           return `index.js`;
-      //         },
-      //       },
-      //     },
-      //     resolve: {
-      //       alias: {
-      //         '@botmate/client': join(
-      //           process.cwd(),
-      //           'packages/core/client/src',
-      //         ),
-      //         '@botmate/ui': join(process.cwd(), 'packages/shared/ui/src'),
-      //         __federation__: join(process.cwd(), 'mock.ts'),
-      //       },
-      //     },
-      //   });
-      // }
-      await viteBuild({
-        plugins: [react(), nxViteTsPaths()],
-        resolve: {
-          alias: {
-            '@botmate/ui': 'packages/shared/ui/src/index.ts',
-            '@botmate/client': 'packages/core/client/src/index.ts',
+      for (const pkg of pkgsToBuild) {
+        await exca('nx', ['build', pkg], {
+          stdio: 'inherit',
+        });
+      }
+
+      const pluginsDir = join(process.cwd(), 'packages/plugins/@botmate');
+      let plugins = await readdir(pluginsDir);
+
+      if (opts.packages) {
+        plugins = plugins.filter((p) => opts.packages.includes(p));
+      }
+
+      for (const plugin of plugins) {
+        await exca('nx', ['build', plugin], {
+          stdio: 'inherit',
+        });
+
+        await viteBuild({
+          plugins: [react()],
+          build: {
+            minify: false,
+            sourcemap: true,
+            cssCodeSplit: false,
+            outDir: 'dist/packages/plugins/@botmate/' + plugin + '/client',
+            rollupOptions: {
+              external: [
+                'react',
+                'react-dom',
+                'react/jsx-runtime',
+                '@botmate/client',
+                '@botmate/ui',
+              ],
+            },
+            lib: {
+              name: 'index',
+              entry: `packages/plugins/@botmate/${plugin}/src/client/client.ts`,
+              formats: ['es'],
+              fileName() {
+                return `index.js`;
+              },
+            },
           },
-        },
-        build: {
-          outDir: 'dist/packages/core/server/build',
-        },
-      });
+          resolve: {
+            alias: {
+              '@botmate/client': join(
+                process.cwd(),
+                'packages/core/client/src',
+              ),
+              '@botmate/ui': join(process.cwd(), 'packages/shared/ui/src'),
+            },
+          },
+        });
+      }
 
-      // const app = new Application();
-      // await app.initialize();
-      // const plugins = await app.pluginManager.getPlugins();
-
-      // const exposes = {};
-
-      // for (const plugin of plugins) {
-      //   console.log('plugin.localPath', plugin.localPath);
-      //   const relativePath =
-      //     plugin.localPath.replace(process.cwd(), '.') +
-      //     (app.isDev ? '/src/client/client.ts' : '/client.js');
-      //   exposes[plugin.name] = relativePath;
-      // }
-
-      // console.log('exposes', exposes);
-      // console.log(require.resolve('@botmate/server'));
+      if (!opts.packages)
+        await viteBuild({
+          plugins: [react(), nxViteTsPaths()],
+          resolve: {
+            alias: {
+              '@botmate/ui': 'packages/shared/ui/src/index.ts',
+              '@botmate/client': 'packages/core/client/src/index.ts',
+            },
+          },
+          build: {
+            outDir: 'dist/packages/core/server/build',
+          },
+        });
     });
 }

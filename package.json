@@ -38,6 +38,7 @@
     "@types/express": "^4.17.21",
     "@types/jest": "^29.4.0",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/loadable__component": "^5.13.9",
     "@types/node": "18.16.9",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",

@@ -1,6 +1,6 @@
 {
   "name": "@botmate/nx",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.1",
   "dependencies": {
     "@nx/devkit": "19.0.5",
     "@nx/node": "^19.0.5",

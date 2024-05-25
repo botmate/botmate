@@ -9,6 +9,8 @@ import { Plugin } from '../plugin';
 import { Application } from './application';
 import { PluginModel, initModel } from './plugin-model';
 
+const builtinPlugins = ['auth', 'users'];
+
 export type PluginMeta = {
   name: string;
   displayName: string;
@@ -50,16 +52,13 @@ export class PluginManager {
     }
   }
 
-  async buildPlugins() {
-    this.logger.info('Building plugins...');
+  async setup() {
+    this.logger.info('Setting up plugins...');
 
     const plugins = await this.getPlugins();
-    console.log('plugins', plugins);
-    // for (const plugin of plugins) {
-    //   this.logger.info(`Building ${colors.bold(plugin.name)}`);
-    //   const pluginPath = await readdir(plugin.path);
-    //   console.log('pluginPath', pluginPath);
-    // }
+    for (const plugin of plugins) {
+      await this.install(plugin.name);
+    }
   }
 
   /**
@@ -70,6 +69,9 @@ export class PluginManager {
   async install(pluginName: string) {
     const plugin = this.plugins.find((p) => p.name === pluginName);
     if (!plugin) {
+      const plugins = await this.getLocalPlugins('storage/plugins');
+      console.log('plugins from storage/plugins', plugins);
+
       this.logger.warn(`Plugin ${colors.bold(pluginName)} not found`);
       return;
     }
@@ -81,7 +83,9 @@ export class PluginManager {
       await this.model.create({
         name: plugin.name,
         displayName: plugin.displayName,
-        builtin: plugin.localPath.includes('packages/plugins/@botmate'),
+        builtin: builtinPlugins.some(
+          (p) => plugin.name === `@botmate/plugin-${p}`,
+        ),
         version: plugin.version,
         description: plugin.description,
         options: {},
@@ -148,7 +152,7 @@ export class PluginManager {
           localPath: pluginPath,
           clientPath: this.app.isDev
             ? `${pluginPath}/src/client/index.ts`
-            : `${pluginPath}/client.js`,
+            : `${pluginPath}/client/index.js`,
         });
       }
     }
@@ -177,7 +181,7 @@ export class PluginManager {
 
       const serverEntry = join(
         plugin.localPath,
-        this.app.isDev ? 'src/server/server.ts' : 'server.js',
+        this.app.isDev ? 'src/server/server.ts' : 'server/index.js',
       );
 
       try {
@@ -201,7 +205,7 @@ export class PluginManager {
         this.logger.error(
           `Failed to prepare plugin ${colors.bold(plugin.name)}`,
         );
-        this.logger.error(e);
+        console.error(e);
       }
     }
 
@@ -212,13 +216,13 @@ export class PluginManager {
    * Get all plugins from the given folder.
    */
   async getLocalPlugins(pluginFolder: string) {
+    const path = join(process.cwd(), pluginFolder);
+
     this.logger.debug(`Reading plugins from "${colors.bold(pluginFolder)}"`);
 
     if (!existsSync(pluginFolder)) {
       return [];
     }
-
-    const path = join(process.cwd(), pluginFolder);
 
     const list = await readdir(path);
 
@@ -248,7 +252,7 @@ export class PluginManager {
           localPath: pluginPath,
           clientPath: this.app.isDev
             ? `${pluginPath}/src/client/index.ts`
-            : `${pluginPath}/client.js`,
+            : `${pluginPath}/client/index.js`,
         });
       }
     }

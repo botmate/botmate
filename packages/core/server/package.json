@@ -1,7 +1,7 @@
 {
   "name": "@botmate/server",
-  "version": "0.0.1",
-  "main": "./server.js",
+  "version": "1.0.0-alpha.1",
+  "main": "./index.js",
   "dependencies": {
     "@botmate/database": "0.0.1",
     "@botmate/utils": "0.0.1",
@@ -11,6 +11,7 @@
     "express-winston": "^4.2.0",
     "tslib": "^2.3.0",
     "vite": "~5.0.0",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "@vitejs/plugin-react": "^4.2.0"
   }
 }

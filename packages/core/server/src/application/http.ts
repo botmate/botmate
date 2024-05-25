@@ -29,11 +29,26 @@ export class Http {
   async init() {
     const alias = new Map<string, string>();
 
-    const vite = await createViteServer({
-      plugins: [react(), tsconfigPaths()],
-      server: { middlewareMode: true },
-      appType: 'custom',
+    if (env.NODE_ENV === 'production') {
+      // these packages can be required from plugins
+      const corePkgs = ['client', 'ui'];
+      for (const pkg of corePkgs) {
+        alias.set(`@botmate/${pkg}`, require.resolve(`@botmate/${pkg}`));
+      }
+    }
 
+    const vite = await createViteServer({
+      plugins: [
+        react(),
+        ...(env.NODE_ENV === 'production' ? [] : [tsconfigPaths()]),
+      ],
+      server: {
+        middlewareMode: true,
+        watch: {
+          ignored: 'packages/core/**',
+        },
+      },
+      appType: 'custom',
       resolve: {
         alias: Object.fromEntries(alias),
       },
@@ -48,19 +63,32 @@ export class Http {
 
   public listen(port: number) {
     this.app.use('/api', this.apiRouter);
-    if (env.NODE_ENV === 'development')
-      this.app.use('*', async (req, res) => {
+
+    if (this.vite !== undefined)
+      this.app.get('*', async (req, res, next) => {
         const url = req.originalUrl;
 
+        if (url.startsWith('/assets')) {
+          return next();
+        }
+
         try {
-          const htmlPath = join(process.cwd(), 'index.html');
+          let htmlPath = join(process.cwd(), 'index.html');
+          if (env.NODE_ENV === 'production') {
+            htmlPath = join(__dirname, '..', 'build', 'index.html');
+          }
           const htmlContent = await readFile(htmlPath, 'utf-8');
-          const template = await this.vite.transformIndexHtml(url, htmlContent);
+          const template = await this.vite?.transformIndexHtml(
+            url,
+            htmlContent,
+          );
 
           res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
         } catch (error) {
-          console.error(error);
-          res.status(500).send(error.message);
+          if (error instanceof Error) {
+            console.error(error);
+            res.status(500).send(error.message);
+          }
         }
       });
     this.app.listen(port);

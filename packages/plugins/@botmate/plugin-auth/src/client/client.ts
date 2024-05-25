@@ -1,6 +1,6 @@
-import { Plugin } from '@botmate/client';
+import { Plugin, loadable } from '@botmate/client';
 
-import LoginPage from './components/login-page';
+const LoginPage = loadable(() => import('./components/login-page'));
 
 export class AuthPlugin extends Plugin {
   async beforeLoad() {

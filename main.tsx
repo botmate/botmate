@@ -1,6 +1,7 @@
 import * as ReactDOM from 'react-dom/client';
 
 import { Application } from '@botmate/client';
+import '@botmate/ui';
 
 const app = new Application();
 

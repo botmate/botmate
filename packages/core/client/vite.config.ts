@@ -42,7 +42,20 @@ export default defineConfig({
       },
     },
     rollupOptions: {
+      // External packages that should not be bundled into your library.
       external: [],
+      output: {
+        inlineDynamicImports: false,
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return id
+              .toString()
+              .split('node_modules/.pnpm/')[1]
+              .split('/')[0]
+              .toString();
+          }
+        },
+      },
     },
   },
   resolve: {

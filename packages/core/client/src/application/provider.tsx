@@ -15,20 +15,27 @@ function AppProvider({ app }: { app: Application }) {
   useEffect(() => {
     app.pluginManager.initialize().then(async () => {
       const plugins = app.pluginManager.plugins;
-      console.log('plugins', plugins);
-      // const { __federation_method_getRemote } =
-      //   // @ts-expect-error - this is a dynamic import
-      //   await import('__federation__');
-      // for (const plugin of plugins) {
-      //   const remotePlugin = await __federation_method_getRemote(
-      //     'remoteApp',
-      //     plugin.name,
-      //   );
+      const { __federation_method_getRemote } =
+        // @ts-expect-error - this is a dynamic import
+        await import('__federation__');
+
+      for (const plugin of plugins) {
+        try {
+          const remotePlugin = await __federation_method_getRemote(
+            'remoteApp',
+            plugin.name,
+          );
+          console.log('remotePlugin', remotePlugin);
+        } catch (error) {
+          console.error('Failed to load remote plugin:', plugin.name);
+        }
+      }
       //   const [key] = Object.keys(remotePlugin);
       //   const instance = new remotePlugin[key](app);
       //   console.debug('Running beforeLoad for plugin:', key);
       //   await instance.beforeLoad();
       // }
+
       const router = createBrowserRouter(app.routes);
       setRouter(router);
       setLoading(false);

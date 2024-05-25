@@ -6,6 +6,7 @@
     "@botmate/database": "0.0.1",
     "@botmate/utils": "0.0.1",
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-winston": "^4.2.0",
     "tslib": "^2.3.0"

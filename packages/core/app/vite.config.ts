@@ -51,5 +51,8 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    rollupOptions: {
+      external: ['packages/core'],
+    },
   },
 });

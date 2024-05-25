@@ -1,10 +1,9 @@
-import { Button, Counter } from '@botmate/ui';
+import { Button } from '@botmate/ui';
 
 function UsersPage() {
   return (
     <div>
       <Button>Hello, world!</Button>
-      <Counter />
     </div>
   );
 }

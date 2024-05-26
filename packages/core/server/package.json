@@ -5,15 +5,12 @@
   "dependencies": {
     "@botmate/database": "1.0.0-alpha.4",
     "@botmate/utils": "1.0.0-alpha.4",
-    "@vitejs/plugin-react": "^4.2.0",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "execa": "5.1.1",
     "express": "^4.19.2",
     "express-winston": "^4.2.0",
     "tar": "^7.1.0",
-    "tslib": "^2.3.0",
-    "vite": "~5.0.0",
-    "vite-tsconfig-paths": "^4.3.2"
+    "tslib": "^2.3.0"
   }
 }

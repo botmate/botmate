@@ -1,5 +1,3 @@
-import react from '@vitejs/plugin-react';
-
 import { createLogger, env } from '@botmate/utils';
 import cors from 'cors';
 import express from 'express';

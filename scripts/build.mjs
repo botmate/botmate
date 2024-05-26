@@ -1,21 +1,19 @@
-import react from '@vitejs/plugin-react';
-
 import exca from 'execa';
-import { existsSync, readdirSync, writeFileSync } from 'fs';
+import { readdirSync, writeFileSync } from 'fs';
 import { readdir, unlink } from 'fs/promises';
 import { join } from 'path';
 import { build as viteBuild } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import tscPaths from 'vite-tsconfig-paths';
 
 async function run() {
+  const opts = {};
+
   await unlink('tmp/main.tsx').catch(() => {});
   await unlink('tmp/plugins.ts').catch(() => {});
 
   const pkgsToBuild = [];
   const mainPkgs = ['client', 'server', 'cli'];
 
-  const opts = {};
   if (opts.packages) {
     const pkgs = opts.packages.split(',');
 
@@ -78,21 +76,17 @@ async function run() {
           },
         },
       },
-      resolve: {
-        // alias: {
-        //   '@botmate/client': join(process.cwd(), 'packages/core/client/src'),
-        //   '@botmate/ui': join(process.cwd(), 'packages/shared/ui/src'),
-        //   '@botmate/icons': join(process.cwd(), 'packages/shared/icons/src'),
-        // },
-      },
+      resolve: {},
     });
   }
 
-  const corePlugins = readdirSync(join(__dirname, 'packages/plugins/@botmate'));
+  const corePlugins = readdirSync(
+    join(process.cwd(), 'packages/plugins/@botmate'),
+  );
 
   const alias = new Map();
 
-  const packagesPath = join(__dirname, 'packages');
+  const packagesPath = join(process.cwd(), 'packages');
 
   let pluginString = '{\n';
   for (const plugin of corePlugins) {
@@ -106,23 +100,40 @@ async function run() {
   }
   pluginString += '}';
 
-  if (existsSync('src'))
-    writeFileSync(
-      'src/plugins.ts',
-      `export const plugins = ${pluginString}`,
-      'utf-8',
-    );
+  writeFileSync(
+    'tmp/plugins.ts',
+    `export const plugins = ${pluginString}`,
+    'utf-8',
+  );
 
-  if (!opts.packages)
-    await viteBuild({
-      plugins: [react(), tscPaths()],
-      resolve: {
-        alias: {},
-      },
-      build: {
-        outDir: 'dist/packages/core/server/build',
-      },
-    });
+  writeFileSync(
+    'tmp/main.tsx',
+    `import * as ReactDOM from 'react-dom/client';
+
+      import { Application } from '@botmate/client';
+
+      const app = new Application();
+
+      async function run() {
+        const { plugins } = await import('./plugins');
+        for (const name of Object.keys(plugins)) {
+          try {
+            await app.pluginManager.add(name, plugins[name], app);
+          } catch (error) {
+            console.error(\`Failed to load plugin: \${name}\`);
+            console.error(error);
+          }
+        }
+
+        app.getRootComponent().then((rootComponent) => {
+          const root = ReactDOM.createRoot(
+            document.getElementById('root') as HTMLElement,
+          );
+          root.render(rootComponent);
+        });
+      }
+      run();`,
+  );
 
   await unlink('tmp/main.tsx').catch(() => {});
   await unlink('tmp/plugins.ts').catch(() => {});

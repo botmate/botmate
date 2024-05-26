@@ -1,6 +1,5 @@
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
-import { tmpdir } from 'os';
 import { join } from 'path';
 
 export function shrinkPath(path: string, length = 20) {

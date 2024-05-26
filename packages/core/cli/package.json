@@ -12,6 +12,7 @@
     "tslib": "^2.3.0",
     "vite": "~5.0.0",
     "@nx/vite": "19.0.5",
-    "@botmate/utils": "0.0.1"
+    "@botmate/utils": "0.0.1",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }

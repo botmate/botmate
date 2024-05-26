@@ -1,16 +1,18 @@
-import react from '@vitejs/plugin-react';
-
 import { Application } from '@botmate/server';
 import { Command } from 'commander';
 import { mkdir, unlink, writeFile } from 'fs/promises';
-import { build as viteBuild } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export function build(cmd: Command) {
   cmd
     .command('build')
     .description('Build the application')
     .action(async () => {
+      const tsconfigPaths = await import('vite-tsconfig-paths').then(
+        (m) => m.default,
+      );
+      const viteBuild = await import('vite').then((m) => m.build);
+      const react = await import('@vitejs/plugin-react').then((m) => m.default);
+
       const app = new Application();
       await app.initialize();
 

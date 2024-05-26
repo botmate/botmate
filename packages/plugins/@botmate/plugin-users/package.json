@@ -1,10 +1,10 @@
 {
   "name": "@botmate/plugin-users",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.9",
   "main": "./server/index.js",
   "dependencies": {
-    "@botmate/database": "1.0.0-alpha.7",
-    "@botmate/server": "1.0.0-alpha.7",
+    "@botmate/database": "1.0.0-alpha.9",
+    "@botmate/server": "1.0.0-alpha.9",
     "tslib": "^2.3.0"
   }
 }

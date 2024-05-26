@@ -12,7 +12,7 @@ async function run() {
   await unlink('tmp/plugins.ts').catch(() => {});
 
   const pkgsToBuild = [];
-  const mainPkgs = ['client', 'server', 'cli'];
+  const mainPkgs = ['client', 'server', 'cli', 'create-botmate'];
 
   if (opts.packages) {
     const pkgs = opts.packages.split(',');

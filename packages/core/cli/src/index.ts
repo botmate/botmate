@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-import { env } from '@botmate/utils';
 import { Command } from 'commander';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 import { build } from './cmds/build';
@@ -14,16 +13,22 @@ const cmd = new Command();
 
 let version = '0.0.0';
 
-function setVersion(path: string) {
-  const pkgJSON = readFileSync(path, 'utf-8');
-  const pkg = JSON.parse(pkgJSON);
-  version = pkg.version;
-}
-
-if (env.NODE_ENV === 'development') {
-  setVersion(join(__dirname, '..', 'package.json'));
-} else {
-  setVersion(join(__dirname, 'package.json'));
+try {
+  let path = join(__dirname, 'package.json');
+  if (existsSync(path)) {
+    const pkgJSON = readFileSync(path, 'utf-8');
+    const pkg = JSON.parse(pkgJSON);
+    version = pkg.version;
+  } else {
+    path = join(__dirname, '..', 'package.json');
+    if (existsSync(path)) {
+      const pkgJSON = readFileSync(path, 'utf-8');
+      const pkg = JSON.parse(pkgJSON);
+      version = pkg.version;
+    }
+  }
+} catch {
+  version = '0.0.0';
 }
 
 cmd.version(version);

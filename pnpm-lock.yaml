@@ -241,7 +241,7 @@ importers:
   packages/core/cli:
     dependencies:
       '@botmate/server':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../server
       '@vitejs/plugin-react':
         specifier: ^4.2.0
@@ -265,7 +265,7 @@ importers:
   packages/core/client:
     dependencies:
       '@botmate/ui':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../../shared/ui
       '@loadable/component':
         specifier: ^5.16.4
@@ -304,7 +304,7 @@ importers:
   packages/core/database:
     dependencies:
       '@botmate/utils':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../utils
       sequelize:
         specifier: ^6.37.3
@@ -319,10 +319,10 @@ importers:
   packages/core/server:
     dependencies:
       '@botmate/database':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../database
       '@botmate/utils':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../utils
       colors:
         specifier: ^1.4.0
@@ -367,16 +367,16 @@ importers:
   packages/plugins/@botmate/plugin-auth:
     dependencies:
       '@botmate/database':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../../../core/database
       '@botmate/plugin-users':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../plugin-users
       '@botmate/server':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../../../core/server
       '@botmate/utils':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../../../core/utils
       jsonwebtoken:
         specifier: 9.0.2
@@ -388,10 +388,10 @@ importers:
   packages/plugins/@botmate/plugin-users:
     dependencies:
       '@botmate/database':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../../../core/database
       '@botmate/server':
-        specifier: 1.0.0-alpha.9
+        specifier: 1.0.0-alpha.10
         version: link:../../../core/server
       tslib:
         specifier: ^2.3.0

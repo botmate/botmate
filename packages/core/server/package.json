@@ -1,10 +1,10 @@
 {
   "name": "@botmate/server",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "main": "./index.js",
   "dependencies": {
-    "@botmate/database": "1.0.0-alpha.9",
-    "@botmate/utils": "1.0.0-alpha.9",
+    "@botmate/database": "1.0.0-alpha.10",
+    "@botmate/utils": "1.0.0-alpha.10",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "execa": "5.1.1",

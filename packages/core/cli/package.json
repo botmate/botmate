@@ -1,11 +1,11 @@
 {
   "name": "@botmate/cli",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "bin": {
     "botmate": "index.js"
   },
   "dependencies": {
-    "@botmate/server": "1.0.0-alpha.9",
+    "@botmate/server": "1.0.0-alpha.10",
     "@vitejs/plugin-react": "^4.2.0",
     "commander": "^12.1.0",
     "execa": "^5.1.1",

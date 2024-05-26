@@ -26,9 +26,12 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     lib: {
-      name: 'ui',
+      name: 'index',
       entry: 'src/index.ts',
       formats: ['es'],
+      fileName() {
+        return 'index.js';
+      },
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],

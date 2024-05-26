@@ -47,7 +47,6 @@
   },
   "release": {
     "version": {
-      "preVersionCommand": "pnpm run build",
       "generatorOptions": {
         "fallbackCurrentVersionResolver": "disk"
       }

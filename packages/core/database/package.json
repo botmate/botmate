@@ -1,10 +1,10 @@
 {
   "name": "@botmate/database",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.3",
   "dependencies": {
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",
-    "@botmate/utils": "0.0.1",
+    "@botmate/utils": "1.0.0-alpha.3",
     "tslib": "^2.3.0"
   }
 }

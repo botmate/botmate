@@ -238,10 +238,10 @@ importers:
   packages/core/cli:
     dependencies:
       '@botmate/server':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../server
       '@botmate/utils':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../utils
       '@nx/vite':
         specifier: 19.0.5
@@ -261,11 +261,14 @@ importers:
       vite:
         specifier: ~5.0.0
         version: 5.0.13(@types/node@18.16.9)(less@4.1.3)(stylus@0.59.0)
+      vite-tsconfig-paths:
+        specifier: ^4.3.2
+        version: 4.3.2(typescript@5.4.5)(vite@5.0.13)
 
   packages/core/client:
     dependencies:
       '@botmate/ui':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../../shared/ui
       '@loadable/component':
         specifier: ^5.16.4
@@ -289,7 +292,7 @@ importers:
   packages/core/database:
     dependencies:
       '@botmate/utils':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../utils
       sequelize:
         specifier: ^6.37.3
@@ -304,10 +307,10 @@ importers:
   packages/core/server:
     dependencies:
       '@botmate/database':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../database
       '@botmate/utils':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../utils
       '@vitejs/plugin-react':
         specifier: ^4.2.0
@@ -361,16 +364,16 @@ importers:
   packages/plugins/@botmate/plugin-auth:
     dependencies:
       '@botmate/database':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../../../core/database
       '@botmate/plugin-users':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../plugin-users
       '@botmate/server':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../../../core/server
       '@botmate/utils':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../../../core/utils
       jsonwebtoken:
         specifier: 9.0.2
@@ -382,10 +385,10 @@ importers:
   packages/plugins/@botmate/plugin-users:
     dependencies:
       '@botmate/database':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../../../core/database
       '@botmate/server':
-        specifier: 0.0.1
+        specifier: 1.0.0-alpha.3
         version: link:../../../core/server
       tslib:
         specifier: ^2.3.0

@@ -1,9 +1,35 @@
 /// <reference types='vitest' />
 import react from '@vitejs/plugin-react';
 
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import federation from '@originjs/vite-plugin-federation';
+import { existsSync, readdirSync, writeFileSync } from 'fs';
+import { join } from 'path';
 import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
+const corePlugins = readdirSync(join(__dirname, '../..', 'plugins/@botmate'));
+
+const alias = new Map<string, string>();
+
+const packagesPath = join(__dirname, '../..');
+
+let pluginString = '{\n';
+for (const plugin of corePlugins) {
+  const pkgName = `@botmate/${plugin}`;
+  pluginString += `"${pkgName}": import("${pkgName}"),\n`;
+
+  alias.set(
+    pkgName,
+    join(packagesPath, `plugins/@botmate/${plugin}/src/client/index.ts`),
+  );
+}
+pluginString += '}';
+
+if (existsSync('src'))
+  writeFileSync(
+    'src/plugins.ts',
+    `export const plugins = ${pluginString}`,
+    'utf-8',
+  );
 
 export default defineConfig({
   root: __dirname,
@@ -17,6 +43,9 @@ export default defineConfig({
         target: 'http://localhost:3000',
       },
     },
+    watch: {
+      ignored: ['packages/core/**/*'],
+    },
   },
 
   preview: {
@@ -24,23 +53,10 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [
-    react(),
-    nxViteTsPaths(),
-    federation({
-      name: 'app',
-      remotes: {
-        remoteApp: 'http://localhost:3000/assets/remoteEntry.js',
-      },
-      shared: ['react', 'react-dom'],
-    }),
-  ],
+  plugins: [react(), tsconfigPaths()],
 
   resolve: {
-    alias: {
-      '@botmate/ui': 'packages/shared/ui/src/index.ts',
-      '@botmate/client': 'packages/core/client/src/index.ts',
-    },
+    alias: Object.fromEntries(alias),
   },
 
   build: {

@@ -47,7 +47,7 @@
   },
   "release": {
     "version": {
-      "preVersionCommand": "pnpm botmate build",
+      "preVersionCommand": "pnpm run build",
       "generatorOptions": {
         "fallbackCurrentVersionResolver": "disk"
       }

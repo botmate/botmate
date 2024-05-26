@@ -4,7 +4,6 @@ import { createLogger, env } from '@botmate/utils';
 import cors from 'cors';
 import express from 'express';
 import expressLogger from 'express-winston';
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ViteDevServer, createServer as createViteServer } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -55,35 +54,18 @@ export class Http {
     });
 
     this.vite = vite;
-    if (env.NODE_ENV === 'production') {
-      this.app.use(express.static(join(__dirname, '..', 'build')));
-    }
-    this.app.use(vite.middlewares);
+    this.app.use(express.static(join(__dirname, '..', 'dist')));
   }
 
   public listen(port: number) {
     this.app.use('/api', this.apiRouter);
 
     if (this.vite !== undefined)
-      this.app.get('*', async (req, res, next) => {
-        const url = req.originalUrl;
-
-        if (url.startsWith('/assets')) {
-          return next();
-        }
-
+      this.app.get('*', async (req, res) => {
         try {
           let htmlPath = join(process.cwd(), 'index.html');
-          if (env.NODE_ENV === 'production') {
-            htmlPath = join(__dirname, '..', 'build', 'index.html');
-          }
-          const htmlContent = await readFile(htmlPath, 'utf-8');
-          const template = await this.vite?.transformIndexHtml(
-            url,
-            htmlContent,
-          );
-
-          res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+          htmlPath = join(__dirname, '..', 'dist', 'index.html');
+          res.sendFile(htmlPath);
         } catch (error) {
           if (error instanceof Error) {
             console.error(error);

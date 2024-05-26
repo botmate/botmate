@@ -21,12 +21,13 @@ function AppProvider({ app }: { app: Application }) {
       const plugins = app.pluginManager.plugins;
 
       for (const plugin of plugins) {
-        if (plugin.clientPath) {
-          const module = await import(/* @vite-ignore */ plugin.clientPath);
-          const [key] = Object.keys(module);
-          console.debug('loading plugin', key);
-          const instance = new module[key](app);
-          await instance.beforeLoad();
+        try {
+          const instance = app.pluginManager.getInstance(plugin.name);
+          if (instance) {
+            await instance.beforeLoad();
+          }
+        } catch (error) {
+          console.error('failed to load plugin', plugin.name, error);
         }
       }
 
@@ -37,7 +38,11 @@ function AppProvider({ app }: { app: Application }) {
   }, [app]);
 
   if (loading) {
-    return <Loader />;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   return (

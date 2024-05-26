@@ -19,6 +19,7 @@
       "@botmate/cli": ["packages/core/cli/src/index.ts"],
       "@botmate/client": ["packages/core/client/src/index.ts"],
       "@botmate/database": ["packages/core/database/src/index.ts"],
+      "@botmate/icons": ["packages/shared/icons/src/index.ts"],
       "@botmate/plugin-auth": [
         "packages/plugins/@botmate/plugin-auth/src/index.ts"
       ],

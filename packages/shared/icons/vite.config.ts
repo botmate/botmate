@@ -8,7 +8,7 @@ import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../../node_modules/.vite/packages/shared/ui',
+  cacheDir: '../../../node_modules/.vite/packages/shared/icons',
 
   plugins: [
     react(),
@@ -19,18 +19,23 @@ export default defineConfig({
     }),
   ],
   build: {
-    outDir: '../../../dist/packages/shared/ui',
+    outDir: '../../../dist/packages/shared/icons',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },
     lib: {
-      name: 'ui',
+      // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      formats: ['es'],
+      name: 'icons',
+      fileName: 'index',
+      // Change this to the formats you want to support.
+      // Don't forget to update your package.json as well.
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
+      // External packages that should not be bundled into your library.
       external: ['react', 'react-dom', 'react/jsx-runtime'],
     },
   },

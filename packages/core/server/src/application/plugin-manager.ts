@@ -1,13 +1,18 @@
 import { ModelStatic } from '@botmate/database';
 import { Logger, createLogger } from '@botmate/utils';
 import colors from 'colors';
-import { existsSync } from 'fs';
-import { lstat, readFile, readdir } from 'fs/promises';
+import exca from 'execa';
+import { createWriteStream, existsSync } from 'fs';
+import { cp, lstat, mkdir, readFile, readdir } from 'fs/promises';
 import { join } from 'path';
+import { Readable } from 'stream';
+import { finished } from 'stream/promises';
+import * as tar from 'tar';
 
 import { Plugin } from '../plugin';
 import { Application } from './application';
 import { PluginModel, initModel } from './plugin-model';
+import { createTmpDir, isTypeScriptPackage } from './utils';
 
 const builtinPlugins = ['auth', 'users'];
 
@@ -18,6 +23,7 @@ export type PluginMeta = {
   version: string;
   dependencies: Record<string, string>;
   localPath: string;
+  serverPath: string;
   clientPath?: string;
 };
 
@@ -80,6 +86,7 @@ export class PluginManager {
       where: { name: plugin.name },
     });
     if (!exist) {
+      await this.build(plugin.name);
       await this.model.create({
         name: plugin.name,
         displayName: plugin.displayName,
@@ -93,6 +100,10 @@ export class PluginManager {
         installed: true,
         dependencies: plugin.dependencies,
       });
+    } else {
+      this.logger.warn(
+        `Plugin ${colors.bold(pluginName)} is already installed`,
+      );
     }
   }
 
@@ -143,6 +154,16 @@ export class PluginManager {
           JSON.parse(data),
         );
 
+        const isTypeScript = await isTypeScriptPackage(pluginPath);
+        const serverPath = join(
+          pluginPath,
+          isTypeScript ? 'src/server/index.ts' : 'server/index.js',
+        );
+        const clientPath = join(
+          pluginPath,
+          isTypeScript ? 'src/client/index.ts' : 'client/index.js',
+        );
+
         plugins.push({
           name: pkg.name,
           displayName: pkg.displayName || pkg.name,
@@ -150,9 +171,8 @@ export class PluginManager {
           version: pkg.version,
           dependencies: pkg.botmate?.dependencies || {},
           localPath: pluginPath,
-          clientPath: this.app.isDev
-            ? `${pluginPath}/src/client/index.ts`
-            : `${pluginPath}/client/index.js`,
+          serverPath,
+          clientPath,
         });
       }
     }
@@ -179,13 +199,8 @@ export class PluginManager {
     for (const plugin of this.plugins) {
       this.logger.debug(`Processing ${colors.bold(plugin.displayName)}`);
 
-      const serverEntry = join(
-        plugin.localPath,
-        this.app.isDev ? 'src/server/server.ts' : 'server/index.js',
-      );
-
       try {
-        const module = await import(serverEntry);
+        const module = await import(plugin.serverPath);
         const exportKey = Object.keys(module)[0];
         if (!exportKey) {
           this.logger.error(
@@ -238,9 +253,27 @@ export class PluginManager {
       const stat = await lstat(pluginPath);
 
       if (stat.isDirectory()) {
+        const isOrg = item.startsWith('@');
+        if (isOrg) {
+          const subPlugins = await this.getLocalPlugins(
+            `storage/plugins/${item}`,
+          );
+          plugins.push(...subPlugins);
+          continue;
+        }
         const pkgJSON = join(pluginPath, 'package.json');
         const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
           JSON.parse(data),
+        );
+
+        const isTypeScript = await isTypeScriptPackage(pluginPath);
+        const serverPath = join(
+          pluginPath,
+          isTypeScript ? 'src/server/index.ts' : 'server/index.js',
+        );
+        const clientPath = join(
+          pluginPath,
+          isTypeScript ? 'src/client/index.ts' : 'client/index.js',
         );
 
         plugins.push({
@@ -250,9 +283,9 @@ export class PluginManager {
           version: pkg.version,
           dependencies: pkg.botmate?.dependencies || {},
           localPath: pluginPath,
-          clientPath: this.app.isDev
-            ? `${pluginPath}/src/client/index.ts`
-            : `${pluginPath}/client/index.js`,
+
+          serverPath,
+          clientPath,
         });
       }
     }
@@ -271,5 +304,58 @@ export class PluginManager {
     for (const plugin of this.instanes.values()) {
       await plugin.load();
     }
+  }
+
+  /**
+   * Build the plugin for production.
+   * @param name Name of the plugin
+   */
+  async build(name: string, force = false) {
+    this.logger.info(`Building plugin ${colors.bold(name)}`);
+
+    const plugin = this.plugins.find((p) => p.name === name);
+    if (plugin && !force) {
+      this.logger.warn(`Plugin already built, skipping...`);
+      return;
+    }
+
+    const tmpDir = await createTmpDir();
+    const pluginPath = join(tmpDir, name.replace('/', '__'));
+
+    const url = await exca('npm', ['view', name, 'dist.tarball'], {
+      stdio: 'pipe',
+    });
+    if (url.failed) {
+      this.logger.error(`Failed to fetch tarball for ${name}`);
+      return;
+    }
+
+    const tarball = url.stdout.trim();
+    const tarballPath = `${pluginPath}.tgz`;
+
+    await fetch(tarball)
+      .then((res) => res.arrayBuffer())
+      .then(async (res) => {
+        const fileStream = createWriteStream(tarballPath, {
+          flags: 'wx',
+        });
+        const readable = new Readable();
+        readable.push(Buffer.from(res));
+        readable.push(null);
+        readable.pipe(fileStream);
+        await finished(fileStream);
+      });
+
+    const pluginStoragePath = join(process.cwd(), 'storage/plugins', name);
+    await mkdir(pluginStoragePath, { recursive: true });
+
+    await tar.extract({
+      file: tarballPath,
+      cwd: tmpDir,
+    });
+
+    await cp(join(tmpDir, 'package'), pluginStoragePath, {
+      recursive: true,
+    });
   }
 }

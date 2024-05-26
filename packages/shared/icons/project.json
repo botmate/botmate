@@ -1,0 +1,21 @@
+{
+  "name": "icons",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/shared/icons/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project icons --web",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "options": {
+        "outputPath": "dist/packages/shared/icons"
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
+  }
+}

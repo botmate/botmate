@@ -5,17 +5,23 @@ import { Application } from '@botmate/client';
 const app = new Application();
 
 async function run() {
-  if (import.meta.env.DEV) {
-    const plugins = await import('./plugins');
-    for (const name of Object.keys(plugins)) {
-      console.log(`Loading plugin: ${name}`);
-      try {
-        // @ts-expect-error - This is a dynamic import
-        await app.addPlugin(plugins[name], app);
-      } catch (error) {
-        console.error(`Failed to load plugin: ${name}`);
-        console.error(error);
+  const { plugins } = await import('./plugins');
+  for (const name of Object.keys(plugins)) {
+    try {
+      console.debug(`loading plugin: ${name}`);
+
+      const Module = await plugins[name];
+      const [key] = Object.keys(Module);
+      if (!key) {
+        console.warn(`Plugin ${name} does not export an export`);
+        continue;
       }
+
+      const Plugin = Module[key];
+      await app.pluginManager.add(name, Plugin, app);
+    } catch (error) {
+      console.error(`Failed to load plugin: ${name}`);
+      console.error(error);
     }
   }
 

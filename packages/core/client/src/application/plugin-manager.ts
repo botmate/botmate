@@ -6,6 +6,7 @@ import { Application } from './application';
 
 export class PluginManager {
   plugins: PluginMeta[] = [];
+  instances: Map<string, Plugin> = new Map();
 
   constructor(private app: Application) {}
 
@@ -14,9 +15,18 @@ export class PluginManager {
     this.plugins = plugins.data;
   }
 
-  async add(Plugin: Plugin, app: Application) {
-    // @ts-expect-error - Expected to be a constructor
-    const instance = new Plugin(app);
-    instance.beforeLoad();
+  async add(name: string, Plugin: Plugin, app: Application) {
+    try {
+      // @ts-expect-error - Expected to be a constructor
+      const instance = new Plugin(app);
+      this.instances.set(name, instance);
+    } catch (error) {
+      // console.error(`Failed to add plugin: ${name}`);
+      console.error(error);
+    }
+  }
+
+  getInstance(pluginName: string) {
+    return this.instances.get(pluginName);
   }
 }

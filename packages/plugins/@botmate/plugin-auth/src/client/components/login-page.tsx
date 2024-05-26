@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { ApiError, api, toast } from '@botmate/client';
+import { ApiError, api, toast, useForm, useNavigate } from '@botmate/client';
+import { LockIcon } from '@botmate/icons';
 import {
   Button,
   Card,
@@ -13,12 +12,12 @@ import {
 } from '@botmate/ui';
 
 function LoginPage() {
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const form = useForm();
+  const nav = useNavigate();
 
-  function handleLogin() {
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+  function handleLogin(data: Record<string, string>) {
+    const email = data.email;
+    const password = data.password;
 
     if (!email || !password) {
       alert('Please fill in all fields');
@@ -31,6 +30,7 @@ function LoginPage() {
         password,
       })
       .then(() => {
+        nav('/dashboard');
         toast.success('Logged in successfully');
       })
       .catch((err) => {
@@ -41,34 +41,36 @@ function LoginPage() {
   }
 
   return (
-    <div className="h-screen flex justify-center items-center px-4">
+    <form
+      className="h-screen flex justify-center items-center px-4"
+      onSubmit={form.handleSubmit(handleLogin)}
+    >
       <Card className="w-[24rem]">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <LockIcon />
+            Login
+          </CardTitle>
           <CardDescription>
             Welcome back! Please login to continue.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <Input placeholder="Email" type="email" ref={emailRef} />
+          <Input placeholder="Email" type="email" {...form.register('email')} />
           <Input
             placeholder="Password"
             type="password"
             autoComplete="off"
-            ref={passwordRef}
+            {...form.register('password')}
           />
         </CardContent>
         <CardFooter>
-          <Button
-            className="w-full"
-            type="submit"
-            onClick={() => handleLogin()}
-          >
+          <Button className="w-full" type="submit">
             Login
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </form>
   );
 }
 

@@ -8,6 +8,7 @@ import { registerCoreRoutes } from './routes';
 
 interface ApplicationOptions {
   port?: number;
+  isProd?: boolean;
 }
 
 export class Application {
@@ -26,6 +27,7 @@ export class Application {
       logger: createLogger('database'),
     });
     this.pluginManager = new PluginManager(this);
+    this.isDev = options.isProd ?? this.isDev;
   }
 
   get db() {

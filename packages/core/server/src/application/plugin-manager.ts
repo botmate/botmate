@@ -290,10 +290,6 @@ export class PluginManager {
       }
     }
 
-    this.logger.info(
-      `Found ${plugins.map((p) => colors.bold(p.displayName)).join(', ')}`,
-    );
-
     return plugins;
   }
 

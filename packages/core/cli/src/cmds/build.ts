@@ -92,5 +92,10 @@ export function build(cmd: Command) {
           sourcemap: true,
         },
       });
+
+      logger.info('Client built');
+
+      await unlink('tmp/main.tsx');
+      await unlink('tmp/plugins.ts');
     });
 }

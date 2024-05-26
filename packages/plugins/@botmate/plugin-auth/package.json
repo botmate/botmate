@@ -1,11 +1,11 @@
 {
   "name": "@botmate/plugin-auth",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "dependencies": {
-    "@botmate/database": "1.0.0-alpha.3",
-    "@botmate/plugin-users": "1.0.0-alpha.3",
-    "@botmate/server": "1.0.0-alpha.3",
-    "@botmate/utils": "1.0.0-alpha.3",
+    "@botmate/database": "1.0.0-alpha.4",
+    "@botmate/plugin-users": "1.0.0-alpha.4",
+    "@botmate/server": "1.0.0-alpha.4",
+    "@botmate/utils": "1.0.0-alpha.4",
     "jsonwebtoken": "9.0.2",
     "tslib": "^2.3.0"
   }

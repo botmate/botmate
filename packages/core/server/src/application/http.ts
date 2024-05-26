@@ -5,13 +5,10 @@ import cors from 'cors';
 import express from 'express';
 import expressLogger from 'express-winston';
 import { join } from 'node:path';
-import { ViteDevServer, createServer as createViteServer } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export class Http {
   app: express.Application;
   apiRouter: express.Router;
-  vite: ViteDevServer | undefined;
 
   constructor() {
     this.app = express();
@@ -35,44 +32,24 @@ export class Http {
         alias.set(`@botmate/${pkg}`, require.resolve(`@botmate/${pkg}`));
       }
     }
-
-    const vite = await createViteServer({
-      plugins: [
-        react(),
-        ...(env.NODE_ENV === 'production' ? [] : [tsconfigPaths()]),
-      ],
-      server: {
-        middlewareMode: true,
-        watch: {
-          ignored: 'packages/core/**',
-        },
-      },
-      appType: 'custom',
-      resolve: {
-        alias: Object.fromEntries(alias),
-      },
-    });
-
-    this.vite = vite;
     this.app.use(express.static(join(__dirname, '..', 'dist')));
   }
 
   public listen(port: number) {
     this.app.use('/api', this.apiRouter);
 
-    if (this.vite !== undefined)
-      this.app.get('*', async (req, res) => {
-        try {
-          let htmlPath = join(process.cwd(), 'index.html');
-          htmlPath = join(__dirname, '..', 'dist', 'index.html');
-          res.sendFile(htmlPath);
-        } catch (error) {
-          if (error instanceof Error) {
-            console.error(error);
-            res.status(500).send(error.message);
-          }
+    this.app.get('*', async (_, res) => {
+      try {
+        let htmlPath = join(process.cwd(), 'index.html');
+        htmlPath = join(__dirname, '..', 'dist', 'index.html');
+        res.sendFile(htmlPath);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error);
+          res.status(500).send(error.message);
         }
-      });
+      }
+    });
     this.app.listen(port);
   }
 }

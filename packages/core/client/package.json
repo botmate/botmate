@@ -1,6 +1,6 @@
 {
   "name": "@botmate/client",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
@@ -11,7 +11,7 @@
     }
   },
   "dependencies": {
-    "@botmate/ui": "1.0.0-alpha.3",
+    "@botmate/ui": "1.0.0-alpha.4",
     "@loadable/component": "^5.16.4",
     "axios": "^1.7.2",
     "react-hook-form": "^7.51.5",

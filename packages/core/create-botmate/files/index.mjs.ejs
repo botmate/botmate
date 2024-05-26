@@ -1,0 +1,9 @@
+import { Application } from './application';
+
+async function runApp() {
+  const app = new Application({ isProd: true });
+  await app.initialize();
+  await app.start();
+}
+
+runApp();

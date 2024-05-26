@@ -1,6 +1,6 @@
 {
   "name": "@botmate/icons",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {

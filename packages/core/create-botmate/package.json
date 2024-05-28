@@ -1,6 +1,6 @@
 {
   "name": "create-botmate",
-  "version": "1.0.0-alpha.10",
+  "version": "0.0.1",
   "description": "Create a new BotMate project",
   "bin": "./index.js",
   "dependencies": {
@@ -8,6 +8,6 @@
     "fast-glob": "^3.3.2",
     "inquirer": "^8.0.0",
     "tslib": "^2.3.0",
-    "@botmate/utils": "1.0.0-alpha.10"
+    "@botmate/utils": "0.0.1"
   }
 }

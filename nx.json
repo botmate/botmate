@@ -52,6 +52,17 @@
       "generatorOptions": {
         "fallbackCurrentVersionResolver": "disk"
       }
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      },
+      "git": {
+        "tag": true
+      },
+      "projectChangelogs": {
+        "commitMessageFormat": "chore(release): ${version}"
+      }
     }
   },
   "generators": {

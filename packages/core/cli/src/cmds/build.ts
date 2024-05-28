@@ -10,6 +10,7 @@ export function build(cmd: Command) {
     .description('Build the application')
     .action(async () => {
       const app = new Application();
+      await app.pluginManager.initialize();
       const plugins = await app.pluginManager.getPlugins();
 
       const isRepo = isProjectRepo();

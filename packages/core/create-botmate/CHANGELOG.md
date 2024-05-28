@@ -1,3 +1,15 @@
+## 1.0.0-alpha.15 (2024-05-28)
+
+
+### 🩹 Fixes
+
+- unused comma
+
+
+### ❤️  Thank You
+
+- mxvsh
+
 ## 1.0.0-alpha.14 (2024-05-28)
 
 

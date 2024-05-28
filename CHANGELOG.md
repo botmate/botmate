@@ -1,3 +1,16 @@
+## 1.0.0-alpha.15 (2024-05-28)
+
+
+### 🩹 Fixes
+
+- init plugin ([4dbcc3c](https://github.com/botmate/botmate/commit/4dbcc3c))
+- unused comma ([abd23ab](https://github.com/botmate/botmate/commit/abd23ab))
+- install dev deps ([6e91033](https://github.com/botmate/botmate/commit/6e91033))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.0.0-alpha.14 (2024-05-28)
 
 

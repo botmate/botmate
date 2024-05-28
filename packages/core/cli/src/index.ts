@@ -6,6 +6,7 @@ import { join } from 'path';
 import { build } from './cmds/build';
 import { dev } from './cmds/dev';
 import { install } from './cmds/install';
+import { plugin } from './cmds/plugin';
 import { setup } from './cmds/setup';
 import { start } from './cmds/start';
 
@@ -38,5 +39,6 @@ start(cmd);
 setup(cmd);
 build(cmd);
 install(cmd);
+plugin(cmd);
 
 cmd.parse(process.argv);

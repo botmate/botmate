@@ -22,7 +22,7 @@
         "tsConfig": "packages/core/cli/tsconfig.lib.json",
         "packageJson": "packages/core/cli/package.json",
         "main": "packages/core/cli/src/index.ts",
-        "assets": ["packages/core/cli/*.md"],
+        "assets": ["packages/core/cli/*.md", "packages/core/cli/files/**/*"],
         "rootDir": "packages/core/cli/src"
       }
     },

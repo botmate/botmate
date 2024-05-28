@@ -30,8 +30,7 @@
       "@botmate/server": ["packages/core/server/src/index.ts"],
       "@botmate/ui": ["packages/shared/ui/src/index.ts"],
       "@botmate/utils": ["packages/core/utils/src/index.ts"],
-      "create-botmate": ["packages/core/create-botmate/src/index.ts"],
-      "x": ["packages/core/x/src/index.ts"]
+      "create-botmate": ["packages/core/create-botmate/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

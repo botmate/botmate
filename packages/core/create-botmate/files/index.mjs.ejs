@@ -1,7 +1,7 @@
 import { Application } from '@botmate/server';
 
 async function runApp() {
-  const app = new Application({ isProd: true });
+  const app = new Application();
   await app.initialize();
   await app.start();
 }

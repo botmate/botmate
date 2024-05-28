@@ -137,17 +137,13 @@ export class PluginManager {
     const plugins: PluginMeta[] = [];
 
     for (const dep of dependencies) {
-      if (dep.startsWith('@botmate/plugin-')) {
-        const pluginPath = join(process.cwd(), 'node_modules', dep);
+      const pluginPath = join(process.cwd(), 'node_modules', dep);
+      const pkgJSON = await PluginManager.readPkgJson(pluginPath);
+      if (pkgJSON.botmate) {
+        this.logger.debug(`Found plugin ${colors.bold(pkgJSON.name)}`);
         const meta = await PluginManager.createMetadata(pluginPath);
         plugins.push(meta);
       }
-    }
-
-    if (plugins.length > 0) {
-      this.logger.info(
-        `Found ${plugins.map((p) => colors.bold(p.displayName)).join(', ')}`,
-      );
     }
 
     return plugins;
@@ -158,7 +154,7 @@ export class PluginManager {
    */
   async prepare() {
     const storagePlugins = await this.getLocalPlugins(LOCAL_PLUGINS_DIR);
-    const corePlugins = await this.getLocalPlugins('packages/plugins/@botmate');
+    const corePlugins = await this.getLocalPlugins('packagesplugins/@botmate');
     const installedPlugins = await this.getInstalledPlugins();
 
     this.plugins = [...corePlugins, ...storagePlugins, ...installedPlugins];
@@ -236,12 +232,18 @@ export class PluginManager {
     return plugins;
   }
 
+  static async readPkgJson(path: string) {
+    const pkgJSON = join(path, 'package.json');
+    const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
+      JSON.parse(data),
+    );
+
+    return pkg;
+  }
+
   static async createMetadata(path: string) {
     try {
-      const pkgJSON = join(path, 'package.json');
-      const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
-        JSON.parse(data),
-      );
+      const pkg = await PluginManager.readPkgJson(path);
       const isTypeScript = await isTypeScriptPackage(path);
       const serverPath = join(
         path,

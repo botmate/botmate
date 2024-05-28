@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { createLogger } from '@botmate/utils';
+import { execSync } from 'child_process';
 import ejs from 'ejs';
 import fg from 'fast-glob';
 import { existsSync } from 'fs';
@@ -8,24 +10,51 @@ import inquirer from 'inquirer';
 const cwd = process.cwd();
 
 async function run() {
+  const logger = createLogger('cli');
+
+  try {
+    execSync('pnpm --version');
+  } catch {
+    logger.error('Please install pnpm');
+    return;
+  }
+
   const prompt = await inquirer.prompt([
     {
       type: 'input',
       name: 'name',
-      message: 'What is the name of your bot?',
+      message: 'Enter the name of the directory',
+    },
+    {
+      type: 'checkbox',
+      name: 'platforms',
+      message: 'Select platforms',
+      choices: [
+        {
+          name: 'Telegram',
+          checked: true,
+        },
+        {
+          name: 'Slack',
+        },
+        {
+          name: 'Discord',
+        },
+      ],
     },
   ]);
 
   const name = prompt.name;
   const projectDir = `${cwd}/${name}`;
+
   if (existsSync(projectDir)) {
-    console.log('Directory already exists');
+    logger.error('Directory already exists');
     return;
   }
 
-  await mkdir(projectDir, { recursive: true });
+  logger.info('Creating botmate project...');
 
-  console.log('Creating botmate project...');
+  await mkdir(projectDir, { recursive: true });
 
   const templateDir = `${__dirname}/files`;
   const files = await fg(`${templateDir}/**/*`, { dot: true });
@@ -39,16 +68,18 @@ async function run() {
 
     const targetPath = `${projectDir}${relativePath}`;
     const content = await ejs.renderFile(file);
-    console.log('Creating file', targetPath);
+
+    logger.info(`CREATE: ${relativePath}`);
+
     await writeFile(targetPath, content);
   }
 
-  console.log('✅ Done!');
-  console.log('To start the app, run:');
-  console.log(`cd ${name}`);
-  console.log('npm install');
-  console.log('npm run setup');
-  console.log('npm run start');
+  logger.info('Inslalling dependencies using "pnpm"');
+
+  execSync('pnpm install', {
+    cwd: projectDir,
+    stdio: 'inherit',
+  });
 }
 
 run();

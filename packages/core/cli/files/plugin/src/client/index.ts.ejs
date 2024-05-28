@@ -1,0 +1,10 @@
+import { Plugin } from '@botmate/client';
+
+export class <%= className %> extends Plugin {
+	async beforeLoad() {
+		this.app.addRoute({
+			path: '/<%= name %>',
+			Component: () => '<%= className %>',
+		});
+	}
+}

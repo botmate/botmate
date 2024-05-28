@@ -1,5 +1,6 @@
 import { Application } from '@botmate/server';
 import { createLogger, isProjectRepo } from '@botmate/utils';
+import { execSync } from 'child_process';
 import { Command } from 'commander';
 import exca from 'execa';
 import { existsSync } from 'fs';
@@ -78,17 +79,6 @@ export function dev(cmd: Command) {
         runApp();`,
       );
 
-      const args = ['--watch', '--tsconfig', 'tsconfig.json'];
-
-      exca('tsx', [...args, '.botmate/dev.ts'], {
-        stdio: 'inherit',
-        env: {
-          NODE_ENV: 'development',
-        },
-      });
-
-      await mkdir(join(botmateDir, 'web'), { recursive: true });
-
       const viteServer = await import('vite').then((m) => m.createServer);
       const react = await import('@vitejs/plugin-react').then((m) => m.default);
       const tsconfigPaths = await import('vite-tsconfig-paths').then(
@@ -121,7 +111,7 @@ export function dev(cmd: Command) {
       await writeFile(
         join(botmateDir, 'main.tsx'),
         `
-        ${!isProjectRepo() ? `import '@botmate/ui';` : ''}
+        ${!isProjectRepo() ? `import '@botmate/ui/style.css';` : ''}
         import * as ReactDOM from 'react-dom/client';
         import { Application } from '@botmate/client';
         
@@ -170,6 +160,27 @@ export function dev(cmd: Command) {
       </html>`,
         'utf-8',
       );
+
+      const args = ['--watch', '--tsconfig', 'tsconfig.json'];
+
+      const devDeps = [];
+
+      try {
+        execSync('tsx --version');
+      } catch (e) {
+        devDeps.push('tsx');
+      }
+
+      await exca('pnpm', ['i', '-D', ...devDeps], {
+        stdio: 'inherit',
+      });
+
+      exca('tsx', [...args, '.botmate/dev.ts'], {
+        stdio: 'inherit',
+        env: {
+          NODE_ENV: 'development',
+        },
+      });
 
       logger.debug('Vite server...');
 

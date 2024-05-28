@@ -1,6 +1,4 @@
 /// <reference types='vitest' />
-import react from '@vitejs/plugin-react';
-
 import * as path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -11,7 +9,6 @@ export default defineConfig({
   cacheDir: '../../../node_modules/.vite/packages/core/client',
 
   plugins: [
-    react(),
     tsConfigPaths(),
     dts({
       entryRoot: 'src',
@@ -19,17 +16,9 @@ export default defineConfig({
     }),
   ],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
-  // Configuration for building your library.
-  // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
     outDir: '../../../dist/packages/core/client',
     emptyOutDir: true,
-    reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },
@@ -42,10 +31,9 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      // External packages that should not be bundled into your library.
-      external: [],
+      external: ['react', 'react/jsx-runtime'],
       output: {
-        inlineDynamicImports: false,
+        sourcemap: false,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return id
@@ -56,11 +44,6 @@ export default defineConfig({
           }
         },
       },
-    },
-  },
-  resolve: {
-    alias: {
-      __federation__: 'mock.ts',
     },
   },
 });

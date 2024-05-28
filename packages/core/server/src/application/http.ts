@@ -1,4 +1,4 @@
-import { createLogger, env } from '@botmate/utils';
+import { createLogger } from '@botmate/utils';
 import cors from 'cors';
 import express from 'express';
 import expressLogger from 'express-winston';
@@ -21,15 +21,6 @@ export class Http {
   }
 
   async init() {
-    const alias = new Map<string, string>();
-
-    if (env.NODE_ENV === 'production') {
-      // these packages can be required from plugins
-      const corePkgs = ['client', 'ui'];
-      for (const pkg of corePkgs) {
-        alias.set(`@botmate/${pkg}`, require.resolve(`@botmate/${pkg}`));
-      }
-    }
     this.app.use(express.static(join(__dirname, '..', 'dist')));
   }
 

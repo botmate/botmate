@@ -16,6 +16,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
+      "@botmate/build": ["packages/core/build/src/index.ts"],
       "@botmate/cli": ["packages/core/cli/src/index.ts"],
       "@botmate/client": ["packages/core/client/src/index.ts"],
       "@botmate/database": ["packages/core/database/src/index.ts"],

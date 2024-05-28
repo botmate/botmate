@@ -46,9 +46,6 @@ export class Application {
     await this.db.sync();
     this.logger.debug('Database synchronized');
 
-    await this.http.init();
-    await registerCoreRoutes(this, this.http);
-
     this.initialized = true;
   }
 
@@ -57,6 +54,9 @@ export class Application {
       return;
     }
     this.logger.info('Starting application...');
+
+    await this.http.init();
+    await registerCoreRoutes(this, this.http);
 
     await this.pluginManager.loadAll();
 

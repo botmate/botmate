@@ -1,5 +1,4 @@
 import { ApiError, api, toast, useForm, useNavigate } from '@botmate/client';
-import { LockIcon } from '@botmate/icons';
 import {
   Button,
   Card,
@@ -20,7 +19,7 @@ function LoginPage() {
     const password = data.password;
 
     if (!email || !password) {
-      alert('Please fill in all fields');
+      toast.error('Please fill in all fields');
       return;
     }
 
@@ -48,7 +47,6 @@ function LoginPage() {
       <Card className="w-[24rem]">
         <CardHeader>
           <CardTitle className="text-2xl flex items-center gap-2">
-            <LockIcon />
             Login
           </CardTitle>
           <CardDescription>

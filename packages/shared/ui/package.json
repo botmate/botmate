@@ -2,12 +2,5 @@
   "name": "@botmate/ui",
   "version": "1.0.0-alpha.10",
   "main": "./index.js",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.js",
-      "types": "./index.d.ts"
-    }
-  }
+  "types": "./index.d.ts"
 }

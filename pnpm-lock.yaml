@@ -12,10 +12,10 @@ importers:
         specifier: 19.0.5
         version: 19.0.5(nx@19.0.5)
       react:
-        specifier: 18.3.1
+        specifier: ^18.3.1
         version: 18.3.1
       react-dom:
-        specifier: 18.3.1
+        specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       tslib:
         specifier: ^2.3.0
@@ -238,20 +238,11 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.91.0)
 
-  packages/core/cli:
+  packages/core/build:
     dependencies:
-      '@botmate/server':
-        specifier: 1.0.0-alpha.10
-        version: link:../server
       '@vitejs/plugin-react':
         specifier: ^4.2.0
         version: 4.2.1(vite@5.0.13)
-      commander:
-        specifier: ^12.1.0
-        version: 12.1.0
-      execa:
-        specifier: ^5.1.1
-        version: 5.1.1
       tslib:
         specifier: ^2.3.0
         version: 2.6.2
@@ -261,6 +252,21 @@ importers:
       vite-tsconfig-paths:
         specifier: ^4.3.2
         version: 4.3.2(typescript@5.4.5)(vite@5.0.13)
+
+  packages/core/cli:
+    dependencies:
+      '@botmate/server':
+        specifier: 1.0.0-alpha.10
+        version: link:../server
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
+      execa:
+        specifier: ^5.1.1
+        version: 5.1.1
+      tslib:
+        specifier: ^2.3.0
+        version: 2.6.2
 
   packages/core/client:
     dependencies:

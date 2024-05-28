@@ -1,0 +1,41 @@
+{
+  "name": "build",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/core/build",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/core/build",
+        "tsConfig": "packages/core/build/tsconfig.lib.json",
+        "packageJson": "packages/core/build/package.json",
+        "main": "packages/core/build/src/index.ts",
+        "assets": ["packages/core/build/*.md"],
+        "rootDir": "packages/core/build/src"
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/core/build/jest.config.ts"
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ import * as tar from 'tar';
 
 import { Plugin } from '../plugin';
 import { Application } from './application';
+import { LOCAL_PLUGINS_DIR } from './constants';
 import { PluginModel, initModel } from './plugin-model';
 import { createTmpDir, isTypeScriptPackage } from './utils';
 
@@ -49,15 +50,6 @@ export class PluginManager {
     return this.plugins;
   }
 
-  async resolvePlugin(name: string) {
-    try {
-      const m = await import(name);
-      console.log('m', m);
-    } catch (e) {
-      this.logger.error(e);
-    }
-  }
-
   async setup() {
     this.logger.info('Setting up plugins...');
 
@@ -75,10 +67,8 @@ export class PluginManager {
   async install(pluginName: string) {
     const plugin = this.plugins.find((p) => p.name === pluginName);
     if (!plugin) {
-      const plugins = await this.getLocalPlugins('storage/plugins');
-      console.log('plugins from storage/plugins', plugins);
-
-      this.logger.warn(`Plugin ${colors.bold(pluginName)} not found`);
+      const plugins = await this.getLocalPlugins(LOCAL_PLUGINS_DIR);
+      console.log('plugins', plugins);
       return;
     }
 
@@ -86,7 +76,7 @@ export class PluginManager {
       where: { name: plugin.name },
     });
     if (!exist) {
-      await this.build(plugin.name);
+      await this.download(plugin.name);
       await this.model.create({
         name: plugin.name,
         displayName: plugin.displayName,
@@ -149,31 +139,8 @@ export class PluginManager {
     for (const dep of dependencies) {
       if (dep.startsWith('@botmate/plugin-')) {
         const pluginPath = join(process.cwd(), 'node_modules', dep);
-        const pkgJSON = join(pluginPath, 'package.json');
-        const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
-          JSON.parse(data),
-        );
-
-        const isTypeScript = await isTypeScriptPackage(pluginPath);
-        const serverPath = join(
-          pluginPath,
-          isTypeScript ? 'src/server/index.ts' : 'server/index.js',
-        );
-        const clientPath = join(
-          pluginPath,
-          isTypeScript ? 'src/client/index.ts' : 'client/index.js',
-        );
-
-        plugins.push({
-          name: pkg.name,
-          displayName: pkg.displayName || pkg.name,
-          description: pkg.description,
-          version: pkg.version,
-          dependencies: pkg.botmate?.dependencies || {},
-          localPath: pluginPath,
-          serverPath,
-          clientPath,
-        });
+        const meta = await PluginManager.createMetadata(pluginPath);
+        plugins.push(meta);
       }
     }
 
@@ -190,18 +157,16 @@ export class PluginManager {
    * Fetch all plugins from the given folder and prepare them.
    */
   async prepare() {
-    const storagePlugins = await this.getLocalPlugins('storage/plugins');
+    const storagePlugins = await this.getLocalPlugins(LOCAL_PLUGINS_DIR);
     const corePlugins = await this.getLocalPlugins('packages/plugins/@botmate');
     const installedPlugins = await this.getInstalledPlugins();
 
     this.plugins = [...corePlugins, ...storagePlugins, ...installedPlugins];
 
     for (const plugin of this.plugins) {
-      this.logger.debug(`Processing ${colors.bold(plugin.displayName)}`);
-
       try {
         const module = await import(plugin.serverPath);
-        const exportKey = Object.keys(module)[0];
+        const [exportKey] = Object.keys(module);
         if (!exportKey) {
           this.logger.error(
             `Failed to prepare plugin ${colors.bold(
@@ -213,8 +178,10 @@ export class PluginManager {
 
         const PluginClass = module[exportKey];
         const pluginLogger = createLogger(plugin.name);
+
         const instance = new PluginClass(this.app, pluginLogger);
         await instance.beforeLoad();
+
         this.instanes.set(plugin.displayName, instance);
       } catch (e) {
         this.logger.error(
@@ -256,41 +223,49 @@ export class PluginManager {
         const isOrg = item.startsWith('@');
         if (isOrg) {
           const subPlugins = await this.getLocalPlugins(
-            `storage/plugins/${item}`,
+            join(LOCAL_PLUGINS_DIR, item),
           );
           plugins.push(...subPlugins);
           continue;
         }
-        const pkgJSON = join(pluginPath, 'package.json');
-        const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
-          JSON.parse(data),
-        );
-
-        const isTypeScript = await isTypeScriptPackage(pluginPath);
-        const serverPath = join(
-          pluginPath,
-          isTypeScript ? 'src/server/index.ts' : 'server/index.js',
-        );
-        const clientPath = join(
-          pluginPath,
-          isTypeScript ? 'src/client/index.ts' : 'client/index.js',
-        );
-
-        plugins.push({
-          name: pkg.name,
-          displayName: pkg.displayName || pkg.name,
-          description: pkg.description,
-          version: pkg.version,
-          dependencies: pkg.botmate?.dependencies || {},
-          localPath: pluginPath,
-
-          serverPath,
-          clientPath,
-        });
+        const meta = await PluginManager.createMetadata(pluginPath);
+        plugins.push(meta);
       }
     }
 
     return plugins;
+  }
+
+  static async createMetadata(path: string) {
+    try {
+      const pkgJSON = join(path, 'package.json');
+      const pkg = await readFile(pkgJSON, 'utf-8').then((data) =>
+        JSON.parse(data),
+      );
+      const isTypeScript = await isTypeScriptPackage(path);
+      const serverPath = join(
+        path,
+        isTypeScript ? 'src/server/index.ts' : 'server/index.js',
+      );
+      const clientPath = join(
+        path,
+        isTypeScript ? 'src/client/index.ts' : 'client/index.js',
+      );
+
+      return {
+        name: pkg.name,
+        displayName: pkg.displayName || pkg.name,
+        description: pkg.description,
+        version: pkg.version,
+        dependencies: pkg.botmate?.dependencies || {},
+        localPath: path,
+
+        serverPath,
+        clientPath,
+      } as PluginMeta;
+    } catch {
+      return {} as PluginMeta;
+    }
   }
 
   /**
@@ -306,7 +281,7 @@ export class PluginManager {
    * Build the plugin for production.
    * @param name Name of the plugin
    */
-  async build(name: string, force = false) {
+  async download(name: string, force = false) {
     this.logger.info(`Building plugin ${colors.bold(name)}`);
 
     const plugin = this.plugins.find((p) => p.name === name);
@@ -342,7 +317,7 @@ export class PluginManager {
         await finished(fileStream);
       });
 
-    const pluginStoragePath = join(process.cwd(), 'storage/plugins', name);
+    const pluginStoragePath = join(process.cwd(), LOCAL_PLUGINS_DIR, name);
     await mkdir(pluginStoragePath, { recursive: true });
 
     await tar.extract({

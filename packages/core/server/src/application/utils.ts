@@ -26,8 +26,8 @@ export async function createTmpDir() {
 
 export async function isTypeScriptPackage(pkgPath: string) {
   try {
-    const hasSrcFolder = existsSync(join(pkgPath, 'src'));
-    return hasSrcFolder;
+    const hasTsConfig = existsSync(join(pkgPath, 'tsconfig.json'));
+    return hasTsConfig;
   } catch (e) {
     return false;
   }

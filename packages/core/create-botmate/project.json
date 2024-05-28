@@ -24,7 +24,7 @@
         "rootDir": "packages/core/create-botmate/src",
         "assets": [
           "packages/core/create-botmate/*.md",
-          "packages/core/create-botmate/files/**/*.ejs"
+          "packages/core/create-botmate/files/**/*"
         ]
       }
     },

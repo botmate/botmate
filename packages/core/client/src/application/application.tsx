@@ -23,7 +23,7 @@ export class Application {
   async getRootComponent() {
     return (
       <ApplicationContext.Provider value={this}>
-        <AppProvider app={this} />;
+        <AppProvider app={this} />
       </ApplicationContext.Provider>
     );
   }

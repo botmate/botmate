@@ -139,11 +139,13 @@ export class PluginManager {
     for (const dep of dependencies) {
       const pluginPath = join(process.cwd(), 'node_modules', dep);
       const pkgJSON = await PluginManager.readPkgJson(pluginPath);
-      if (pkgJSON.botmate) {
-        this.logger.debug(`Found plugin ${colors.bold(pkgJSON.name)}`);
-        const meta = await PluginManager.createMetadata(pluginPath);
-        plugins.push(meta);
+      if (!pkgJSON.name.startsWith('@botmate/plugin-')) {
+        if (!pkgJSON.botmate) continue;
       }
+
+      this.logger.debug(`Found plugin ${colors.bold(pkgJSON.name)}`);
+      const meta = await PluginManager.createMetadata(pluginPath);
+      plugins.push(meta);
     }
 
     return plugins;

@@ -7,6 +7,7 @@
     "ejs": "^3.1.10",
     "fast-glob": "^3.3.2",
     "inquirer": "^8.0.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@botmate/utils": "1.0.0-alpha.10"
   }
 }

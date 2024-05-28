@@ -295,8 +295,6 @@ importers:
         specifier: ^4.3.2
         version: 4.3.2(typescript@5.4.5)(vite@5.0.13)
 
-  packages/core/cli/files/plugin: {}
-
   packages/core/client:
     dependencies:
       '@botmate/ui':

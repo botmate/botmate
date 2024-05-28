@@ -1,3 +1,15 @@
+## 1.0.0-alpha.14 (2024-05-28)
+
+
+### 🩹 Fixes
+
+- include all files ([d8e0255](https://github.com/botmate/botmate/commit/d8e0255))
+- local plugin checks ([264c75d](https://github.com/botmate/botmate/commit/264c75d))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.0.0-alpha.13 (2024-05-28)
 
 This was a version bump only, there were no code changes.

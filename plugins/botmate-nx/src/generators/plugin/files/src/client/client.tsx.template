@@ -1,0 +1,9 @@
+import { Plugin } from '@botmate/client';
+
+export class <%= className %> extends Plugin {
+  priority = 1;
+
+  async beforeLoad() {
+    //
+  }
+}

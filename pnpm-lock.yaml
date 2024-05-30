@@ -11,6 +11,9 @@ importers:
       '@nx/devkit':
         specifier: 19.0.5
         version: 19.0.5(nx@19.0.5)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -459,6 +462,15 @@ importers:
   packages/shared/types: {}
 
   packages/shared/ui: {}
+
+  plugins/botmate-nx:
+    dependencies:
+      '@nx/devkit':
+        specifier: 19.0.5
+        version: 19.0.5(nx@19.0.5)
+      tslib:
+        specifier: ^2.3.0
+        version: 2.6.2
 
 packages:
 

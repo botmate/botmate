@@ -37,6 +37,7 @@
       "@botmate/types": ["packages/shared/types/src/index.ts"],
       "@botmate/ui": ["packages/shared/ui/src/index.ts"],
       "@botmate/utils": ["packages/core/utils/src/index.ts"],
+      "botmate-nx": ["plugins/botmate-nx/src/index.ts"],
       "create-botmate": ["packages/core/create-botmate/src/index.ts"]
     }
   },

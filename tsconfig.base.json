@@ -24,6 +24,9 @@
       "@botmate/plugin-auth": [
         "packages/plugins/@botmate/plugin-auth/src/index.ts"
       ],
+      "@botmate/plugin-bots": [
+        "packages/plugins/@botmate/plugin-bots/src/index.ts"
+      ],
       "@botmate/plugin-dashboard": [
         "packages/plugins/@botmate/plugin-dashboard/src/index.ts"
       ],

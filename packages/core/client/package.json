@@ -17,6 +17,7 @@
     "react-hook-form": "^7.51.5",
     "react-router-dom": "^6.23.1",
     "sonner": "^1.4.41",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zustand": "^4.5.2"
   }
 }

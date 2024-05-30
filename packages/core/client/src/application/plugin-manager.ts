@@ -19,6 +19,7 @@ export class PluginManager {
     try {
       // @ts-expect-error - Expected to be a constructor
       const instance = new Plugin(app);
+      await instance.beforeLoad();
       this.instances.set(name, instance);
     } catch (error) {
       // console.error(`Failed to add plugin: ${name}`);

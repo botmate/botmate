@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "botmate": "tsx --tsconfig ./tsconfig.base.json packages/core/cli/src/index.ts",
-    "release": "release-it"
+    "dev": "pnpm botmate dev"
   },
   "private": true,
   "devDependencies": {
@@ -65,6 +65,7 @@
     "jest-environment-jsdom": "^29.4.1",
     "jest-environment-node": "^29.4.1",
     "jsdom": "~22.1.0",
+    "lucide-react": "^0.379.0",
     "nx": "19.0.5",
     "postcss": "8.4.21",
     "prettier": "^2.6.2",

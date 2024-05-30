@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import { Application } from './application';
 import Loader from './components/loader';
 import NotFoundPage from './components/not-found';
+import { StoreProvider } from './hooks';
 
 const notFoundRoute = {
   path: '*',
@@ -31,6 +32,10 @@ function AppProvider({ app }: { app: Application }) {
         }
       }
 
+      const instances = app.pluginManager.instances;
+      for (const [, instance] of instances) {
+        await instance.load();
+      }
       const router = createBrowserRouter([...app.routes, notFoundRoute]);
       setRouter(router);
       setLoading(false);
@@ -46,10 +51,10 @@ function AppProvider({ app }: { app: Application }) {
   }
 
   return (
-    <>
+    <StoreProvider initialState={app._store}>
       <Toaster />
       <RouterProvider router={router} />
-    </>
+    </StoreProvider>
   );
 }
 

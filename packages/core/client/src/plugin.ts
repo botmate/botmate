@@ -2,6 +2,7 @@ import { Application } from './application/application';
 
 export class Plugin {
   app: Application;
+  priority = 100;
 
   constructor(app: Application) {
     this.app = app;

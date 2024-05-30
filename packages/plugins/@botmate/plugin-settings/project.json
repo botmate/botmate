@@ -1,0 +1,41 @@
+{
+  "name": "plugin-settings",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/plugins/@botmate/plugin-settings/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/plugins/@botmate/plugin-settings",
+        "tsConfig": "packages/plugins/@botmate/plugin-settings/tsconfig.lib.json",
+        "packageJson": "packages/plugins/@botmate/plugin-settings/package.json",
+        "main": "packages/plugins/@botmate/plugin-settings/src/index.ts",
+        "assets": ["packages/plugins/@botmate/plugin-settings/*.md"],
+        "rootDir": "packages/plugins/@botmate/plugin-dashboard/src"
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/plugins/@botmate/plugin-settings/jest.config.ts"
+      }
+    }
+  }
+}

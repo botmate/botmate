@@ -1,12 +1,7 @@
-import { Plugin, loadable } from '@botmate/client';
-
-const UsersPage = loadable(() => import('./components/users-page'));
+import { Plugin } from '@botmate/client';
 
 export class UsersPlugin extends Plugin {
   async beforeLoad() {
-    this.app.addRoute({
-      path: '/users',
-      Component: UsersPage,
-    });
+    //
   }
 }

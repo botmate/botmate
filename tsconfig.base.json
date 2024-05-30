@@ -24,10 +24,17 @@
       "@botmate/plugin-auth": [
         "packages/plugins/@botmate/plugin-auth/src/index.ts"
       ],
+      "@botmate/plugin-dashboard": [
+        "packages/plugins/@botmate/plugin-dashboard/src/index.ts"
+      ],
+      "@botmate/plugin-settings": [
+        "packages/plugins/@botmate/plugin-settings/src/index.ts"
+      ],
       "@botmate/plugin-users": [
         "packages/plugins/@botmate/plugin-users/src/index.ts"
       ],
       "@botmate/server": ["packages/core/server/src/index.ts"],
+      "@botmate/types": ["packages/shared/types/src/index.ts"],
       "@botmate/ui": ["packages/shared/ui/src/index.ts"],
       "@botmate/utils": ["packages/core/utils/src/index.ts"],
       "create-botmate": ["packages/core/create-botmate/src/index.ts"]

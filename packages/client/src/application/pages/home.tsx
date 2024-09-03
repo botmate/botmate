@@ -1,5 +1,5 @@
 import { PlusIcon } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
@@ -9,6 +9,24 @@ import { useGetBotsQuery } from '../services';
 function HomePage() {
   const { data, isLoading } = useGetBotsQuery();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const items = document.querySelectorAll('[data-item]');
+    if (items.length > 0) {
+      items.forEach((item) => {
+        const name = item.querySelector('#name');
+        const nameParent = name?.parentElement;
+
+        if (name && nameParent) {
+          if (name.scrollWidth > nameParent.clientWidth) {
+            setTimeout(() => {
+              name.classList.add('animate-marquee');
+            }, 1000);
+          }
+        }
+      });
+    }
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -46,6 +64,7 @@ function HomePage() {
               to={`/bots/${bot.id}`}
               className="max-w-24 text-ellipsis hover:scale-95 transition-all duration-150"
               draggable="false"
+              data-item
             >
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
@@ -59,8 +78,10 @@ function HomePage() {
                   className="rounded-3xl w-24 h-24"
                   draggable="false"
                 />
-                <div className="pl-1">
-                  <h2 className="font-normal line-clamp-1">{bot.name}</h2>
+                <div className="pl-1 overflow-hidden whitespace-nowrap">
+                  <h2 className="font-normal inline-block" id="name">
+                    {bot.name}
+                  </h2>
                   <p className="text-sm text-muted-foreground line-clamp-1">
                     {bot.botId}
                   </p>

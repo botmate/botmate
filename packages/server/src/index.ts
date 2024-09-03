@@ -1,4 +1,7 @@
 export * from './application';
 export * from './plugin';
+
 export { PlatformType } from '@botmate/platform';
-export * from './services/bots/model';
+
+export * from './models/bot';
+export * from './models/plugin';

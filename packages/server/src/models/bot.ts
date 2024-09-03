@@ -5,11 +5,11 @@ import {
   InferCreationAttributes,
   Model,
   ModelStatic,
-  Sequelize,
+  Sequelize
 } from '@botmate/database';
 import { PlatformType } from '@botmate/platform';
 
-import { BotStatus } from './bot';
+import { BotStatus } from '../bot';
 
 export class BotModel extends Model<
   InferAttributes<BotModel>,
@@ -37,54 +37,54 @@ export function initBotsModel(db: Sequelize): ModelStatic<BotModel> {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        autoIncrementIdentity: true,
+        autoIncrementIdentity: true
       },
       botId: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       avatar: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: true
       },
       platformType: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       raw: {
         type: DataTypes.JSON,
-        allowNull: true,
+        allowNull: true
       },
       credentials: {
         type: DataTypes.JSON,
-        allowNull: true,
+        allowNull: true
       },
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: false
       },
       status: {
         type: DataTypes.ENUM('active', 'inactive', 'error'),
         allowNull: false,
-        defaultValue: 'inactive',
+        defaultValue: 'inactive'
       },
       createdAt: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        defaultValue: DataTypes.NOW
       },
       updatedAt: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
+        defaultValue: DataTypes.NOW
+      }
     },
     {
-      timestamps: true,
-    },
+      timestamps: true
+    }
   );
 }
 

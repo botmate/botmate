@@ -5,12 +5,12 @@ import express from 'express';
 
 import { registerCLI } from './commands';
 import { Config } from './config';
+import { initBotsModel } from './models/bot';
+import { initPluginModel } from './models/plugin';
 import { PlatformManager } from './platform-manager';
 import { Plugin } from './plugin';
 import { PluginManager } from './plugin-manager';
-import { initPluginModel } from './plugin-manager/model';
 import { setupCoreRoutes } from './routes';
-import { initBotsModel } from './services/bots';
 import { setupVite } from './vite';
 
 export class Application {

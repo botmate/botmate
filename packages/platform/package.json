@@ -1,0 +1,15 @@
+{
+  "name": "@botmate/platform",
+  "version": "1.0.0",
+  "description": "Platform interface for BotMate",
+  "main": "lib/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@botmate/logger": "workspace:^"
+  }
+}

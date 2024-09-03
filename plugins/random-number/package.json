@@ -1,0 +1,17 @@
+{
+  "name": "@botmate/plugin-random-number",
+  "displayName": "Random Number",
+  "version": "1.0.0",
+  "description": "A plugin that generates a random number.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@botmate/server": "workspace:^",
+    "@botmate/client": "workspace:^",
+    "@botmate/platform-telegram": "workspace:^"
+  },
+  "botmate": {}
+}

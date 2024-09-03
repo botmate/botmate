@@ -1,0 +1,17 @@
+{
+  "name": "@botmate/app",
+  "version": "1.0.0",
+  "description": "BotMate Application.",
+  "main": "lib/index.js",
+  "files": [
+    "client",
+    "dist",
+    "lib"
+  ],
+  "dependencies": {
+    "@botmate/client": "workspace:^",
+    "@botmate/server": "workspace:^",
+    "dotenv": "^16.4.5",
+    "envalid": "^8.0.0"
+  }
+}

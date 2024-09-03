@@ -1,9 +1,0 @@
-{
-  "name": "@botmate/plugin-dashboard",
-  "version": "0.0.1",
-  "main": "./server/index.js",
-  "dependencies": {
-    "@botmate/server": "0.0.1",
-    "tslib": "^2.3.0"
-  }
-}

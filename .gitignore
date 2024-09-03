@@ -1,46 +1,46 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# compiled output
-dist
-tmp
-/out-tsc
-
-# dependencies
 node_modules
+dist
+dist-ssr
+*.local
+lib
+*.sqlite
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
+# Editor directories and files
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
 !.vscode/extensions.json
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-# System Files
+!.vscode/settings.json
+.idea
 .DS_Store
-Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+
 
 .nx/cache
+.nx/workspace-data
 
-.botmate
-storage/*
-!storage/.gitkeep
-packages/core/app/src/plugins.ts
+storage/db/*
+storage/uploads/*
+storage/plugins/*
+
+!storage/db/.gitkeep
+!storage/uploads/.gitkeep
+!storage/plugins/.gitkeep
+
+tmp/*
+!tmp/.gitkeep

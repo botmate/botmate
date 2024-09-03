@@ -1,0 +1,11 @@
+{
+  "name": "@botmate/utils",
+  "version": "1.0.0",
+  "description": "Utilities for BotMate",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@botmate/platform-telegram",
+  "displayName": "Telegram",
+  "version": "1.0.0",
+  "description": "Telegram platform support for BotMate",
+  "main": "lib/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@botmate/logger": "workspace:^",
+    "axios": "^1.7.7",
+    "grammy": "^1.29.0"
+  },
+  "credentials": {
+    "token": {
+      "description": "Bot token"
+    }
+  }
+}

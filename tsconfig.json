@@ -1,6 +1,21 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "jsx": "react",
+    "paths": {
+      "@botmate/logger": ["./packages/logger/src/index.ts"],
+      "@botmate/server": ["./packages/server/src/index.ts"],
+      "@botmate/client": ["./packages/client/src/index.ts"],
+      "@botmate/utils": ["./packages/utils/src/index.ts"],
+      "@botmate/database": ["./packages/database/src/index.ts"],
+      "@botmate/platform": ["./packages/platform/src/index.ts"],
+      "@botmate/ui": ["./packages/ui/src/index.ts"]
+    }
   }
 }

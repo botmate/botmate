@@ -1,0 +1,15 @@
+{
+  "name": "@botmate/logger",
+  "version": "1.0.0",
+  "description": "Logger for BotMate",
+  "main": "lib/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "winston": "^3.14.2"
+  }
+}

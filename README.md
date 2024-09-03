@@ -1,6 +1,6 @@
-# BotMate - Chatbot Platform
+# botmate
 
 > [!IMPORTANT]  
 > This project is still in development and not ready for production use.
 
-Open-source project that aims to provide a simple and easy to use interface for creating and managing chatbots. It comes with plugin capabilities, so you can easily extend its functionality and add new features.
+This project is an open-source, plugin-based platform designed to offer a straightforward and user-friendly interface for creating and managing chatbots. Its core functionality provides an intuitive way to build and oversee your chatbots with minimal hassle.

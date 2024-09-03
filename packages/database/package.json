@@ -1,0 +1,16 @@
+{
+  "name": "@botmate/database",
+  "version": "1.0.0",
+  "description": "Database package for BotMate",
+  "main": "lib/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@botmate/logger": "workspace:^",
+    "sequelize": "^6.37.3"
+  }
+}

@@ -13,6 +13,7 @@
   "dependencies": {
     "@botmate/ui": "workspace:^",
     "@reduxjs/toolkit": "^2.2.7",
+    "@sentry/react": "^8.28.0",
     "framer-motion": "^11.3.31",
     "lucide-react": "^0.436.0",
     "react-redux": "^9.1.2",

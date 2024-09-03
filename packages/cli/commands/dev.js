@@ -42,17 +42,25 @@ dev.action(async (opts) => {
       '-r',
       'tsconfig-paths/register',
       serverDir,
-      'dev',
+      'dev'
     ];
 
     execa('node', argv, {
       shell: true,
       stdio: 'inherit',
-      env: { ...process.env },
+      env: { ...process.env }
     });
   }
 
   if (client) {
+    const uiDir = join(process.cwd(), 'packages/ui');
+    if (existsSync(uiDir)) {
+      execa('pnpm', ['dev'], {
+        cwd: uiDir,
+        stdio: 'inherit'
+      });
+    }
+
     const react = await import('@vitejs/plugin-react-swc');
     const tsconfigPaths = await import('vite-tsconfig-paths');
 
@@ -63,26 +71,18 @@ dev.action(async (opts) => {
       plugins: [react.default(), tsconfigPaths.default()],
       logLevel: 'error',
       define: {
-        'process.env.ENDPOINT': `"http://localhost:${serverPort}"`,
+        'process.env.ENDPOINT': `"http://localhost:${serverPort}"`
       },
       server: {
         port: clientPort,
         proxy: {
-          '/api': `http://localhost:${serverPort}`,
-        },
-      },
+          '/api': `http://localhost:${serverPort}`
+        }
+      }
     });
 
     await viteServer.listen(clientPort);
     viteServer.printUrls();
-  }
-
-  const uiDir = join(process.cwd(), 'packages/ui');
-  if (existsSync(uiDir)) {
-    execa('pnpm', ['dev'], {
-      cwd: uiDir,
-      stdio: 'inherit',
-    });
   }
 });
 

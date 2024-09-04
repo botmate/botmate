@@ -17,10 +17,10 @@ export class PluginModel extends Model<
   declare displayName: string;
   declare version: string;
   declare description: string | null;
-  declare enabled: boolean;
-  declare installed: boolean;
-  declare options: Record<string, unknown> | null;
   declare dependencies: Record<string, string> | null;
+  declare botId: string;
+  declare config: Record<string, unknown> | null;
+  declare enabled: boolean;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -51,23 +51,22 @@ export function initPluginModel(db: Sequelize): ModelStatic<PluginModel> {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      dependencies: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      botId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      config: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-      },
-      installed: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      options: {
-        type: DataTypes.JSON,
-        allowNull: true,
-      },
-      dependencies: {
-        type: DataTypes.JSON,
-        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,

@@ -6,41 +6,114 @@ import { Application } from '../application';
 import { initPluginModel } from '../models/plugin';
 import { Plugin } from '../plugin';
 
-type PluginMeta = {
+export type PluginMeta = {
   name: string;
+  version: string;
   displayName: string;
+  description: string;
+  dependencies: Record<string, string>;
+  author: string;
   serverPath: string;
   clientPath: string;
-  version: string;
-  loaded: boolean;
 };
 
 export class PluginManager {
-  private plugins: PluginMeta[] = [];
-  private pluginInstances = new Map<string, Plugin>();
+  private model = initPluginModel(this.app.database.sequelize);
+
+  private _plugins = new Map<string, PluginMeta>();
+  private _instannces = new Map<string, Plugin>();
 
   constructor(private app: Application) {}
 
-  async install() {}
-  async uninstall() {}
+  get plugins() {
+    return this._plugins;
+  }
+
+  async init() {
+    const localPlugins = await this.getLocalPlugins();
+    const installedPlugins = await this.getInstalledPlugins();
+    const plugins = new Map(
+      [...localPlugins, ...installedPlugins].map((p) => [p.name, p]),
+    );
+
+    this._plugins = plugins;
+
+    for (const plugin of plugins.values()) {
+      const server = await import(plugin.serverPath);
+      const [exportKey] = Object.keys(server);
+      const _class = server[exportKey];
+      const _plugin = new _class(this.app);
+
+      this._instannces.set(plugin.name, _plugin);
+    }
+  }
+
+  async install(name: string, botId: string) {
+    const plugin = this._plugins.get(name);
+
+    if (!plugin) {
+      throw new Error(`Plugin ${name} not found`);
+    }
+
+    const exist = await this.model.findOne({
+      where: {
+        name,
+        botId,
+      },
+    });
+    if (exist) {
+      throw new Error(`Plugin ${name} already installed`);
+    }
+    return await this.model.create({
+      name,
+      botId,
+      displayName: plugin.displayName,
+      enabled: false,
+      version: plugin.version,
+      description: plugin.description,
+      dependencies: plugin.dependencies,
+      config: {},
+    });
+  }
+  async uninstall(name: string, botId: string) {
+    const exist = await this.model.findOne({
+      where: {
+        name,
+        botId,
+      },
+    });
+    if (!exist) {
+      throw new Error(`Plugin ${name} not found`);
+    }
+
+    return await exist.destroy();
+  }
 
   async add() {}
   async remove() {}
 
-  async enable() {}
-  async disable() {}
+  async enable(name: string) {
+    const plugin = await this.model.findOne({
+      where: {
+        name,
+      },
+    });
+    if (!plugin) {
+      throw new Error(`Plugin ${name} not found`);
+    }
+
+    plugin.enabled = true;
+    await plugin.save();
+  }
+  async disable(name: string) {}
 
   async getPlugins() {
-    const localPlugins = await this.getLocalPlugins();
-    const installedPlugins = await this.getInstalledPlugins();
-
-    return [...localPlugins, ...installedPlugins];
+    return Array.from(this._plugins.values());
   }
 
   async getLocalPlugins() {
-    const pluginModel = initPluginModel(this.app.database.sequelize);
     const packages = getPackagesSync(this.app.rootPath).filter(
-      (pkg) => require(pkg.manifestLocation).botmate
+      (pkg) => require(pkg.manifestLocation).botmate,
     );
 
     const plugins = await Promise.all(
@@ -55,47 +128,22 @@ export class PluginManager {
         }
         if (!existsSync(serverPath)) {
           this.app.logger.warn(
-            `Plugin ${pkg.name} does not have a server entry file.`
+            `Plugin ${pkg.name} does not have a server entry file.`,
           );
           return;
         }
 
-        try {
-          const server = await import(serverPath);
-          const [exportKey] = Object.keys(server);
-          const _class = server[exportKey];
-          const plugin = new _class(this.app);
-          this.pluginInstances.set(pkg.name, plugin);
-
-          const exist = await pluginModel.findOne({
-            where: { name: pkg.name }
-          });
-
-          if (!exist) {
-            await pluginModel.create({
-              name: pkg.name,
-              displayName: pkg.get('displayName'),
-              version: pkg.version,
-              enabled: false,
-              installed: true,
-              description: pkg.get('description'),
-              options: {},
-              dependencies: {}
-            });
-          }
-
-          return {
-            name: pkg.name,
-            displayName: pkg.get('displayName'),
-            serverPath,
-            clientPath,
-            loaded: false,
-            version: pkg.version
-          } as PluginMeta;
-        } catch {
-          this.app.logger.warn(`Plugin ${pkg.name} does not have an export.`);
-        }
-      })
+        return {
+          name: pkg.name,
+          displayName: pkg.get('displayName'),
+          description: pkg.get('description'),
+          serverPath,
+          clientPath,
+          author: pkg.get('author'),
+          dependencies: pkg.get('dependencies'),
+          version: pkg.version,
+        } as PluginMeta;
+      }),
     );
     return plugins.filter(Boolean) as PluginMeta[];
   }
@@ -103,10 +151,10 @@ export class PluginManager {
   async getInstalledPlugins() {
     const pkg = require(join(this.app.rootPath, 'package.json'));
     if (pkg.dependencies) {
-      const dependencies = Object.entries(pkg.dependencies);
-      const plugins: PluginMeta[] = [];
-      for (const [name, version] of dependencies) {
-      }
+      // const dependencies = Object.entries(pkg.dependencies);
+      // const plugins: PluginMeta[] = [];
+      // for (const [name, version] of dependencies) {
+      // }
     }
 
     return [] as PluginMeta[];
@@ -120,13 +168,13 @@ export class PluginManager {
 
     // run beforeLoad
     for (const plugin of plugins) {
-      const instance = this.pluginInstances.get(plugin.name);
+      const instance = this._instannces.get(plugin.name);
       if (instance) {
         try {
           await instance.beforeLoad();
         } catch (e) {
           this.app.logger.error(
-            `Error running beforeLoad for plugin ${plugin.name}`
+            `Error running beforeLoad for plugin ${plugin.name}`,
           );
         }
       }
@@ -134,26 +182,26 @@ export class PluginManager {
 
     // run load
     for (const plugin of plugins) {
-      const instance = this.pluginInstances.get(plugin.name);
+      const instance = this._instannces.get(plugin.name);
       if (instance) {
         try {
+          this.app.logger.info(`Loading plugin: ${plugin.name}`);
           await instance.load();
-          plugin.loaded = true;
         } catch (e) {
-          this.app.logger.error(`Error loading plugin ${plugin.name}`);
+          this.app.logger.error(`Error loading plugin: ${plugin.name}`);
         }
       }
     }
 
     // run afterLoad
     for (const plugin of plugins) {
-      const instance = this.pluginInstances.get(plugin.name);
+      const instance = this._instannces.get(plugin.name);
       if (instance) {
         try {
           await instance.afterLoad();
         } catch (e) {
           this.app.logger.error(
-            `Error running afterLoad for plugin ${plugin.name}`
+            `Error running afterLoad for plugin ${plugin.name}`,
           );
         }
       }

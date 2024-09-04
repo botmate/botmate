@@ -3,31 +3,56 @@ import { Router } from 'express';
 import { Application } from '../application';
 import { Bot, BotStatus } from '../bot';
 import { initBotsModel } from '../models/bot';
+import { initPluginModel } from '../models/plugin';
 
-// todo: refactor models and services
+// todo: refactor services - DO NOT CALL DATABASE DIRECTLY from inside the route
 export function bots({ server, database }: Application) {
   const router = Router();
   const model = initBotsModel(database.sequelize);
+  const pluginModel = initPluginModel(database.sequelize);
 
   router.get('/', async (req, res) => {
     const bots = await model.findAll();
     res.json(bots);
   });
+
   router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const bot = await model.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
     if (!bot) {
       res.status(404).json({
-        message: 'Bot not found'
+        message: 'Bot not found',
       });
       return;
     }
     res.json(bot);
   });
+
+  router.get('/:id/plugins', async (req, res) => {
+    const { id } = req.params;
+    const bot = await model.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!bot) {
+      res.status(404).json({
+        message: 'Bot not found',
+      });
+      return;
+    }
+    const plugins = await pluginModel.findAll({
+      where: {
+        botId: id,
+      },
+    });
+    res.json(plugins);
+  });
+
   router.post('/', async (req, res) => {
     const { credentials, platform } = req.body;
     const bot = new Bot(platform, credentials);
@@ -36,8 +61,8 @@ export function bots({ server, database }: Application) {
 
       const exist = await model.findOne({
         where: {
-          id: info.id
-        }
+          id: info.id,
+        },
       });
 
       if (exist) {
@@ -55,13 +80,13 @@ export function bots({ server, database }: Application) {
         status: BotStatus.INACTIVE,
         credentials: credentials,
         raw: info.raw,
-        avatar: info.avatar
+        avatar: info.avatar,
       });
       res.json(botData);
     } catch (e) {
       console.error(e);
       res.status(400).json({
-        message: 'An error occurred while creating the bot'
+        message: 'An error occurred while creating the bot',
       });
     }
   });

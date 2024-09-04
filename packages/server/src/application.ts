@@ -56,11 +56,13 @@ export class Application {
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
 
-    await setupVite(this);
     await setupCoreRoutes(this);
+    await setupVite(this);
 
     await this.pluginManager.loadAll();
     await this.database.sequelize.sync();
+
+    await this.pluginManager.init();
 
     await this.cli.parseAsync(process.argv);
 

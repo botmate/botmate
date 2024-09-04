@@ -2,7 +2,7 @@ import {
   ChartAreaIcon,
   LayoutDashboard,
   Settings2Icon,
-  ShoppingBagIcon,
+  ShoppingBagIcon
 } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from '@botmate/ui';
 
 import useCurrentBot from '../hooks/use-bot';
@@ -22,29 +22,29 @@ const items = [
     title: 'Dashboard',
     icon: LayoutDashboard,
     path: '/',
-    regex: /^\/$/,
+    regex: /^\/$/
   },
   {
     id: 2,
     title: 'Analytics',
     icon: ChartAreaIcon,
     path: '/analytics',
-    regex: /^\/analytics$/,
+    regex: /^\/analytics$/
   },
   {
     id: 3,
     title: 'Marketplace',
     icon: ShoppingBagIcon,
     path: '/marketplace',
-    regex: /^\/marketplace$/,
+    regex: /^\/marketplace$/
   },
   {
     id: 4,
     title: 'Settings',
     icon: Settings2Icon,
     path: '/settings',
-    regex: /^\/settings/,
-  },
+    regex: /^\/settings/
+  }
 ];
 
 function Sidebar() {
@@ -53,7 +53,7 @@ function Sidebar() {
   const bot = useCurrentBot();
 
   return (
-    <div className="w-24 h-full bg-card flex flex-col py-3">
+    <div className="w-24 h-full flex flex-col py-3 bg-card">
       <div className="w-full h-20 flex items-center justify-center">
         <Link to="/" draggable="false">
           <img
@@ -83,13 +83,17 @@ function Sidebar() {
                 >
                   <TooltipTrigger
                     className={
-                      `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-black/70'}` +
+                      `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-black/70 dark:text-white'}` +
                       `transition-all duration-150`
                     }
                   >
                     <Icon
                       size={24}
-                      className={isActive ? 'text-primary' : 'text-black/70'}
+                      className={
+                        isActive
+                          ? 'text-primary'
+                          : 'text-black/70 dark:text-white/70'
+                      }
                     />
                   </TooltipTrigger>
                 </Link>

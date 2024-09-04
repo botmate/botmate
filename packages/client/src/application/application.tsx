@@ -5,13 +5,15 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import '@botmate/ui/styles.css';
+import { ThemeProvider } from 'next-themes';
 
 import SettingsLayout from './layouts/settings';
 import AnalyticsPage from './pages/bots/analytics';
 import DashboardPage from './pages/bots/dashboard';
 import MarketplacePage from './pages/bots/marketplace';
 import GeneralSettingsPage from './pages/bots/settings';
-import AppearanceSettingsPage from './pages/bots/settings/appearance';
+import PluginSettingsPage from './pages/bots/settings/plugins';
+import AppearanceSettingsPage from './pages/bots/settings/secutiry';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import SetupPage from './pages/setup';
@@ -34,25 +36,28 @@ export class Application {
   getRootComponent() {
     // todo: setup dynamic routes
     return () => (
-      <BrowserRouter>
-        <ReduxProvider store={store}>
-          <Routes>
-            <Route index path="/" element={<HomePage />} />
-            <Route path="/setup" element={<SetupPage />} />
-            <Route path="/login" element={<LoginPage />} />
+      <ThemeProvider attribute="class">
+        <BrowserRouter>
+          <ReduxProvider store={store}>
+            <Routes>
+              <Route index path="/" element={<HomePage />} />
+              <Route path="/setup" element={<SetupPage />} />
+              <Route path="/login" element={<LoginPage />} />
 
-            <Route element={<AppProvider app={this} />} path="/bots/:id">
-              <Route index element={<DashboardPage />} />
-              <Route path="analytics" element={<AnalyticsPage />} />
-              <Route path="marketplace" element={<MarketplacePage />} />
-              <Route path="settings" element={<SettingsLayout />}>
-                <Route index element={<GeneralSettingsPage />} />
-                <Route path="appearance" element={<AppearanceSettingsPage />} />
+              <Route element={<AppProvider app={this} />} path="/bots/:id">
+                <Route index element={<DashboardPage />} />
+                <Route path="analytics" element={<AnalyticsPage />} />
+                <Route path="marketplace" element={<MarketplacePage />} />
+                <Route path="settings" element={<SettingsLayout />}>
+                  <Route index element={<GeneralSettingsPage />} />
+                  <Route path="advanced" element={<AppearanceSettingsPage />} />
+                  <Route path="plugins" element={<PluginSettingsPage />} />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
-        </ReduxProvider>
-      </BrowserRouter>
+            </Routes>
+          </ReduxProvider>
+        </BrowserRouter>
+      </ThemeProvider>
     );
   }
 

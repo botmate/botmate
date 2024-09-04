@@ -7,8 +7,15 @@ type Props = {
   subtitle: string;
   children?: React.ReactNode;
   page?: 'default' | 'settings';
+  actions?: React.ReactNode;
 };
-function PageLayout({ children, title, subtitle, page = 'default' }: Props) {
+function PageLayout({
+  children,
+  title,
+  subtitle,
+  page = 'default',
+  actions
+}: Props) {
   const elements = React.Children.toArray(children);
   const [first, second] = elements;
 
@@ -17,13 +24,16 @@ function PageLayout({ children, title, subtitle, page = 'default' }: Props) {
       className={`flex-1 flex flex-col gap-6 container mx-auto ${
         {
           default: '2xl:p-24 p-16',
-          settings: '2xl:p-12 p-8',
+          settings: '2xl:p-12 p-8'
         }[page]
       }`}
     >
-      <div>
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-gray-600 text-lg">{subtitle}</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-semibold">{title}</h1>
+          <p className="text-muted-foreground text-lg">{subtitle}</p>
+        </div>
+        <div>{actions}</div>
       </div>
 
       <div className="flex-1 flex items-start gap-4">

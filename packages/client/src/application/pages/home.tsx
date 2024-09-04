@@ -1,14 +1,25 @@
-import { PlusIcon } from 'lucide-react';
+import { MoonIcon, PlusIcon, SunIcon } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { Button } from '@botmate/ui';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 import { useGetBotsQuery } from '../services';
 
 function HomePage() {
-  const { data, isLoading } = useGetBotsQuery();
   const navigate = useNavigate();
+  const { data, isLoading } = useGetBotsQuery();
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [theme]);
 
   useEffect(() => {
     const items = document.querySelectorAll('[data-item]');
@@ -55,7 +66,17 @@ function HomePage() {
               Here are the list of bots that you have added
             </p>
           </div>
-          <div className="space-x-1"></div>
+          <div className="space-x-1">
+            <Button
+              variant="ghost"
+              className="rounded-full p-3"
+              onClick={() => {
+                setTheme(theme === 'dark' ? 'light' : 'dark');
+              }}
+            >
+              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            </Button>
+          </div>
         </div>
         <div className="flex flex-wrap gap-6 mt-6">
           {data?.map((bot, index) => (
@@ -95,7 +116,7 @@ function HomePage() {
             transition={{ delay: 0.07 * data!.length }}
           >
             <Link to="/setup" draggable="false">
-              <div className="h-24 w-24 p-4 flex items-center justify-center border bg-gray-50 border-gray-200 rounded-3xl hover:-translate-y-1 transition-all duration-150 cursor-pointer">
+              <div className="h-24 w-24 p-4 flex items-center justify-center border bg-background border-gray rounded-3xl hover:-translate-y-1 transition-all duration-150 cursor-pointer">
                 <PlusIcon />
               </div>
             </Link>

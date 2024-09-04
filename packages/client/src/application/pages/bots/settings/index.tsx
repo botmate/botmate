@@ -31,7 +31,9 @@ function GeneralSettingsPage() {
             ].map((item) => {
               return (
                 <div key={item.title} className="flex flex-col">
-                  <span className="text-sm text-gray-600">{item.title}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {item.title}
+                  </span>
                   <span className="text-lg">{item.value}</span>
                 </div>
               );

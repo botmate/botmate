@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { Application } from '../application';
+import { initPluginModel } from '../models/plugin';
 import { Plugin } from '../plugin';
 
 type PluginMeta = {
@@ -37,8 +38,9 @@ export class PluginManager {
   }
 
   async getLocalPlugins() {
+    const pluginModel = initPluginModel(this.app.database.sequelize);
     const packages = getPackagesSync(this.app.rootPath).filter(
-      (pkg) => require(pkg.manifestLocation).botmate,
+      (pkg) => require(pkg.manifestLocation).botmate
     );
 
     const plugins = await Promise.all(
@@ -53,7 +55,7 @@ export class PluginManager {
         }
         if (!existsSync(serverPath)) {
           this.app.logger.warn(
-            `Plugin ${pkg.name} does not have a server entry file.`,
+            `Plugin ${pkg.name} does not have a server entry file.`
           );
           return;
         }
@@ -65,18 +67,35 @@ export class PluginManager {
           const plugin = new _class(this.app);
           this.pluginInstances.set(pkg.name, plugin);
 
+          const exist = await pluginModel.findOne({
+            where: { name: pkg.name }
+          });
+
+          if (!exist) {
+            await pluginModel.create({
+              name: pkg.name,
+              displayName: pkg.get('displayName'),
+              version: pkg.version,
+              enabled: false,
+              installed: true,
+              description: pkg.get('description'),
+              options: {},
+              dependencies: {}
+            });
+          }
+
           return {
             name: pkg.name,
             displayName: pkg.get('displayName'),
             serverPath,
             clientPath,
             loaded: false,
-            version: pkg.version,
+            version: pkg.version
           } as PluginMeta;
         } catch {
           this.app.logger.warn(`Plugin ${pkg.name} does not have an export.`);
         }
-      }),
+      })
     );
     return plugins.filter(Boolean) as PluginMeta[];
   }
@@ -107,7 +126,7 @@ export class PluginManager {
           await instance.beforeLoad();
         } catch (e) {
           this.app.logger.error(
-            `Error running beforeLoad for plugin ${plugin.name}`,
+            `Error running beforeLoad for plugin ${plugin.name}`
           );
         }
       }
@@ -134,7 +153,7 @@ export class PluginManager {
           await instance.afterLoad();
         } catch (e) {
           this.app.logger.error(
-            `Error running afterLoad for plugin ${plugin.name}`,
+            `Error running afterLoad for plugin ${plugin.name}`
           );
         }
       }

@@ -1,7 +1,8 @@
 import { Router } from 'express';
 
 import { Application } from '../application';
-import { Bot, BotStatus, initBotsModel } from '../bot';
+import { Bot, BotStatus } from '../bot';
+import { initBotsModel } from '../models/bot';
 
 // todo: refactor models and services
 export function bots({ server, database }: Application) {

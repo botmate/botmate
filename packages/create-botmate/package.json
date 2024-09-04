@@ -1,0 +1,16 @@
+{
+  "name": "create-botmate",
+  "version": "0.0.1",
+  "description": "Create a new BotMate project",
+  "bin": "./lib/index.js",
+  "files": [
+    "lib",
+    "files"
+  ],
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "fast-glob": "3.2.7",
+    "inquirer": "^8.0.0",
+    "@botmate/logger": "workspace:^"
+  }
+}

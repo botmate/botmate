@@ -1,0 +1,17 @@
+{
+  "name": "@botmate/plugin-openai-chatbot",
+  "displayName": "OpenAI Chatbot",
+  "version": "1.0.0",
+  "description": "OpenAI Chatbot plugin for BotMate",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [],
+  "author": "BotMate Team",
+  "license": "ISC",
+  "dependencies": {
+    "@botmate/server": "workspace:^",
+    "@botmate/client": "workspace:^",
+    "@botmate/platform-telegram": "workspace:^"
+  },
+  "botmate": {}
+}

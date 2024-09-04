@@ -1,4 +1,4 @@
-import type { BotModel } from '@botmate/server';
+import type { IBot } from '@botmate/server';
 
 import { baseApi } from '../api';
 
@@ -10,13 +10,13 @@ export type CreateBotPayload = {
 export const botsApi = baseApi.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
-    getBots: builder.query<BotModel[], void>({
+    getBots: builder.query<IBot[], void>({
       query: () => '/bots',
     }),
-    getBotInfo: builder.query<BotModel, string>({
+    getBotInfo: builder.query<IBot, string>({
       query: (id) => `/bots/${id}`,
     }),
-    createBot: builder.mutation<BotModel, CreateBotPayload>({
+    createBot: builder.mutation<IBot, CreateBotPayload>({
       query: (bot) => ({
         url: '/bots',
         method: 'POST',

@@ -6,7 +6,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "keywords": [],
-  "author": "",
+  "author": "BotMate Team",
   "license": "ISC",
   "dependencies": {
     "@botmate/server": "workspace:^",

@@ -1,9 +1,13 @@
+import React from 'react';
+
 import { Plugin } from '@botmate/client';
+
+import SettingsPage from './settings';
 
 export class RandomNumberGenerator extends Plugin {
   displayName = 'Random Number Generator';
 
-  load(): void {
-    console.log('Random Number Generator loaded');
+  async beforeLoad() {
+    this.setSettingsPage(<SettingsPage />);
   }
 }

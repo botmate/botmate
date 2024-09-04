@@ -8,7 +8,8 @@
     "postinstall": "botmate postinstall",
     "dev:client": "vite dev",
     "prepare": "husky install",
-    "commitlint": "commitlint --edit $1"
+    "commitlint": "commitlint --edit $1",
+    "create-botmate": "ts-node -r tsconfig-paths/register ./packages/create-botmate/src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,8 @@
     "@commitlint/config-conventional": "^19.4.1",
     "@eslint/js": "^9.9.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/ejs": "^3.1.5",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^22.5.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -42,6 +45,7 @@
     "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.10",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0",

@@ -7,6 +7,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
+import { useApp } from '../hooks/use-app';
 import { useGetPluginsQuery } from '../services/plugins';
 
 const items = [
@@ -34,10 +35,12 @@ const NoPlugins = (
   </div>
 );
 function SettingsLayout() {
+  const app = useApp();
   const params = useParams();
   const location = useLocation();
-  const { data: plugins, isLoading } = useGetPluginsQuery();
   const [searchParams] = useSearchParams();
+
+  const plugins = app.pluginManager.plugins;
 
   return (
     <div className="flex flex-1">
@@ -72,26 +75,22 @@ function SettingsLayout() {
             Plugins
           </h1>
           <div className="flex gap-1 flex-col">
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : plugins?.length === 0 ? (
-              NoPlugins
-            ) : (
-              plugins?.map((plugin) => {
-                const absolutePath = `/bots/${params.id}/settings/plugins?name=${plugin.name}`;
-                const isActive = searchParams.get('name') === plugin.name;
+            {plugins?.length === 0
+              ? NoPlugins
+              : plugins?.map((plugin) => {
+                  const absolutePath = `/bots/${params.id}/settings/plugins?name=${plugin.name}`;
+                  const isActive = searchParams.get('name') === plugin.name;
 
-                return (
-                  <Link key={plugin.name} to={absolutePath}>
-                    <div
-                      className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
-                    >
-                      <h2 className="font-medium">{plugin.displayName}</h2>
-                    </div>
-                  </Link>
-                );
-              })
-            )}
+                  return (
+                    <Link key={plugin.name} to={absolutePath}>
+                      <div
+                        className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
+                      >
+                        <h2 className="font-medium">{plugin.displayName}</h2>
+                      </div>
+                    </Link>
+                  );
+                })}
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@ export type PluginMeta = {
   author: string;
   serverPath: string;
   clientPath: string;
+  platformType: string;
 };
 
 export class PluginManager {
@@ -119,6 +120,8 @@ export class PluginManager {
     const plugins = await Promise.all(
       packages.map(async (pkg) => {
         let serverPath, clientPath;
+        const botmate = pkg.get('botmate');
+
         if (this.app.isDev) {
           serverPath = join(pkg.location, 'src/server/index.ts');
           clientPath = join(pkg.location, 'src/client/index.ts');
@@ -126,9 +129,19 @@ export class PluginManager {
           serverPath = join(pkg.location, 'dist/server/index.js');
           clientPath = join(pkg.location, 'dist/client/index.js');
         }
+
         if (!existsSync(serverPath)) {
           this.app.logger.warn(
             `Plugin ${pkg.name} does not have a server entry file.`,
+          );
+          return;
+        }
+
+        const platformType = botmate.platformType;
+
+        if (!platformType) {
+          this.app.logger.warn(
+            `Plugin ${pkg.name} does not have a platformType.`,
           );
           return;
         }
@@ -142,6 +155,7 @@ export class PluginManager {
           author: pkg.get('author'),
           dependencies: pkg.get('dependencies'),
           version: pkg.version,
+          platformType,
         } as PluginMeta;
       }),
     );

@@ -8,6 +8,7 @@ export class PluginManager {
 
   private _instances = new Map<string, Plugin>();
 
+  plugins: PluginMeta[] = [];
   installedPlugins: PluginMeta[] = [];
 
   get instances() {
@@ -24,14 +25,17 @@ export class PluginManager {
     this.unloadInstances();
     this.installedPlugins = [];
 
-    const allPlugins = await this.getInstalledPlugins();
+    const allPlugins = await this.getPlugins();
     const botPlugins = await this.getBotPlugins(botId);
 
+    this.plugins = allPlugins;
+
     for (const plugin of allPlugins) {
-      if (botPlugins.some((p) => p.name === plugin.name)) {
-        this.installedPlugins.push(plugin);
-        await this.loadRemotePlugin(plugin);
-      }
+      if (this.app.bot?.platformType === plugin.platformType)
+        if (botPlugins.some((p) => p.name === plugin.name)) {
+          this.installedPlugins.push(plugin);
+          await this.loadRemotePlugin(plugin);
+        }
     }
   }
 
@@ -52,7 +56,7 @@ export class PluginManager {
     }
   }
 
-  async getInstalledPlugins() {
+  async getPlugins() {
     const plugins = await this.app.api.get<PluginMeta[]>('/plugins');
     return plugins;
   }

@@ -13,5 +13,7 @@
     "@botmate/client": "workspace:^",
     "@botmate/platform-telegram": "workspace:^"
   },
-  "botmate": {}
+  "botmate": {
+    "platformType": "telegram"
+  }
 }

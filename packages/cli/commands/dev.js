@@ -13,10 +13,9 @@ dev.option('-s, --server', 'run the server on the same port as the client');
 dev.option('-c, --client <client>', 'path to the client directory');
 
 dev.action(async (opts) => {
-  console.log('Starting development server...'.green.bold);
   const { APP_PACKAGE_ROOT } = process.env;
 
-  let { port, server, client, watchUi } = opts;
+  let { port, server, client } = opts;
 
   process.env.APP_PORT = port;
 
@@ -33,11 +32,16 @@ dev.action(async (opts) => {
   }
 
   if (server) {
-    const serverDir = join(APP_PACKAGE_ROOT, 'src');
+    let serverDir = join(APP_PACKAGE_ROOT, 'src');
+
+    if (!existsSync(join(APP_PACKAGE_ROOT, 'server'))) {
+      serverDir = require.resolve('@botmate/server');
+    }
+
     const argv = [
-      join(__dirname, '../node_modules/tsx/dist/cli.mjs'),
+      require.resolve('tsx'),
       'watch',
-      '--ignore=./storage/plugins/**',
+      '--ignore=./storage/**',
       '--tsconfig tsconfig.json',
       '-r',
       'tsconfig-paths/register',

@@ -36,9 +36,9 @@ export function sortPackages(packages: Package[]): Package[] {
 }
 
 export const getPluginPackages = (packages: Package[]) =>
-  packages.filter((item) =>
-    PLUGINS_DIR.some((pluginDir) => item.location.startsWith(pluginDir)),
-  );
+  packages
+    .filter((item) => item.location.match(/\bplugins\/.*\b/))
+    .filter((item) => item.get('botmate'));
 
 export const CJS_EXCLUDE_PACKAGES = [
   path.join(PACKAGES_PATH, 'core/build'),
@@ -49,4 +49,6 @@ export const CJS_EXCLUDE_PACKAGES = [
 export const getCjsPackages = (packages: Package[]) =>
   packages
     .filter((item) => !PLUGINS_DIR.some((dir) => item.location.startsWith(dir)))
-    .filter((item) => !CJS_EXCLUDE_PACKAGES.includes(item.location));
+    .filter((item) => !CJS_EXCLUDE_PACKAGES.includes(item.location))
+    .filter((item) => !item.get('botmate'))
+    .filter((item) => item.name !== '@botmate/ui');

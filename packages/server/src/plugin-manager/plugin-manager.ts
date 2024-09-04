@@ -122,12 +122,12 @@ export class PluginManager {
         let serverPath, clientPath;
         const botmate = pkg.get('botmate');
 
-        if (this.app.isDev) {
+        if (this.app.isDev()) {
           serverPath = join(pkg.location, 'src/server/index.ts');
           clientPath = join(pkg.location, 'src/client/index.ts');
         } else {
-          serverPath = join(pkg.location, 'dist/server/index.js');
-          clientPath = join(pkg.location, 'dist/client/index.js');
+          serverPath = join(pkg.location, 'lib/server/index.js');
+          clientPath = join(pkg.location, 'lib/client/index.js');
         }
 
         if (!existsSync(serverPath)) {

@@ -17,8 +17,8 @@ export class Application {
   server = express();
   logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
-  mode: 'development' | 'production' = 'development';
-  isDev = this.mode === 'development';
+  mode: 'development' | 'production' = 'production';
+  isDev = () => this.mode === 'development';
   rootPath = process.cwd();
   database = new Database();
   config = new Config();

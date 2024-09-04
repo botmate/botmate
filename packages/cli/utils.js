@@ -26,26 +26,17 @@ exports.hasTsNode = () => {
   return exports.isPackageValid('ts-node/dist/bin');
 };
 
-exports.generateAppDir = function () {
-  const appPkgPath = dirname(
-    dirname(require.resolve('@botmate/app/src/index.ts')),
-  );
-  const appDevDir = resolve(process.cwd(), './storage/.app-dev');
-  if (
-    exports.isDev() &&
-    !exports.hasCorePackages() &&
-    appPkgPath.includes('node_modules')
-  ) {
-    if (!existsSync(appDevDir)) {
-      mkdirSync(appDevDir, { force: true, recursive: true });
-      cpSync(appPkgPath, appDevDir, {
-        recursive: true,
-        force: true,
-      });
-    }
-    process.env.APP_PACKAGE_ROOT = appDevDir;
-  } else {
-    process.env.APP_PACKAGE_ROOT = appPkgPath;
+exports.setupAppDir = function () {
+  try {
+    require.resolve('@botmate/app/src/index.ts');
+    process.env.APP_PACKAGE_ROOT = dirname(
+      dirname(require.resolve('@botmate/app/src/index.ts')),
+    );
+  } catch {
+    require.resolve('@botmate/app');
+    process.env.APP_PACKAGE_ROOT = dirname(
+      dirname(require.resolve('@botmate/app')),
+    );
   }
 };
 

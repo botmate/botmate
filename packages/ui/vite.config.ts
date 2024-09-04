@@ -8,9 +8,6 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 export default defineConfig({
   plugins: [react(), cssInjectedByJsPlugin()],
   build: {
-    watch: {
-      include: 'src/**',
-    },
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'index',

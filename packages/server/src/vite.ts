@@ -4,8 +4,8 @@ import { createServer } from 'vite';
 
 import { Application } from './application';
 
-export async function setupVite({ server, mode }: Application) {
-  if (mode === 'development') {
+export async function setupVite({ server, isDev }: Application) {
+  if (isDev()) {
     return;
   }
 
@@ -24,6 +24,7 @@ export async function setupVite({ server, mode }: Application) {
     resolve: {
       alias: {
         '@botmate/client': require.resolve('@botmate/client'),
+        '@botmate/ui': require.resolve('@botmate/ui'),
       },
     },
   });

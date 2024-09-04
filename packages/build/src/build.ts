@@ -1,12 +1,13 @@
 import react from '@vitejs/plugin-react-swc';
 
+import execa from 'execa';
 import fg from 'fast-glob';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import { build as tsupBuild } from 'tsup';
 import { build as viteBuild } from 'vite';
 
-import { CORE_APP, CORE_CLIENT, globExcludeFiles } from './constants';
+import { CORE_CLIENT, globExcludeFiles } from './constants';
 import { buildPlugins } from './plugin';
 import { getCjsPackages, getPackages, getPluginPackages } from './utils';
 
@@ -16,18 +17,25 @@ export async function build() {
   const plugins = getPluginPackages(packages);
 
   for (const pkg of cjs) {
-    console.log('building', pkg.name);
+    console.log(`building ${pkg.name}`);
     await buildServer(pkg.location);
+  }
+
+  if (existsSync(join(process.cwd(), 'packages/ui'))) {
+    await execa('pnpm', ['build'], {
+      cwd: join(process.cwd(), 'packages/ui'),
+      stdio: 'inherit',
+    });
   }
 
   if (existsSync(CORE_CLIENT)) {
     await buildClient(CORE_CLIENT);
   }
 
-  // await buildPlugins(plugins);
+  await buildPlugins(plugins);
 }
 
-async function buildServer(cwd: string) {
+export async function buildServer(cwd: string) {
   const entry = fg.globSync(['src/**', ...globExcludeFiles], {
     cwd,
     absolute: true,

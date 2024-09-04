@@ -1,5 +1,3 @@
-import react from '@vitejs/plugin-react-swc';
-
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { createServer } from 'vite';

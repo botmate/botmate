@@ -42,43 +42,55 @@ dev.action(async (opts) => {
       '-r',
       'tsconfig-paths/register',
       serverDir,
-      'dev'
+      'dev',
     ];
 
     execa('node', argv, {
       shell: true,
       stdio: 'inherit',
-      env: { ...process.env }
+      env: { ...process.env },
     });
   }
 
   if (client) {
     const uiDir = join(process.cwd(), 'packages/ui');
+    let clientSdk = join(process.cwd(), 'packages/client/src/index.ts');
+
     if (existsSync(uiDir)) {
       execa('pnpm', ['dev'], {
         cwd: uiDir,
-        stdio: 'inherit'
+        stdio: 'inherit',
       });
+    }
+
+    if (!existsSync(clientSdk)) {
+      clientSdk = require.resolve('@botmate/client');
     }
 
     const react = await import('@vitejs/plugin-react-swc');
     const tsconfigPaths = await import('vite-tsconfig-paths');
 
-    const clientDir = join(APP_PACKAGE_ROOT, 'client');
+    const appClientDir = join(APP_PACKAGE_ROOT, 'client');
 
     const viteServer = await createServer({
-      root: clientDir,
+      root: appClientDir,
       plugins: [react.default(), tsconfigPaths.default()],
       logLevel: 'error',
       define: {
-        'process.env.ENDPOINT': `"http://localhost:${serverPort}"`
+        'process.env.ENDPOINT': `"http://localhost:${serverPort}"`,
       },
       server: {
         port: clientPort,
         proxy: {
-          '/api': `http://localhost:${serverPort}`
-        }
-      }
+          '/api': `http://localhost:${serverPort}`,
+        },
+        host: '0.0.0.0',
+      },
+      resolve: {
+        alias: {
+          '@botmate/client': clientSdk,
+        },
+      },
     });
 
     await viteServer.listen(clientPort);

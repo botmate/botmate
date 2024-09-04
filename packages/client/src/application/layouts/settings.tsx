@@ -4,7 +4,7 @@ import {
   Outlet,
   useLocation,
   useParams,
-  useSearchParams
+  useSearchParams,
 } from 'react-router-dom';
 
 import { useGetPluginsQuery } from '../services/plugins';
@@ -15,15 +15,15 @@ const items = [
     name: 'General',
     description: 'Configure general settings',
     path: '/',
-    regex: /^\/$/
+    regex: /^\/$/,
   },
   {
     id: 2,
     name: 'Advanced',
     description: 'Configure advanced settings',
     path: '/advanced',
-    regex: /^\/advanced$/
-  }
+    regex: /^\/advanced$/,
+  },
 ];
 
 const NoPlugins = (
@@ -46,7 +46,7 @@ function SettingsLayout() {
           {items.map((item) => {
             const relativePath = location.pathname.replace(
               /^\/bots\/\d+\/settings/,
-              ''
+              '',
             );
             const isActive = item.regex.test(relativePath || '/');
 
@@ -71,23 +71,18 @@ function SettingsLayout() {
           <h1 className="text-gray-600 dark:text-neutral-500 text-sm uppercase">
             Plugins
           </h1>
-          <div>
+          <div className="flex gap-1 flex-col">
             {isLoading ? (
               <div>Loading...</div>
             ) : plugins?.length === 0 ? (
               NoPlugins
             ) : (
               plugins?.map((plugin) => {
-                const relativePath = location.pathname.replace(
-                  /^\/bots\/\d+\/settings/,
-                  ''
-                );
-                const absolutePath = `/bots/${params.id}/settings/plugins?plugin=${plugin.name}`;
-
-                const isActive = searchParams.get('plugin') === plugin.name;
+                const absolutePath = `/bots/${params.id}/settings/plugins?name=${plugin.name}`;
+                const isActive = searchParams.get('name') === plugin.name;
 
                 return (
-                  <Link key={plugin.id} to={absolutePath}>
+                  <Link key={plugin.name} to={absolutePath}>
                     <div
                       className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
                     >

@@ -2,7 +2,7 @@ import {
   ChartAreaIcon,
   LayoutDashboard,
   Settings2Icon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
 } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger
+  TooltipTrigger,
 } from '@botmate/ui';
 
 import useCurrentBot from '../hooks/use-bot';
@@ -22,29 +22,29 @@ const items = [
     title: 'Dashboard',
     icon: LayoutDashboard,
     path: '/',
-    regex: /^\/$/
+    regex: /^\/$/,
   },
   {
     id: 2,
     title: 'Analytics',
     icon: ChartAreaIcon,
     path: '/analytics',
-    regex: /^\/analytics$/
+    regex: /^\/analytics$/,
   },
   {
     id: 3,
     title: 'Marketplace',
     icon: ShoppingBagIcon,
     path: '/marketplace',
-    regex: /^\/marketplace$/
+    regex: /^\/marketplace$/,
   },
   {
     id: 4,
     title: 'Settings',
     icon: Settings2Icon,
     path: '/settings',
-    regex: /^\/settings/
-  }
+    regex: /^\/settings/,
+  },
 ];
 
 function Sidebar() {

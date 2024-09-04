@@ -14,7 +14,7 @@ function PageLayout({
   title,
   subtitle,
   page = 'default',
-  actions
+  actions,
 }: Props) {
   const elements = React.Children.toArray(children);
   const [first, second] = elements;
@@ -24,7 +24,7 @@ function PageLayout({
       className={`flex-1 flex flex-col gap-6 container mx-auto ${
         {
           default: '2xl:p-24 p-16',
-          settings: '2xl:p-12 p-8'
+          settings: '2xl:p-12 p-8',
         }[page]
       }`}
     >

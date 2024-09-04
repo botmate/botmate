@@ -73,7 +73,7 @@ function SetupPage() {
     <div className="flex items-center h-screen">
       <div className="w-[1200px] h-[600px] 2xl:h-[800px] mx-auto relative">
         <motion.div
-          className="absolute w-full h-full mx-auto bg-card rounded-3xl"
+          className="absolute w-full h-full mx-auto bg-card rounded-3xl border"
           animate={{
             rotate: step === 1 ? 0 : 1,
           }}
@@ -81,7 +81,7 @@ function SetupPage() {
             bounce: 0.4,
           }}
         >
-          <div className="2xl:p-24 p-12 bg-gray-50 rounded-t-3xl">
+          <div className="2xl:p-24 p-12 rounded-t-3xl">
             <img
               src="/logo.svg"
               alt="BotMate"
@@ -231,11 +231,11 @@ function SetupPage() {
             }}
           >
             <Card className="w-full h-full mx-auto">
-              <div className="2xl:p-24 p-12">
+              <div className="2xl:p-24 p-12 text-center">
                 <h1 className="mt-6 2xl:text-5xl text-4xl font-light">
                   Congratulations! {createBotResponse?.name} is connected 🎉
                 </h1>
-                <p className="2xl:text-lg mt-4 max-w-[850px] text-muted-foreground">
+                <p className="2xl:text-lg mt-4 max-w-[850px] text-muted-foreground mx-auto">
                   Your bot is now connected to BotMate. You can now start
                   customizing your bot using plugins from the community or
                   create your own.

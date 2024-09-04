@@ -58,7 +58,7 @@ function HomePage() {
 
   return (
     <div className="flex items-center h-screen">
-      <motion.div className="w-[1200px] h-[600px] 2xl:h-[800px] mx-auto bg-card rounded-3xl p-12">
+      <motion.div className="w-[1200px] h-[600px] 2xl:h-[800px] mx-auto bg-card rounded-3xl p-12 border">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-semibold">Home</h1>

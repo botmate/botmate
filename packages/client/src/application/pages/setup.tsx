@@ -101,7 +101,7 @@ function SetupPage() {
               {Object.entries(PLATFORMS).map(([key, platform]) => (
                 <div
                   key={key}
-                  className="h-40 w-40 rounded-3xl hover:bg-gray-100 hover:border-gray-200 hover:scale-95 border border-transparent cursor-pointer transition-all duration-150"
+                  className="h-40 w-40 rounded-3xl hover:bg-muted hover:border-gray-200 dark:hover:border-neutral-600 hover:scale-95 border border-transparent cursor-pointer transition-all duration-150"
                   onClick={() => {
                     setStep(2);
                     setPlatform(platform);
@@ -173,7 +173,7 @@ function SetupPage() {
                     </div>
                   ))}
 
-                  <div className="flex flex-col gap-4 w-[300px] p-6 bg-gray-50 border rounded-xl">
+                  <div className="flex flex-col gap-4 w-[300px] p-6 bg-card border rounded-xl">
                     {Object.entries(credentialsList).map(([key, value]) => (
                       <Input
                         key={key}

@@ -32,39 +32,12 @@ dev.action(async (opts) => {
     client = true;
   }
 
-  if (server) {
-    let serverDir = join(APP_PACKAGE_ROOT, 'src');
-
-    if (!existsSync(serverDir)) {
-      serverDir = require.resolve('@botmate/app');
-    }
-
-    const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
-
-    const argv = [
-      tsx,
-      'watch',
-      '--ignore=./storage/**',
-      '--tsconfig tsconfig.json',
-      '-r',
-      'tsconfig-paths/register',
-      serverDir,
-      'dev',
-    ];
-
-    execa('node', argv, {
-      shell: true,
-      stdio: 'inherit',
-      env: { ...process.env },
-    });
-  }
-
   if (client) {
     const uiDir = join(process.cwd(), 'packages/ui');
     let clientSdk = join(process.cwd(), 'packages/client/src/index.ts');
 
     if (existsSync(uiDir)) {
-      execa('pnpm', ['dev'], {
+      await execa('pnpm', ['dev'], {
         cwd: uiDir,
         stdio: 'inherit',
       });
@@ -104,6 +77,33 @@ dev.action(async (opts) => {
       await viteServer.listen(clientPort);
       viteServer.printUrls();
     }
+  }
+
+  if (server) {
+    let serverDir = join(APP_PACKAGE_ROOT, 'src');
+
+    if (!existsSync(serverDir)) {
+      serverDir = require.resolve('@botmate/app');
+    }
+
+    const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
+
+    const argv = [
+      tsx,
+      'watch',
+      '--ignore=./storage/**',
+      '--tsconfig tsconfig.json',
+      '-r',
+      'tsconfig-paths/register',
+      serverDir,
+      'dev',
+    ];
+
+    execa('node', argv, {
+      shell: true,
+      stdio: 'inherit',
+      env: { ...process.env },
+    });
   }
 });
 

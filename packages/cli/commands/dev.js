@@ -2,7 +2,7 @@ require('colors');
 const { Command } = require('commander');
 const execa = require('execa');
 const { existsSync } = require('fs');
-const { join } = require('path');
+const { join, dirname } = require('path');
 const { createServer } = require('vite');
 
 const dev = new Command('dev');
@@ -13,6 +13,7 @@ dev.option('-s, --server', 'run the server on the same port as the client');
 dev.option('-c, --client <client>', 'path to the client directory');
 
 dev.action(async (opts) => {
+  console.log('Starting development server...'.green);
   const { APP_PACKAGE_ROOT } = process.env;
 
   let { port, server, client } = opts;
@@ -34,12 +35,14 @@ dev.action(async (opts) => {
   if (server) {
     let serverDir = join(APP_PACKAGE_ROOT, 'src');
 
-    if (!existsSync(join(APP_PACKAGE_ROOT, 'server'))) {
-      serverDir = require.resolve('@botmate/server');
+    if (!existsSync(serverDir)) {
+      serverDir = require.resolve('@botmate/app');
     }
 
+    const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
+
     const argv = [
-      require.resolve('tsx'),
+      tsx,
       'watch',
       '--ignore=./storage/**',
       '--tsconfig tsconfig.json',
@@ -71,34 +74,36 @@ dev.action(async (opts) => {
       clientSdk = require.resolve('@botmate/client');
     }
 
-    const react = await import('@vitejs/plugin-react-swc');
-    const tsconfigPaths = await import('vite-tsconfig-paths');
-
     const appClientDir = join(APP_PACKAGE_ROOT, 'client');
 
-    const viteServer = await createServer({
-      root: appClientDir,
-      plugins: [react.default(), tsconfigPaths.default()],
-      logLevel: 'error',
-      define: {
-        'process.env.ENDPOINT': `"http://localhost:${serverPort}"`,
-      },
-      server: {
-        port: clientPort,
-        proxy: {
-          '/api': `http://localhost:${serverPort}`,
-        },
-        host: '0.0.0.0',
-      },
-      resolve: {
-        alias: {
-          '@botmate/client': clientSdk,
-        },
-      },
-    });
+    if (existsSync(appClientDir)) {
+      const react = await import('@vitejs/plugin-react-swc');
+      const tsconfigPaths = await import('vite-tsconfig-paths');
 
-    await viteServer.listen(clientPort);
-    viteServer.printUrls();
+      const viteServer = await createServer({
+        root: appClientDir,
+        plugins: [react.default(), tsconfigPaths.default()],
+        logLevel: 'error',
+        define: {
+          'process.env.ENDPOINT': `"http://localhost:${serverPort}"`,
+        },
+        server: {
+          port: clientPort,
+          proxy: {
+            '/api': `http://localhost:${serverPort}`,
+          },
+          host: '0.0.0.0',
+        },
+        resolve: {
+          alias: {
+            '@botmate/client': clientSdk,
+          },
+        },
+      });
+
+      await viteServer.listen(clientPort);
+      viteServer.printUrls();
+    }
   }
 });
 

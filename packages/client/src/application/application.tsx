@@ -11,6 +11,7 @@ import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 
 import { Api } from './api';
+import MainLayout from './layouts/main';
 import SettingsLayout from './layouts/settings';
 import AnalyticsPage from './pages/bots/analytics';
 import DashboardPage from './pages/bots/dashboard';
@@ -21,8 +22,9 @@ import AppearanceSettingsPage from './pages/bots/settings/secutiry';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import SetupPage from './pages/setup';
-import { PluginManager } from './plugin-manager';
 import { AppProvider } from './providers/app';
+import BotProvider from './providers/bot';
+import PluginsProvider from './providers/plugins';
 import { store } from './store';
 
 export class EventEmitter {
@@ -47,23 +49,18 @@ export class Application {
   api = new Api();
 
   private _routes: RouteObject[] = [];
-  private _pm = new PluginManager(this);
 
   bot: IBot | null = null;
   emitter = new EventEmitter();
 
-  private pluginsSettingsPage: Record<string, React.ReactNode> = {};
+  private _pluginSettings = new Map<string, React.ReactNode>();
 
   get routes() {
     return this._routes;
   }
 
-  get pluginManager() {
-    return this._pm;
-  }
-
-  get settingsPage() {
-    return this.pluginsSettingsPage;
+  get pluginSettings() {
+    return this._pluginSettings;
   }
 
   getRootComponent() {
@@ -78,17 +75,30 @@ export class Application {
                 <Route path="/setup" element={<SetupPage />} />
                 <Route path="/login" element={<LoginPage />} />
 
-                <Route element={<AppProvider app={this} />} path="/bots/:id">
-                  <Route index element={<DashboardPage />} />
-                  <Route path="analytics" element={<AnalyticsPage />} />
-                  <Route path="marketplace" element={<MarketplacePage />} />
-                  <Route path="settings" element={<SettingsLayout />}>
-                    <Route index element={<GeneralSettingsPage />} />
-                    <Route
-                      path="advanced"
-                      element={<AppearanceSettingsPage />}
-                    />
-                    <Route path="plugins" element={<PluginSettingsPage />} />
+                {/* todo: refactor to array/objects */}
+                <Route element={<AppProvider app={this} />}>
+                  <Route element={<BotProvider app={this} />} path="/bots/:id">
+                    <Route element={<PluginsProvider />}>
+                      <Route element={<MainLayout />}>
+                        <Route index element={<DashboardPage />} />
+                        <Route path="analytics" element={<AnalyticsPage />} />
+                        <Route
+                          path="marketplace"
+                          element={<MarketplacePage />}
+                        />
+                        <Route path="settings" element={<SettingsLayout />}>
+                          <Route index element={<GeneralSettingsPage />} />
+                          <Route
+                            path="advanced"
+                            element={<AppearanceSettingsPage />}
+                          />
+                          <Route
+                            path="plugins"
+                            element={<PluginSettingsPage />}
+                          />
+                        </Route>
+                      </Route>
+                    </Route>
                   </Route>
                 </Route>
               </Routes>

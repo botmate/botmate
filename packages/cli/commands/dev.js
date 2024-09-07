@@ -13,6 +13,8 @@ dev.option('-s, --server', 'run the server on the same port as the client');
 dev.option('-c, --client <client>', 'path to the client directory');
 
 dev.action(async (opts) => {
+  process.env.NODE_ENV = 'development';
+
   console.log('Starting development server...'.green);
   const { APP_PACKAGE_ROOT } = process.env;
 

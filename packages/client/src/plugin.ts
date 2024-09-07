@@ -1,3 +1,5 @@
+import { IPlugin } from '@botmate/server';
+
 import { Application } from './application';
 
 export abstract class Plugin {
@@ -9,7 +11,10 @@ export abstract class Plugin {
   async load() {}
   async afterLoad() {}
 
-  constructor(private app: Application) {}
+  constructor(
+    private app: Application,
+    private pluginData: IPlugin,
+  ) {}
 
   get routes() {
     return this.app.routes;
@@ -19,15 +24,11 @@ export abstract class Plugin {
     this.routes.push({ path, element });
   }
 
-  setSettingsPage(element: React.ReactNode) {
-    this.app.settingsPage[this.displayName] = element;
+  provideSettings(element: React.ReactNode) {
+    this.app.pluginSettings.set(this.pluginData.name, element);
   }
 
   getSettingsPage() {
-    if (this.app.settingsPage[this.displayName]) {
-      return this.app.settingsPage[this.displayName];
-    }
-
-    return null;
+    return this.app.pluginSettings.get(this.pluginData.name);
   }
 }

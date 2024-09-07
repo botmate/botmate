@@ -1,32 +1,39 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Badge } from '@botmate/ui';
 
 import { useApp } from '../../../hooks/use-app';
-import { useGetPluginsQuery } from '../../../services/plugins';
+import useCurrentBot from '../../../hooks/use-bot';
+import { useBotPlugins, usePlugins } from '../../../hooks/use-plugins';
+import {
+  useDisablePluginMutation,
+  useEnablePluginMutation,
+  useInstallPluginMutation,
+  useUninstallPluginMutation,
+} from '../../../services/plugins';
 
 function PluginSettingsPage() {
   const app = useApp();
   const [searchParams] = useSearchParams();
-  const { data: plugins } = useGetPluginsQuery();
+
+  const plugins = usePlugins();
+  const botPlugins = useBotPlugins();
+  const bot = useCurrentBot();
+
+  const [installPluginMutation] = useInstallPluginMutation();
+  const [uninstallPluginMutation] = useUninstallPluginMutation();
+  const [enablePluginMutation] = useEnablePluginMutation();
+  const [disablePluginMutation] = useDisablePluginMutation();
 
   const plugin = plugins?.find(
     (plugin) => plugin.name === searchParams.get('name'),
   );
 
-  const isInstalled = useCallback(
-    (name: string) => {
-      return app.pluginManager.installedPlugins.some(
-        (plugin) => plugin.name === name,
-      );
-    },
-    [plugins],
-  );
-
   if (plugin) {
-    const pluginInstance = app.pluginManager.instances.get(plugin.name);
-    const settingsPage = pluginInstance?.getSettingsPage();
+    const data = botPlugins.find((p) => p.name === plugin.name);
+    const Settings = app.pluginSettings.get(plugin.name);
+
     return (
       <div>
         <div className="p-8 bg-card border-b flex justify-between items-start relative">
@@ -44,30 +51,43 @@ function PluginSettingsPage() {
               <Badge
                 className="cursor-pointer"
                 onClick={async () => {
-                  if (pluginInstance) {
+                  if (data) {
+                    if (data.enabled) {
+                      await disablePluginMutation({
+                        botId: bot.id,
+                        name: plugin.name,
+                      }).unwrap();
+                    } else {
+                      await enablePluginMutation({
+                        botId: bot.id,
+                        name: plugin.name,
+                      }).unwrap();
+                    }
+                  } else {
+                    await installPluginMutation({
+                      botId: bot.id,
+                      name: plugin.name,
+                    }).unwrap();
                   }
-                  await app.pluginManager.install(plugin.name);
-
                   window.location.reload();
                 }}
               >
                 click to{' '}
-                {isInstalled(plugin.name)
-                  ? pluginInstance?.loaded
-                    ? 'disable'
-                    : 'enable'
-                  : 'install'}
+                {data ? (data?.enabled ? 'disable' : 'enable') : 'install'}
               </Badge>
               {/* {plugin.installed && <Badge variant="outline">installed</Badge>} */}
               <Badge variant="outline">v{plugin.version}</Badge>
               <Badge variant="outline">latest</Badge>
               <div className="flex-1" />
-              {isInstalled(plugin.name) && (
+              {!!data && (
                 <Badge
                   variant="danger"
                   className="bg-red-500 text-white cursor-pointer hover:bg-red-400"
                   onClick={async () => {
-                    await app.pluginManager.uninstall(plugin.name);
+                    await uninstallPluginMutation({
+                      botId: bot.id,
+                      name: plugin.name,
+                    }).unwrap();
                     window.location.reload();
                   }}
                 >
@@ -77,19 +97,7 @@ function PluginSettingsPage() {
             </div>
           </div>
 
-          <div className="p-8">{settingsPage}</div>
-          {/* <Tabs defaultValue="account">
-            <TabsList>
-              <TabsTrigger value="account">README.md</TabsTrigger>
-              <TabsTrigger value="password">Password</TabsTrigger>
-            </TabsList>
-            <TabsContent value="account">
-              Make changes to your account here.
-            </TabsContent>
-            <TabsContent value="password">
-              Change your password here.
-            </TabsContent>
-          </Tabs> */}
+          <div className="p-8">{Settings}</div>
         </div>
       </div>
     );

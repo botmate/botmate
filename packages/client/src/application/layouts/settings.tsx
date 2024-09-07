@@ -7,7 +7,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
-import { useApp } from '../hooks/use-app';
+import useCurrentBot from '../hooks/use-bot';
 import { useGetPluginsQuery } from '../services/plugins';
 
 const items = [
@@ -35,12 +35,12 @@ const NoPlugins = (
   </div>
 );
 function SettingsLayout() {
-  const app = useApp();
   const params = useParams();
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  const plugins = app.pluginManager.plugins;
+  const bot = useCurrentBot();
+  const { data: plugins } = useGetPluginsQuery(bot.platformType);
 
   return (
     <div className="flex flex-1">
@@ -59,7 +59,7 @@ function SettingsLayout() {
               <Link
                 key={item.id}
                 to={absolutePath}
-                className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-muted' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
+                className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
               >
                 <h2 className="font-medium">{item.name}</h2>
                 <p className="mt-2 text-muted-foreground text-sm">

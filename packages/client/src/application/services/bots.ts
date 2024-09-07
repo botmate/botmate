@@ -1,4 +1,4 @@
-import type { IBot } from '@botmate/server';
+import type { IBot, IPlugin } from '@botmate/server';
 
 import { baseApi } from '../api';
 

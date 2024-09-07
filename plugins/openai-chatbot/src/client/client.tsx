@@ -8,6 +8,6 @@ export class OpenAIChatbot extends Plugin {
   displayName = 'OpenAI Chatbot';
 
   async beforeLoad() {
-    this.setSettingsPage(<SettingsPage />);
+    this.provideSettings(<SettingsPage />);
   }
 }

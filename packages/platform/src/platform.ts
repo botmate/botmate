@@ -10,8 +10,11 @@ export enum PlatformType {
   Discord = 'discord',
 }
 
-export abstract class Platform {
+export abstract class Platform<TInstance = unknown> {
   abstract name: string;
+  abstract instance: TInstance;
 
-  abstract getBotInfo(credentials: Record<string, string>): Promise<BotInfo>;
+  abstract getBotInfo(): Promise<BotInfo>;
+  abstract start(): Promise<void>;
+  abstract stop(): Promise<void>;
 }

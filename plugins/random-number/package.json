@@ -8,9 +8,10 @@
   "author": "BotMate Team",
   "license": "ISC",
   "dependencies": {
-    "@botmate/server": "workspace:^",
     "@botmate/client": "workspace:^",
-    "@botmate/platform-telegram": "workspace:^"
+    "@botmate/platform-telegram": "workspace:^",
+    "@botmate/server": "workspace:^",
+    "grammy": "^1.29.0"
   },
   "botmate": {
     "platformType": "telegram"

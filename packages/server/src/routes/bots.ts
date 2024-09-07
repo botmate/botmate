@@ -6,7 +6,7 @@ import { initBotsModel } from '../models/bot';
 import { initPluginModel } from '../models/plugin';
 
 // todo: refactor services - DO NOT CALL DATABASE DIRECTLY from inside the route
-export function bots({ server, database }: Application) {
+export function bots({ server, database, botManager }: Application) {
   const router = Router();
   const model = initBotsModel(database.sequelize);
   const pluginModel = initPluginModel(database.sequelize);
@@ -30,27 +30,6 @@ export function bots({ server, database }: Application) {
       return;
     }
     res.json(bot);
-  });
-
-  router.get('/:id/plugins', async (req, res) => {
-    const { id } = req.params;
-    const bot = await model.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!bot) {
-      res.status(404).json({
-        message: 'Bot not found',
-      });
-      return;
-    }
-    const plugins = await pluginModel.findAll({
-      where: {
-        botId: id,
-      },
-    });
-    res.json(plugins);
   });
 
   router.post('/', async (req, res) => {
@@ -89,6 +68,27 @@ export function bots({ server, database }: Application) {
         message: 'An error occurred while creating the bot',
       });
     }
+  });
+
+  router.get('/:id/plugins', async (req, res) => {
+    const { id } = req.params;
+    const bot = await model.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!bot) {
+      res.status(404).json({
+        message: 'Bot not found',
+      });
+      return;
+    }
+    const plugins = await pluginModel.findAll({
+      where: {
+        botId: id,
+      },
+    });
+    res.json(plugins);
   });
 
   server.use('/api/bots', router);

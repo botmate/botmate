@@ -3,6 +3,7 @@ import { createLogger } from '@botmate/logger';
 import { Command } from 'commander';
 import express from 'express';
 
+import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
 import { Config } from './config';
 import { initBotsModel } from './models/bot';
@@ -17,6 +18,7 @@ export class Application {
   server = express();
   logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
+
   mode: 'development' | 'production' = 'production';
   isDev = () => this.mode === 'development';
   rootPath = process.cwd();
@@ -26,6 +28,7 @@ export class Application {
   protected _config: Record<string, string | number | boolean> = {};
   protected _pluginManager: PluginManager;
   protected _platformManager: PlatformManager;
+  protected _botManager: BotManager;
   protected _cli: Command;
 
   get pluginManager() {
@@ -36,9 +39,14 @@ export class Application {
     return this._platformManager;
   }
 
+  get botManager() {
+    return this._botManager;
+  }
+
   constructor() {
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
+    this._botManager = new BotManager(this);
 
     this._cli = this.createCLI();
 
@@ -59,14 +67,17 @@ export class Application {
     await setupCoreRoutes(this);
     await setupVite(this);
 
-    await this.pluginManager.loadAll();
     await this.database.sequelize.sync();
 
+    if (process.env.NODE_ENV === 'development') {
+      this.mode = 'development';
+    }
+
+    await this.botManager.init();
     await this.pluginManager.init();
 
-    await this.cli.parseAsync(process.argv);
-
     process.on('SIGINT', () => this.stop());
+    await this.cli.parseAsync(process.argv);
   }
 
   async start() {

@@ -8,6 +8,6 @@ export class RandomNumberGenerator extends Plugin {
   displayName = 'Random Number Generator';
 
   async beforeLoad() {
-    this.setSettingsPage(<SettingsPage />);
+    this.provideSettings(<SettingsPage />);
   }
 }

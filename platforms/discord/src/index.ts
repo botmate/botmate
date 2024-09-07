@@ -15,16 +15,23 @@ function getUploadPath() {
   return storagePath;
 }
 
-export class Discord extends Platform {
+export class Discord extends Platform<Client> {
   name = 'Discord';
+  instance: Client;
 
-  async getBotInfo(credentials: Record<string, string>): Promise<BotInfo> {
-    const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+  constructor(private _credentials: Record<string, string>) {
+    super();
+    this.instance = new Client({ intents: [GatewayIntentBits.Guilds] });
+    this.instance.login(_credentials.token);
+  }
+
+  async getBotInfo(): Promise<BotInfo> {
+    const client = this.instance!;
 
     return new Promise((resolve, reject) => {
-      client.login(credentials.token);
+      client.once('ready', async (client) => {
+        this.instance = client;
 
-      client.once('ready', async () => {
         if (!client.user) {
           reject(new Error('Failed to get user'));
           return;

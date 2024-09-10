@@ -289,7 +289,7 @@ export class PluginManager {
 
     const isDev = this.app.isDev();
 
-    const plugins = await Promise.all(
+    const pluginsLocal = await Promise.all(
       packages.map(async (pkg) => {
         let serverPath, clientPath;
         const botmate = pkg.get('botmate');
@@ -329,7 +329,32 @@ export class PluginManager {
         } as PluginMeta;
       }),
     );
-    return plugins.filter(Boolean) as PluginMeta[];
+
+    const pkgJSON = join(this.app.rootPath, 'package.json');
+    const deps = require(pkgJSON).dependencies || {};
+    for (const dep of Object.keys(deps)) {
+      try {
+        const module = require(`${dep}/package.json`);
+        if (module.botmate) {
+          const serverPath = require.resolve(`${dep}/lib/server/index.js`);
+          const clientPath = require.resolve(`${dep}/lib/client/index.js`);
+
+          pluginsLocal.push({
+            name: dep,
+            displayName: module.displayName,
+            description: module.description,
+            serverPath,
+            clientPath,
+            author: module.author,
+            dependencies: module.dependencies,
+            version: module.version,
+            platformType: module.platformType,
+          });
+        }
+      } catch (e) {}
+    }
+
+    return pluginsLocal.filter(Boolean) as PluginMeta[];
   }
 
   async create() {}

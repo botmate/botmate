@@ -4,6 +4,9 @@
   "description": "HTTP Server for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,6 +17,7 @@
     "@botmate/database": "workspace:^",
     "@botmate/logger": "workspace:^",
     "@botmate/platform": "workspace:^",
+    "@botmate/ui": "workspace:^",
     "@lerna/project": "^6.4.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "commander": "^12.1.0",

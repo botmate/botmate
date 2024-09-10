@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Platform interface for BotMate",
   "main": "lib/index.js",
+  "scripts": {
+    "build": "tsup"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

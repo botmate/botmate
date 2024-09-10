@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Create a new BotMate project",
   "bin": "./lib/index.js",
+  "scripts": {
+    "build": "tsup"
+  },
   "files": [
     "lib",
     "files"

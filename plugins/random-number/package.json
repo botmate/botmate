@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "A plugin that generates a random number.",
   "main": "lib/server/index.js",
+  "scripts": {
+    "build": "tsup && vite build"
+  },
   "keywords": [],
   "author": "BotMate Team",
   "license": "ISC",

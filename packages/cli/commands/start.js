@@ -9,13 +9,15 @@ const start = new Command('start');
 start.option('-p, --port <port>', 'port to run the server on', '3000');
 
 start.action((opts) => {
-  const { APP_PACKAGE_ROOT } = process.env;
+  process.env.NODE_ENV = 'production';
+
+  const { SERVER_ROOT } = process.env;
 
   if (opts.port) {
-    process.env.APP_PORT = opts.port;
+    process.env.PORT = opts.port;
   }
 
-  if (!existsSync(resolve(process.cwd(), `${APP_PACKAGE_ROOT}/lib/index.js`))) {
+  if (!existsSync(resolve(process.cwd(), `${SERVER_ROOT}/lib/index.js`))) {
     console.log('The code is not compiled, please execute it first');
     console.log(colors.yellow('$ pnpm build'));
     console.log('If you want to run in development mode, please execute');
@@ -23,7 +25,7 @@ start.action((opts) => {
     return;
   }
 
-  execa('node', [`${APP_PACKAGE_ROOT}/lib/index.js`], {
+  execa('node', [`${SERVER_ROOT}/lib/index.js`], {
     stdio: 'inherit',
   });
 });

@@ -9,95 +9,38 @@ const dev = new Command('dev');
 
 dev.allowUnknownOption();
 dev.option('-p, --port <port>', 'port to run the server on', '8233');
-dev.option('-s, --server', 'run the server on the same port as the client');
-dev.option('-c, --client <client>', 'path to the client directory');
+dev.option('-s, --server', 'only run the server', false);
 
 dev.action(async (opts) => {
   process.env.NODE_ENV = 'development';
 
   console.log('Starting development server...'.green);
-  const { APP_PACKAGE_ROOT } = process.env;
 
-  let { port, server, client } = opts;
+  let { port, server } = opts;
 
-  process.env.APP_PORT = port;
-
-  let serverPort, clientPort;
-
-  if (!server && !client) {
-    clientPort = port;
-    serverPort = parseInt(port) + 1;
-
-    process.env.APP_PORT = serverPort;
-
-    server = true;
-    client = true;
-  }
-
-  if (client) {
-    const uiDir = join(process.cwd(), 'packages/ui');
-    let clientSdk = join(process.cwd(), 'packages/client/src/index.ts');
-
-    if (existsSync(uiDir)) {
-      await execa('pnpm', ['dev'], {
-        cwd: uiDir,
-        stdio: 'inherit',
-      });
-    }
-
-    if (!existsSync(clientSdk)) {
-      clientSdk = require.resolve('@botmate/client');
-    }
-
-    const appClientDir = join(APP_PACKAGE_ROOT, 'client');
-
-    if (existsSync(appClientDir)) {
-      const react = await import('@vitejs/plugin-react-swc');
-      const tsconfigPaths = await import('vite-tsconfig-paths');
-
-      const viteServer = await createServer({
-        root: appClientDir,
-        plugins: [react.default(), tsconfigPaths.default()],
-        logLevel: 'error',
-        define: {
-          'process.env.ENDPOINT': `"http://localhost:${serverPort}"`,
-        },
-        server: {
-          port: clientPort,
-          proxy: {
-            '/api': `http://localhost:${serverPort}`,
-          },
-          host: '0.0.0.0',
-        },
-        resolve: {
-          alias: {
-            '@botmate/client': clientSdk,
-          },
-        },
-      });
-
-      await viteServer.listen(clientPort);
-      viteServer.printUrls();
-    }
-  }
+  process.env.PORT = port;
 
   if (server) {
-    let serverDir = join(APP_PACKAGE_ROOT, 'src');
+    process.env.NO_CLIENT = true;
+  }
 
-    if (!existsSync(serverDir)) {
-      serverDir = require.resolve('@botmate/app');
-    }
+  const serverDir = require.resolve('@botmate/server/package.json');
+  const hasTS = existsSync(join(dirname(serverDir), 'tsconfig.json'));
 
+  if (hasTS) {
+    // in a monorepo
     const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
+    const devFile = join(dirname(serverDir), 'src/dev.ts');
 
     const argv = [
       tsx,
       'watch',
       '--ignore=./storage/**',
+      '--clear-screen=false',
       '--tsconfig tsconfig.json',
       '-r',
       'tsconfig-paths/register',
-      serverDir,
+      devFile,
       'dev',
     ];
 

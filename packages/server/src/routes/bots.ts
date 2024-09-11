@@ -2,11 +2,11 @@ import { Router } from 'express';
 
 import { Application } from '../application';
 import { Bot, BotStatus } from '../bot';
-import { initBotsModel } from '../models/bot';
+import { IBot, initBotsModel } from '../models/bot';
 import { initPluginModel } from '../models/plugin';
 
 // todo: refactor services - DO NOT CALL DATABASE DIRECTLY from inside the route
-export function bots({ server, database, botManager }: Application) {
+export function bots({ server, database }: Application) {
   const router = Router();
   const model = initBotsModel(database.sequelize);
   const pluginModel = initPluginModel(database.sequelize);
@@ -34,7 +34,7 @@ export function bots({ server, database, botManager }: Application) {
 
   router.post('/', async (req, res) => {
     const { credentials, platform } = req.body;
-    const bot = new Bot(platform, credentials);
+    const bot = new Bot(platform, credentials, {} as IBot);
     try {
       const info = await bot.getBotInfo();
 
@@ -45,11 +45,11 @@ export function bots({ server, database, botManager }: Application) {
       });
 
       if (exist) {
-        // res.status(400).json({
-        //   message: 'Bot already exists',
-        // });
+        res.status(400).json({
+          message: 'Bot already exists',
+        });
         await exist.destroy();
-        // return;
+        return;
       }
       const botData = await model.create({
         botId: info.id,

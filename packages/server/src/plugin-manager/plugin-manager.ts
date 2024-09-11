@@ -5,7 +5,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { Application } from '../application';
-import { Bot, BotStatus } from '../bot';
+import { Bot } from '../bot';
 import { initPluginModel } from '../models/plugin';
 
 export type PluginMeta = {
@@ -63,25 +63,7 @@ export class PluginManager {
             continue;
           }
 
-          let bot = this.app.botManager.bots.get(botData.id);
-
-          if (bot?.status === BotStatus.ACTIVE) {
-            const server = await import(plugin.serverPath);
-            const [exportKey] = Object.keys(server);
-            const _class = server[exportKey];
-            const _plugin = new _class(this.app, bot);
-
-            bot.plugins.set(plugin.name, _plugin);
-
-            try {
-              await _plugin.beforeLoad();
-            } catch (error) {
-              console.error(error);
-              this.logger.error(
-                `Error running beforeLoad for plugin ${botPlugin.name}`,
-              );
-            }
-          }
+          await this.loadBotPlugin(botPlugin.name, botPlugin.botId);
         } catch (e) {
           console.error(e);
           this.logger.error(`Error loading plugin ${botPlugin.name}`);

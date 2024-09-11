@@ -19,7 +19,7 @@ export class Application {
   logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
 
-  mode: 'development' | 'production' = 'production';
+  mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
   rootPath = process.cwd();
   database = new Database();
@@ -53,10 +53,10 @@ export class Application {
     registerCLI(this);
   }
 
-  async init(config: Record<string, string | number | boolean>) {
+  async init(config?: Record<string, string | number | boolean>) {
     this.logger.info('Initializing application...');
 
-    this._config = config;
+    this._config = config || {};
 
     initPluginModel(this.database.sequelize);
     initBotsModel(this.database.sequelize);
@@ -81,10 +81,10 @@ export class Application {
   }
 
   async start() {
-    const { APP_PORT = 8233 } = process.env;
-    this.server.listen(APP_PORT);
+    const { PORT = 8233 } = process.env;
+    this.server.listen(PORT);
 
-    this.logger.info(`Application started on port ${APP_PORT}`);
+    this.logger.info(`Application started on port ${PORT}`);
   }
 
   async stop() {

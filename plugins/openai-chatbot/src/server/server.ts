@@ -1,10 +1,42 @@
 import { PlatformType, Plugin } from '@botmate/server';
+import type { Bot } from 'grammy';
+import OpenAI from 'openai';
 
 export class OpenAIChatbot extends Plugin {
   displayName = 'OpenAI Chatbot';
   platformType = PlatformType.Telegram;
 
+  client?: OpenAI;
+
   async load() {
-    //
+    const bot = this.bot.instance<Bot>();
+
+    bot.on('message', async (ctx) => {
+      if (!this.client) {
+        const apiKey = await this.config.get('openai.apiKey');
+        if (!apiKey) {
+          this.logger.warn(`No API key was found for OpenAI`);
+          return;
+        }
+
+        this.client = new OpenAI({
+          apiKey,
+        });
+      }
+
+      ctx.replyWithChatAction('typing');
+
+      const chatCompletion = await this.client.chat.completions.create({
+        messages: [{ role: 'user', content: ctx.message.text! }],
+        model: 'gpt-3.5-turbo',
+      });
+
+      if (chatCompletion.choices) {
+        const text = chatCompletion.choices[0].message.content;
+        if (text) {
+          ctx.reply(text);
+        }
+      }
+    });
   }
 }

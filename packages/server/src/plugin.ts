@@ -1,3 +1,4 @@
+import { createLogger } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 
 import { Application } from './application';
@@ -9,11 +10,11 @@ export interface PluginInterface {
   afterLoad?: () => void;
 }
 
-export interface PluginOptions {}
-
 export abstract class Plugin implements PluginInterface {
   abstract displayName: string;
   abstract platformType: PlatformType;
+
+  logger!: ReturnType<typeof createLogger>;
 
   async beforeLoad() {}
   async load() {}
@@ -22,7 +23,6 @@ export abstract class Plugin implements PluginInterface {
   constructor(
     private _app: Application,
     private _bot: Bot,
-    private _options?: PluginOptions,
   ) {}
 
   get bot() {
@@ -30,6 +30,12 @@ export abstract class Plugin implements PluginInterface {
   }
 
   get config() {
-    return this._app.botConfigManager;
+    const configManager = this._app.botConfigManager;
+    return {
+      get: (key: string, def?: any) =>
+        configManager.get(+this.bot.data.id, key, def),
+      set: (key: string, value: any) =>
+        configManager.save(+this.bot.data.id, key, value),
+    };
   }
 }

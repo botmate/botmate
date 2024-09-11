@@ -155,6 +155,10 @@ export class PluginManager {
       const _class = server[exportKey];
       const _plugin = new _class(this.app, bot);
 
+      _plugin.logger = createLogger({
+        name: exportKey,
+      });
+
       bot.plugins.set(plugin.name, _plugin);
 
       try {

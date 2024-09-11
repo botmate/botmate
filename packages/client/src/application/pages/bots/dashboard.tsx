@@ -3,7 +3,7 @@ import {
   HammerIcon,
   HelpCircle,
   InfoIcon,
-  PlugIcon
+  PlugIcon,
 } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -18,28 +18,28 @@ function DashboardPage() {
         title: 'Documentation',
         description: 'Dsicover more about the bots and how to use them.',
         icon: InfoIcon,
-        link: 'https://docs.botmate.dev'
+        link: 'https://docs.botmate.dev',
       },
       {
         title: 'Plugins',
         description: 'Discover more about the plugins and how to use them.',
         icon: PlugIcon,
-        link: `/bots/${params.id}/marketplace`
+        link: `/bots/${params.id}/marketplace`,
       },
       {
         title: 'Blogs',
         description: 'Read the latest blogs about the bots and plugins.',
         icon: BookIcon,
-        link: 'https://blog.botmate.dev'
+        link: 'https://blog.botmate.dev',
       },
       {
         title: 'Help',
         description: 'Get help from the community and the team.',
         icon: HelpCircle,
-        link: 'https://t.me/chatbotmate'
-      }
+        link: 'https://t.me/chatbotmate',
+      },
     ],
-    [params.id]
+    [params.id],
   );
   return (
     <PageLayout

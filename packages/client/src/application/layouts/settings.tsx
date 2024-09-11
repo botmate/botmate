@@ -29,7 +29,7 @@ const items = [
 
 const NoPlugins = (
   <div>
-    <div className="flex flex-col gap-2 mt-4 p-4 bg-orange-50 rounded-xl border border-orange-200 text-orange-500">
+    <div className="flex flex-col gap-2 mt-4 p-4 bg-orange-50 rounded-xl border border-orange-200 text-orange-500 dark:bg-orange-900/10 dark:border-orange-600">
       <div className="text-center text-sm">No plugins are installed</div>
     </div>
   </div>

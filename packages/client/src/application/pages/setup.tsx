@@ -101,7 +101,7 @@ function SetupPage() {
               {Object.entries(PLATFORMS).map(([key, platform]) => (
                 <div
                   key={key}
-                  className="h-40 w-40 rounded-3xl hover:bg-muted/50 hover:border-gray-400/50 dark:hover:border-neutral-600 hover:scale-95 border border-transparent cursor-pointer transition-all duration-150"
+                  className="h-40 w-40 rounded-3xl hover:bg-muted/50 hover:border-muted dark:hover:border-neutral-600 hover:scale-95 border-2 border-transparent cursor-pointer transition-all duration-150"
                   onClick={() => {
                     setStep(2);
                     setPlatform(platform);

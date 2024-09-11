@@ -1,0 +1,8 @@
+{
+  "root": "platforms/discord",
+  "targets": {
+    "build": {
+      "cache": true
+    }
+  }
+}

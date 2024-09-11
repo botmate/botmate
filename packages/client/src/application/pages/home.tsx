@@ -6,12 +6,14 @@ import { Button } from '@botmate/ui';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 
+import { useApp } from '../hooks/use-app';
 import { useGetBotsQuery } from '../services';
 
 function HomePage() {
+  const app = useApp();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetBotsQuery();
   const { theme, setTheme } = useTheme();
+  const { data, isLoading } = useGetBotsQuery();
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -19,6 +21,8 @@ function HomePage() {
     } else {
       document.body.classList.remove('dark');
     }
+
+    app.pluginSettings.clear();
   }, [theme]);
 
   useEffect(() => {
@@ -94,7 +98,7 @@ function HomePage() {
                 className="space-y-1"
               >
                 <img
-                  src={`${process.env.ENDPOINT}/${bot.avatar}`}
+                  src={`/${bot.avatar}`}
                   alt={bot.name}
                   className="rounded-3xl w-24 h-24"
                   draggable="false"
@@ -113,7 +117,7 @@ function HomePage() {
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.07 * data!.length }}
+            transition={{ delay: 0.07 * (data?.length || 0) }}
           >
             <Link to="/setup" draggable="false">
               <div className="h-24 w-24 p-4 flex items-center justify-center border bg-background border-gray rounded-3xl hover:-translate-y-1 transition-all duration-150 cursor-pointer">

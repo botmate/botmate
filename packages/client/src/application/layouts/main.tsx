@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Outlet } from 'react-router-dom';
 
 import Sidebar from '../components/sidebar';
@@ -7,7 +8,11 @@ function MainLayout() {
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <Outlet />
+      <ErrorBoundary FallbackComponent={() => <div>Something went wrong</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Outlet />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

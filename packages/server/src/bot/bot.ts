@@ -27,7 +27,7 @@ export class Bot {
   constructor(
     private type: PlatformType,
     private credentials: Record<string, string>,
-    private data: IBot,
+    private _data: IBot,
   ) {}
 
   instance<T>() {
@@ -38,6 +38,10 @@ export class Bot {
     const platform = await this.importPlatform();
     const bot = new platform(this.credentials) as Platform;
     this._bot = bot;
+  }
+
+  get data() {
+    return this._data;
   }
 
   async importPlatform() {

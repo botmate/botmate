@@ -36,7 +36,7 @@ export class BotConfigManager {
     );
   }
 
-  async get<T = any>(botId: number, key: string): Promise<T | null> {
+  async get<T = any>(botId: number, key: string, def?: T): Promise<T> {
     this.app.logger.debug(`Getting config key: ${key}`);
 
     const bot = await this._model.findOne({
@@ -47,11 +47,15 @@ export class BotConfigManager {
 
     if (!bot) {
       this.app.logger.error(`Bot not found: ${botId}`);
-      return null;
+      throw new Error(`Bot not found: ${botId}`);
     }
 
     if (!bot.config?.[key]) {
-      return null;
+      this.app.logger.debug(`Config key not found: ${key}`);
+      if (def !== undefined) {
+        this.app.logger.debug(`Returning default value: ${def}`);
+        return def;
+      }
     }
 
     return bot.config?.[key] as T;

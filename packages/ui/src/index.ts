@@ -9,3 +9,4 @@ export * from './components/ui/hover-card';
 export * from './components/ui/dropdown-menu';
 export * from './components/ui/badge';
 export * from './components/ui/tabs';
+export * from './components/ui/slider';

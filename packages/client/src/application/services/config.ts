@@ -1,22 +1,22 @@
 import { baseApi } from '../api';
 
-type SaveConfigRequest = {
-  botId: string;
+type SavePluginConfigRequest = {
+  pluginId: string;
   key: string;
   value: string;
 };
 
-type GetConfigRequest = {
-  botId: string;
+type GetPluginConfigRequest = {
+  pluginId: string;
   key: string;
 };
 
 export const configApi = baseApi.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
-    saveConfig: builder.mutation<void, SaveConfigRequest>({
+    savePluginConfig: builder.mutation<void, SavePluginConfigRequest>({
       query: (body) => ({
-        url: '/config/save',
+        url: '/config/plugin/save',
         method: 'POST',
         body: JSON.stringify(body),
         headers: {
@@ -24,9 +24,9 @@ export const configApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    getConfig: builder.mutation<string, GetConfigRequest>({
+    getPluginConfig: builder.mutation<string, GetPluginConfigRequest>({
       query: (params) => ({
-        url: '/config/get',
+        url: '/config/plugin/get',
         method: 'GET',
         params,
       }),
@@ -34,4 +34,5 @@ export const configApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useSaveConfigMutation, useGetConfigMutation } = configApi;
+export const { useSavePluginConfigMutation, useGetPluginConfigMutation } =
+  configApi;

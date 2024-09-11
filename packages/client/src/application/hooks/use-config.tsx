@@ -1,18 +1,15 @@
-import { useSaveConfigMutation } from '../services';
-import useCurrentBot from './use-bot';
+import { useSavePluginConfigMutation } from '../services';
+import { useCurrentPlugin } from './use-plugins';
 
-export function useBotConfig(botId?: string) {
-  const { id, config } = useCurrentBot();
+export function usePluginConfig() {
+  const plugin = useCurrentPlugin();
+  const [saveMutation, { isLoading }] = useSavePluginConfigMutation();
 
-  const [saveMutation, { isLoading }] = useSaveConfigMutation();
-
-  if (!botId) {
-    botId = id;
-  }
+  const config = plugin?.config || {};
 
   return {
     save: (key: string, value: string) =>
-      saveMutation({ botId, key, value }).unwrap(),
+      saveMutation({ pluginId: plugin!.id, key, value }).unwrap(),
     isSaving: isLoading,
     get: function <T = any>(key: string, def: T) {
       return (config?.[key] || def) as T;

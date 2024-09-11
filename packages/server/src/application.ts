@@ -5,7 +5,7 @@ import express from 'express';
 
 import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
-import { BotConfigManager } from './config';
+import { ConfigManager } from './config';
 import { initBotsModel } from './models/bot';
 import { initPluginModel } from './models/plugin';
 import { PlatformManager } from './platform-manager';
@@ -27,7 +27,7 @@ export class Application {
   protected _pluginManager: PluginManager;
   protected _platformManager: PlatformManager;
   protected _botManager: BotManager;
-  protected _botConfigManager: BotConfigManager;
+  protected _configManager: ConfigManager;
   protected _cli: Command;
 
   get pluginManager() {
@@ -42,15 +42,15 @@ export class Application {
     return this._botManager;
   }
 
-  get botConfigManager() {
-    return this._botConfigManager;
+  get configManager() {
+    return this._configManager;
   }
 
   constructor() {
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
-    this._botConfigManager = new BotConfigManager(this);
+    this._configManager = new ConfigManager(this);
 
     this._cli = this.createCLI();
 

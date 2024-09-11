@@ -1,0 +1,8 @@
+{
+  "root": "packages/platform",
+  "targets": {
+    "build": {
+      "cache": true
+    }
+  }
+}

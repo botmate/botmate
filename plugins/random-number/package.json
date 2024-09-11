@@ -11,6 +11,7 @@
   "author": "BotMate Team",
   "license": "ISC",
   "dependencies": {
+    "@botmate/ui": "workspace:^",
     "@botmate/client": "workspace:^",
     "@botmate/platform-telegram": "workspace:^",
     "@botmate/server": "workspace:^",

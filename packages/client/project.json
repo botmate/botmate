@@ -1,0 +1,8 @@
+{
+  "root": "packages/client",
+  "targets": {
+    "build": {
+      "cache": true
+    }
+  }
+}

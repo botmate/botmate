@@ -1,0 +1,8 @@
+{
+  "root": "platforms/telegram",
+  "targets": {
+    "build": {
+      "cache": true
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "root": "packages/database",
+  "targets": {
+    "build": {
+      "cache": true
+    }
+  }
+}

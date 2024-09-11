@@ -28,4 +28,8 @@ export abstract class Plugin implements PluginInterface {
   get bot() {
     return this._bot;
   }
+
+  get config() {
+    return this._app.botConfigManager;
+  }
 }

@@ -1,28 +1,21 @@
 import react from '@vitejs/plugin-react-swc';
 
-import express from 'express';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { createServer } from 'vite';
 
 import { Application } from './application';
 
-export async function setupVite({ server, isDev, rootPath }: Application) {
-  const appPkg = require.resolve('@botmate/app/package.json');
-
-  const dir = join(appPkg, '..');
-  const client = join(dir, 'dist');
-
-  // const sdk = join(rootPath, 'packages/client/lib/index.es.js');
-
-  // console.log('sdk', sdk);
+export async function setupVite({ server, isDev, mode }: Application) {
+  const client = require.resolve('@botmate/client/package.json');
+  const clientDir = dirname(client);
 
   const vite = await createServer({
-    mode: 'production',
+    mode,
+    plugins: [react()],
     server: {
       middlewareMode: true,
     },
-    root: client,
+    root: join(clientDir, 'public'),
     appType: 'custom',
     logLevel: 'error',
     build: {
@@ -31,6 +24,13 @@ export async function setupVite({ server, isDev, rootPath }: Application) {
     },
     optimizeDeps: {
       include: ['react', 'react/jsx-runtime'],
+    },
+    resolve: {
+      alias: isDev()
+        ? {
+            '@botmate/client': join(clientDir, 'src/index.ts'),
+          }
+        : {},
     },
   });
 
@@ -51,7 +51,6 @@ export async function setupVite({ server, isDev, rootPath }: Application) {
   <body>
     <div id="root"></div>
     <script type="module">
-      import '@botmate/client/lib/style.css';
       import { Application } from '@botmate/client';
       const app = new Application();
       app.render('root');

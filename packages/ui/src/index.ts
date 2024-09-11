@@ -12,3 +12,4 @@ export * from './components/ui/tabs';
 export * from './components/ui/slider';
 export * from './components/ui/select';
 export * from './components/ui/charts';
+export * from './components/ui/alert-dialog';

@@ -33,4 +33,12 @@ export class BotManager {
       bot.start();
     }
   }
+
+  async stop(id: string) {
+    const bot = this._bots.get(id);
+    if (!bot) {
+      return;
+    }
+    await bot.stop();
+  }
 }

@@ -6,7 +6,7 @@ import { IBot, initBotsModel } from '../models/bot';
 import { initPluginModel } from '../models/plugin';
 
 // todo: refactor services - DO NOT CALL DATABASE DIRECTLY from inside the route
-export function bots({ server, database }: Application) {
+export function bots({ server, database, botManager }: Application) {
   const router = Router();
   const model = initBotsModel(database.sequelize);
   const pluginModel = initPluginModel(database.sequelize);
@@ -89,6 +89,24 @@ export function bots({ server, database }: Application) {
       },
     });
     res.json(plugins);
+  });
+
+  router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    await botManager.stop(id);
+    await model.destroy({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    await pluginModel.destroy({
+      where: {
+        botId: id,
+      },
+    });
+    res.json({
+      message: 'Bot deleted',
+    });
   });
 
   server.use('/api/bots', router);

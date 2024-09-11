@@ -1,4 +1,4 @@
-import type { IBot, IPlugin } from '@botmate/server';
+import type { IBot } from '@botmate/server';
 
 import { baseApi } from '../api';
 
@@ -12,6 +12,7 @@ export const botsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getBots: builder.query<IBot[], void>({
       query: () => '/bots',
+      providesTags: ['Bots'],
     }),
     getBotInfo: builder.query<IBot, string>({
       query: (id) => `/bots/${id}`,
@@ -23,8 +24,19 @@ export const botsApi = baseApi.injectEndpoints({
         body: bot,
       }),
     }),
+    deleteBot: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/bots/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Bots'],
+    }),
   }),
 });
 
-export const { useGetBotsQuery, useGetBotInfoQuery, useCreateBotMutation } =
-  botsApi;
+export const {
+  useGetBotsQuery,
+  useGetBotInfoQuery,
+  useCreateBotMutation,
+  useDeleteBotMutation,
+} = botsApi;

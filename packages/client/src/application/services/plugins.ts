@@ -40,7 +40,7 @@ export const pluginsApi = baseApi.injectEndpoints({
     uninstallPlugin: builder.mutation<PluginMeta, UninstallPluginPayload>({
       query: ({ botId, name }) => ({
         url: `/plugins/uninstall`,
-        method: 'DELETE',
+        method: 'POST',
         body: { name, botId },
       }),
       invalidatesTags: ['BotPlugins'],

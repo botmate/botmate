@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { toast, useBotConfig } from '@botmate/client';
+import { toast, usePluginConfig } from '@botmate/client';
 import {
   Button,
   Card,
@@ -13,7 +13,7 @@ import {
 } from '@botmate/ui';
 
 function SettingsPage() {
-  const config = useBotConfig();
+  const config = usePluginConfig();
 
   const apiKeyRef = useRef<HTMLInputElement>(null);
   const defaultValue = config.get('openai.apiKey', '');

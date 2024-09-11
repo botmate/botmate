@@ -30,12 +30,12 @@ export abstract class Plugin implements PluginInterface {
   }
 
   get config() {
-    const configManager = this._app.botConfigManager;
+    const configManager = this._app.configManager;
     return {
       get: (key: string, def?: any) =>
-        configManager.get(+this.bot.data.id, key, def),
+        configManager.getPluginConfig(+this.bot.data.id, key, def),
       set: (key: string, value: any) =>
-        configManager.save(+this.bot.data.id, key, value),
+        configManager.savePluginConfig(+this.bot.data.id, key, value),
     };
   }
 }

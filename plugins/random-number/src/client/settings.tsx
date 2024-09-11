@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { toast, useBotConfig } from '@botmate/client';
+import { toast, usePluginConfig } from '@botmate/client';
 import {
   Button,
   Card,
@@ -13,7 +13,7 @@ import {
 } from '@botmate/ui';
 
 function SettingsPage() {
-  const config = useBotConfig();
+  const config = usePluginConfig();
 
   const minRef = React.useRef<HTMLInputElement>(null);
   const maxRef = React.useRef<HTMLInputElement>(null);
@@ -32,9 +32,7 @@ function SettingsPage() {
         <CardHeader>
           <CardTitle className="text-md">Configure Range</CardTitle>
           <CardDescription className="text-sm">
-            <p>
-              Set the minimum and maximum range for the random number generator.
-            </p>
+            Set the minimum and maximum range for the random number generator.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between gap-4">

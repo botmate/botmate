@@ -1,56 +1,62 @@
 import { Application } from './application';
 import { initBotsModel } from './models/bot';
+import { initPluginModel } from './models/plugin';
 
-export class BotConfigManager {
+export class ConfigManager {
   constructor(private app: Application) {}
 
-  private _model = initBotsModel(this.app.database.sequelize);
+  private _botModel = initBotsModel(this.app.database.sequelize);
+  private _pluginModel = initPluginModel(this.app.database.sequelize);
 
-  async save<T = any>(botId: number, key: string, value: T) {
+  async savePluginConfig<T = any>(pluginId: string, key: string, value: T) {
     this.app.logger.debug(`Saving config key: ${key}`);
 
-    const bot = await this._model.findOne({
+    const plugin = await this._pluginModel.findOne({
       where: {
-        id: botId,
+        id: pluginId,
       },
     });
 
-    if (!bot) {
-      this.app.logger.error(`Bot not found: ${botId}`);
+    if (!plugin) {
+      this.app.logger.error(`Plugin not found: ${pluginId}`);
       return;
     }
 
-    const config = bot.config || {};
+    const config = plugin.config || {};
 
     config[key] = value;
 
-    await this._model.update(
+    await this._pluginModel.update(
       {
         config,
       },
       {
         where: {
-          id: botId,
+          id: pluginId,
         },
       },
     );
   }
 
-  async get<T = any>(botId: number, key: string, def?: T): Promise<T> {
+  async getPluginConfig<T = any>(
+    pluginId: string,
+    key: string,
+    def?: T,
+  ): Promise<T> {
     this.app.logger.debug(`Getting config key: ${key}`);
 
-    const bot = await this._model.findOne({
+    const plugin = await this._pluginModel.findOne({
       where: {
-        id: botId,
+        id: pluginId,
       },
     });
 
-    if (!bot) {
-      this.app.logger.error(`Bot not found: ${botId}`);
-      throw new Error(`Bot not found: ${botId}`);
+    if (!plugin) {
+      this.app.logger.error(`Plugin not found: ${pluginId}`);
+      throw new Error(`Plugin not found: ${pluginId}`);
     }
 
-    if (!bot.config?.[key]) {
+    if (!plugin.config?.[key]) {
       this.app.logger.debug(`Config key not found: ${key}`);
       if (def !== undefined) {
         this.app.logger.debug(`Returning default value: ${def}`);
@@ -58,6 +64,6 @@ export class BotConfigManager {
       }
     }
 
-    return bot.config?.[key] as T;
+    return plugin.config?.[key] as T;
   }
 }

@@ -8,9 +8,12 @@
   "author": "BotMate Team",
   "license": "ISC",
   "dependencies": {
+    "@botmate/ui": "workspace:^",
     "@botmate/server": "workspace:^",
     "@botmate/client": "workspace:^",
-    "@botmate/platform-telegram": "workspace:^"
+    "@botmate/platform-telegram": "workspace:^",
+    "grammy": "^1.29.0",
+    "openai": "4.59.0"
   },
   "botmate": {
     "platformType": "telegram"

@@ -53,7 +53,7 @@ function Sidebar() {
   const bot = useCurrentBot();
 
   return (
-    <div className="w-24 h-full flex flex-col py-3 bg-card">
+    <div className="w-24 h-full flex flex-col py-3 bg-card overflow-hidden">
       <div className="w-full h-20 flex items-center justify-center">
         <Link to="/" draggable="false">
           <img
@@ -65,7 +65,7 @@ function Sidebar() {
         </Link>
       </div>
 
-      <div className="flex flex-col py-4 gap-1 h-full">
+      <div className="flex flex-col py-4 gap-1 h-full overflow-auto">
         {items.map((item) => {
           const Icon = item.icon;
           const relativePath = location.pathname.replace(/^\/bots\/\d+/, '');
@@ -104,15 +104,14 @@ function Sidebar() {
             </TooltipProvider>
           );
         })}
-        <div className="flex-1" />
-        <div className="relative flex items-center justify-center" role="group">
-          <img
-            src={`/${bot.avatar}`}
-            alt="botmate"
-            className="w-[3.5rem] rounded-2xl cursor-default"
-            draggable="false"
-          />
-        </div>
+      </div>
+      <div className="relative flex items-center justify-center" role="group">
+        <img
+          src={`/${bot.avatar}`}
+          alt="botmate"
+          className="w-[3.5rem] rounded-2xl cursor-default"
+          draggable="false"
+        />
       </div>
     </div>
   );

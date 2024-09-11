@@ -43,8 +43,8 @@ function SettingsLayout() {
   const { data: plugins } = useGetPluginsQuery(bot.platformType);
 
   return (
-    <div className="flex flex-1">
-      <div className="w-72 py-6 p-4 space-y-6 bg-card border-r">
+    <div className="flex flex-1 h-screen overflow-hidden">
+      <div className="w-72 py-6 p-4 space-y-6 bg-card border-r overflow-auto">
         <div className="flex flex-col gap-1">
           {items.map((item) => {
             const relativePath = location.pathname.replace(
@@ -94,7 +94,7 @@ function SettingsLayout() {
           </div>
         </div>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 overflow-auto">
         <Outlet />
       </div>
     </div>

@@ -5,7 +5,7 @@ import express from 'express';
 
 import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
-import { Config } from './config';
+import { BotConfigManager } from './config';
 import { initBotsModel } from './models/bot';
 import { initPluginModel } from './models/plugin';
 import { PlatformManager } from './platform-manager';
@@ -23,12 +23,11 @@ export class Application {
   isDev = () => this.mode === 'development';
   rootPath = process.cwd();
   database = new Database();
-  config = new Config();
 
-  protected _config: Record<string, string | number | boolean> = {};
   protected _pluginManager: PluginManager;
   protected _platformManager: PlatformManager;
   protected _botManager: BotManager;
+  protected _botConfigManager: BotConfigManager;
   protected _cli: Command;
 
   get pluginManager() {
@@ -43,20 +42,23 @@ export class Application {
     return this._botManager;
   }
 
+  get botConfigManager() {
+    return this._botConfigManager;
+  }
+
   constructor() {
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
+    this._botConfigManager = new BotConfigManager(this);
 
     this._cli = this.createCLI();
 
     registerCLI(this);
   }
 
-  async init(config?: Record<string, string | number | boolean>) {
+  async init() {
     this.logger.info('Initializing application...');
-
-    this._config = config || {};
 
     initPluginModel(this.database.sequelize);
     initBotsModel(this.database.sequelize);

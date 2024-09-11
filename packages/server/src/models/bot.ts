@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model,
   ModelStatic,
-  Sequelize
+  Sequelize,
 } from '@botmate/database';
 import { PlatformType } from '@botmate/platform';
 
@@ -21,6 +21,7 @@ export class BotModel extends Model<
   declare platformType: PlatformType;
   declare raw: Record<string, unknown> | null;
   declare credentials: Record<string, string> | null;
+  declare config: Record<string, unknown> | null;
   declare avatar: string;
   declare enabled: boolean;
   declare status: BotStatus;
@@ -37,54 +38,58 @@ export function initBotsModel(db: Sequelize): ModelStatic<BotModel> {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        autoIncrementIdentity: true
+        autoIncrementIdentity: true,
       },
       botId: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       avatar: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       platformType: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       raw: {
         type: DataTypes.JSON,
-        allowNull: true
+        allowNull: true,
       },
       credentials: {
         type: DataTypes.JSON,
-        allowNull: true
+        allowNull: true,
+      },
+      config: {
+        type: DataTypes.JSON,
+        defaultValue: {},
       },
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false
+        defaultValue: false,
       },
       status: {
         type: DataTypes.ENUM('active', 'inactive', 'error'),
         allowNull: false,
-        defaultValue: 'inactive'
+        defaultValue: 'inactive',
       },
       createdAt: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
+        defaultValue: DataTypes.NOW,
       },
       updatedAt: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-      }
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
-      timestamps: true
-    }
+      timestamps: true,
+    },
   );
 }
 

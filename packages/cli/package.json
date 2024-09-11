@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@botmate/app": "workspace:^",
+    "@botmate/server": "workspace:^",
     "@botmate/utils": "workspace:^",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "colors": "^1.4.0",

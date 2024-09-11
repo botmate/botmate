@@ -9,7 +9,6 @@ export class PlatformManager {
 
   async listPlatforms() {
     const platformDir = join(this.app.rootPath, 'platforms');
-    console.log('platformDir', platformDir);
     if (existsSync(platformDir)) {
       const platforms = (await getPackages()).filter((pkg) =>
         pkg.name.startsWith('@botmate/platform-'),
@@ -21,8 +20,27 @@ export class PlatformManager {
         version: pkg.version,
         credentials: pkg.get('credentials'),
       }));
-    }
+    } else {
+      const pkgJSON = require(join(process.cwd(), 'package.json'));
+      const dependencies = pkgJSON?.dependencies || {};
 
-    return [];
+      const platforms = [];
+      for (const dep of Object.keys(dependencies)) {
+        if (dep.startsWith('@botmate/platform')) {
+          try {
+            const pkg = await import(`${dep}/package.json`);
+            platforms.push({
+              name: pkg.name,
+              displayName: pkg.displayName,
+              description: pkg.description,
+              version: pkg.version,
+              credentials: pkg.credentials,
+            });
+          } catch {}
+        }
+      }
+
+      return platforms;
+    }
   }
 }

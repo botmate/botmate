@@ -6,6 +6,10 @@
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
   "keywords": [],
+  "files": [
+    "lib",
+    "styles.css"
+  ],
   "author": "",
   "license": "ISC",
   "scripts": {

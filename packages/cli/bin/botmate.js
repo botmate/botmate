@@ -2,10 +2,9 @@
 
 const { Command } = require('commander');
 const { version } = require('../package.json');
-const { setupAppDir, initEnv } = require('../utils');
+const { initEnv } = require('../utils');
 
 initEnv();
-setupAppDir();
 
 process.env['VITE_CJS_IGNORE_WARNING'] = 'true';
 

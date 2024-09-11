@@ -71,12 +71,10 @@ export class Application {
           <BrowserRouter>
             <ReduxProvider store={store}>
               <Routes>
-                <Route index path="/" element={<HomePage />} />
-                <Route path="/setup" element={<SetupPage />} />
-                <Route path="/login" element={<LoginPage />} />
-
-                {/* todo: refactor to array/objects */}
                 <Route element={<AppProvider app={this} />}>
+                  <Route index path="/" element={<HomePage />} />
+                  <Route path="/setup" element={<SetupPage />} />
+                  <Route path="/login" element={<LoginPage />} />
                   <Route element={<BotProvider app={this} />} path="/bots/:id">
                     <Route element={<PluginsProvider />}>
                       <Route element={<MainLayout />}>

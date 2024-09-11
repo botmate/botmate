@@ -107,7 +107,7 @@ function Sidebar() {
         <div className="flex-1" />
         <div className="relative flex items-center justify-center" role="group">
           <img
-            src={`${process.env.ENDPOINT}/${bot.avatar}`}
+            src={`/${bot.avatar}`}
             alt="botmate"
             className="w-[3.5rem] rounded-2xl cursor-default"
             draggable="false"

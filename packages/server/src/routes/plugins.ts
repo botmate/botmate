@@ -7,10 +7,8 @@ export function plugins({ server, pluginManager }: Application) {
   const router = Router();
 
   router.get('/', async (req, res) => {
-    const { platformType } = req.query;
-    const plugins = await pluginManager.getPlugins(
-      platformType as PlatformType,
-    );
+    const { platform } = req.query;
+    const plugins = await pluginManager.getPlugins(platform as PlatformType);
     res.json(plugins);
   });
 

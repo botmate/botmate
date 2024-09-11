@@ -48,7 +48,9 @@ export class Bot {
       );
       return platform.default;
     } else {
-      return (await import(pkgMap[this.type])).default;
+      const _export = await import(pkgMap[this.type]);
+      const [first] = Object.values(_export);
+      return first;
     }
   }
 

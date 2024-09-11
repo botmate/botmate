@@ -19,7 +19,9 @@ function PluginsProvider() {
       for (const plugin of botPlugins!) {
         try {
           const pluginData = plugins?.find((p) => p.name === plugin.name);
-          const module = await import(`${pluginData?.clientPath}`);
+          const module = await import(
+            /* @vite-ignore */ `${pluginData?.clientPath}`
+          );
           const [first] = Object.keys(module);
           const _Plugin = module[first];
           const i = new _Plugin(app, plugin) as Plugin;

@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig({
+  // @ts-ignore
   plugins: [react(), cssInjectedByJsPlugin()],
   build: {
     lib: {
@@ -14,12 +15,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
-      output: {
-        globals: {
-          react: 'React',
-        },
-      },
+      external: ['react', 'react/jsx-runtime', 'react-dom'],
     },
     outDir: 'lib',
     emptyOutDir: false,

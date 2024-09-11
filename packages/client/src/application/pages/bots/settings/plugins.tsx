@@ -68,8 +68,8 @@ function PluginSettingsPage() {
                       botId: bot.id,
                       name: plugin.name,
                     }).unwrap();
+                    window.location.reload();
                   }
-                  window.location.reload();
                 }}
               >
                 click to{' '}

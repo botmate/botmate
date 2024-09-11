@@ -9,6 +9,7 @@ import type { IBot } from '@botmate/server';
 import '@botmate/ui/styles.css';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
+import { Toaster } from 'sonner';
 
 import { Api } from './api';
 import MainLayout from './layouts/main';
@@ -67,6 +68,7 @@ export class Application {
     // todo: setup dynamic routes
     return () => (
       <Subscribe>
+        <Toaster />
         <ThemeProvider attribute="class">
           <BrowserRouter>
             <ReduxProvider store={store}>

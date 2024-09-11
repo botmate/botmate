@@ -1,11 +1,9 @@
 import { Application } from './application';
-import { initBotsModel } from './models/bot';
 import { initPluginModel } from './models/plugin';
 
 export class ConfigManager {
   constructor(private app: Application) {}
 
-  private _botModel = initBotsModel(this.app.database.sequelize);
   private _pluginModel = initPluginModel(this.app.database.sequelize);
 
   async savePluginConfig<T = any>(pluginId: string, key: string, value: T) {
@@ -42,9 +40,7 @@ export class ConfigManager {
     pluginId: string,
     key: string,
     def?: T,
-  ): Promise<T> {
-    this.app.logger.debug(`Getting config key: ${key}`);
-
+  ): Promise<T | null> {
     const plugin = await this._pluginModel.findOne({
       where: {
         id: pluginId,
@@ -53,13 +49,13 @@ export class ConfigManager {
 
     if (!plugin) {
       this.app.logger.error(`Plugin not found: ${pluginId}`);
-      throw new Error(`Plugin not found: ${pluginId}`);
+      return null;
     }
 
     if (!plugin.config?.[key]) {
-      this.app.logger.debug(`Config key not found: ${key}`);
+      this.app.logger.warn(`Config key not found: ${key}`);
       if (def !== undefined) {
-        this.app.logger.debug(`Returning default value: ${def}`);
+        this.app.logger.warn(`Returning default value: ${def}`);
         return def;
       }
     }

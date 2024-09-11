@@ -153,7 +153,14 @@ export class PluginManager {
       const server = await import(plugin.serverPath);
       const [exportKey] = Object.keys(server);
       const _class = server[exportKey];
-      const _plugin = new _class(this.app, bot);
+
+      const pluginData = await this.model.findOne({
+        where: {
+          name: pluginName,
+          botId,
+        },
+      });
+      const _plugin = new _class(this.app, bot, pluginData);
 
       _plugin.logger = createLogger({
         name: exportKey,

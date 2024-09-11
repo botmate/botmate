@@ -1,5 +1,5 @@
 {
-  "root": "packages/ui",
+  "name": "ui",
   "targets": {
     "build": {
       "cache": true

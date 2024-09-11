@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "files": [
-    "lib"
+    "lib",
+    "public"
   ],
   "dependencies": {
+    "@botmate/client": "workspace:^",
     "@botmate/database": "workspace:^",
     "@botmate/logger": "workspace:^",
     "@botmate/platform": "workspace:^",

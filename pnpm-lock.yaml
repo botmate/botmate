@@ -186,9 +186,9 @@ importers:
 
   packages/cli:
     dependencies:
-      '@botmate/app':
+      '@botmate/server':
         specifier: workspace:^
-        version: link:../app
+        version: link:../server
       '@botmate/utils':
         specifier: workspace:^
         version: link:../utils
@@ -303,6 +303,9 @@ importers:
 
   packages/server:
     dependencies:
+      '@botmate/client':
+        specifier: workspace:^
+        version: link:../client
       '@botmate/database':
         specifier: workspace:^
         version: link:../database

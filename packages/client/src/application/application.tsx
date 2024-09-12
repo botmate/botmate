@@ -6,7 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import type { IBot } from '@botmate/server';
-import '@botmate/ui/styles.css';
+import '@botmate/ui/theme.css';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 import { Toaster } from 'sonner';

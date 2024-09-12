@@ -10,6 +10,9 @@
   "keywords": [],
   "author": "BotMate Team",
   "license": "ISC",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@botmate/ui": "workspace:^",
     "@botmate/client": "workspace:^",

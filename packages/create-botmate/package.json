@@ -11,9 +11,9 @@
     "files"
   ],
   "dependencies": {
+    "colors": "^1.4.0",
     "ejs": "^3.1.10",
     "fast-glob": "3.2.7",
-    "inquirer": "^8.0.0",
-    "@botmate/logger": "workspace:^"
+    "inquirer": "^8.0.0"
   }
 }

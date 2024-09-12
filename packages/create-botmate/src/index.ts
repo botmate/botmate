@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { createLogger } from '@botmate/logger';
 import { execSync } from 'child_process';
+import colors from 'colors';
 import ejs from 'ejs';
 import fg from 'fast-glob';
 import { existsSync } from 'fs';
@@ -11,12 +11,10 @@ import { dirname } from 'path';
 const cwd = process.cwd();
 
 async function run() {
-  const logger = createLogger({ name: 'create-botmate' });
-
   try {
     execSync('pnpm --version');
   } catch {
-    logger.error('Please install pnpm');
+    console.error('Please install pnpm');
     return;
   }
 
@@ -25,21 +23,23 @@ async function run() {
       type: 'input',
       name: 'name',
       message: 'Enter the name of the directory',
+      default: 'botmate',
     },
     {
-      type: 'checkbox',
-      name: 'platforms',
-      message: 'Select platforms',
+      type: 'list',
+      name: 'platform',
+      message: 'Select a platform',
       choices: [
         {
           name: 'Telegram',
           checked: true,
         },
         {
-          name: 'Slack',
+          name: 'Discord',
         },
         {
-          name: 'Discord',
+          name: 'Slack',
+          disabled: 'Coming soon',
         },
       ],
     },
@@ -49,18 +49,16 @@ async function run() {
   const projectDir = `${cwd}/${name}`;
 
   if (existsSync(projectDir)) {
-    logger.error('Directory already exists');
+    console.error(colors.red('Directory already exists'));
     return;
   }
 
-  logger.info('Creating botmate project...');
+  console.info('Creating botmate project...');
 
   await mkdir(projectDir, { recursive: true });
 
   const templateDir = `${__dirname}/../files`;
   const files = await fg(`${templateDir}/**/*`, { dot: true });
-
-  console.log('files', files);
 
   for (const file of files) {
     let relativePath = file.replace(templateDir, '');
@@ -70,9 +68,12 @@ async function run() {
     }
 
     const targetPath = `${projectDir}${relativePath}`;
-    const content = await ejs.renderFile(file);
+    const content = await ejs.renderFile(file, {
+      name,
+      platform: prompt.platform.toLowerCase(),
+    });
 
-    logger.info(`CREATE: ${relativePath}`);
+    console.info(colors.green(`CREATE:`), `${relativePath}`);
 
     const dir = dirname(targetPath);
 
@@ -80,12 +81,10 @@ async function run() {
     await writeFile(targetPath, content);
   }
 
-  logger.info('Inslalling dependencies using "pnpm"');
-
-  // execSync('pnpm install', {
-  //   cwd: projectDir,
-  //   stdio: 'inherit',
-  // });
+  console.info('Project created');
+  console.info('Run the following commands to start the project:');
+  console.info(colors.cyan.bold(`$ cd ${name}`));
+  console.info(colors.cyan.bold('$ pnpm install'));
 }
 
 run();

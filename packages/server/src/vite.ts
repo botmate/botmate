@@ -10,26 +10,27 @@ export async function setupVite({
   version,
   mode,
   isTSProject,
+  isDev,
 }: Application) {
   const client = require.resolve('@botmate/client/package.json');
   const clientDir = dirname(client);
 
   const vite = await createServer({
     mode,
-    plugins: [isTSProject && react()],
+    plugins: [isDev() && react()],
     server: {
       middlewareMode: true,
-      hmr: isTSProject ? true : false,
+      hmr: isDev() ? true : false,
     },
     root: join(clientDir, 'public'),
     appType: 'custom',
     logLevel: 'error',
     build: {
-      minify: false,
-      sourcemap: true,
+      minify: isDev() ? false : 'terser',
+      sourcemap: isDev() ? 'inline' : false,
     },
     optimizeDeps: {
-      include: ['react', 'react/jsx-runtime'],
+      include: ['react', 'react/jsx-runtime', 'react-dom'],
     },
     resolve: {
       alias: isTSProject

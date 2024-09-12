@@ -1,0 +1,26 @@
+{
+  "name": "<%=pkg%>",
+  "displayName": "<%=name%>",
+  "version": "1.0.0",
+  "description": "<%=description%>",
+  "main": "lib/server/index.js",
+  "scripts": {
+    "build": "tsup && vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@botmate/ui": "workspace:^",
+    "@botmate/client": "workspace:^",
+    "@botmate/platform-telegram": "workspace:^",
+    "@botmate/server": "workspace:^",
+    "grammy": "^1.29.0"
+  },
+  "botmate": {
+    "platformType": "telegram"
+  }
+}

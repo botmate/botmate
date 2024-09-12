@@ -5,10 +5,10 @@
     "dev": "botmate dev",
     "start": "botmate start",
     "build": "botmate build",
-    "dev:client": "vite dev",
     "prepare": "husky install",
     "commitlint": "commitlint --edit $1",
-    "create-botmate": "ts-node -r tsconfig-paths/register ./packages/create-botmate/src/index.ts"
+    "create-botmate": "ts-node -r tsconfig-paths/register ./packages/create-botmate/src/index.ts",
+    "local-registery": "verdaccio --config .verdaccio/config.yml"
   },
   "keywords": [],
   "author": "",
@@ -50,6 +50,7 @@
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0",
+    "verdaccio": "^5.32.1",
     "vite": "^5.4.2",
     "vite-plugin-css-injected-by-js": "^3.5.1",
     "vite-tsconfig-paths": "^5.0.1"

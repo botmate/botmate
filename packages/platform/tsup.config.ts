@@ -14,6 +14,7 @@ export default defineConfig({
   silent: true,
   sourcemap: false,
   clean: true,
-  bundle: true,
+  bundle: false,
+  treeshake: true,
   skipNodeModulesBundle: true,
 });

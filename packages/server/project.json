@@ -1,5 +1,5 @@
 {
-  "root": "packages/server",
+  "name": "server",
   "targets": {
     "build": {
       "cache": true

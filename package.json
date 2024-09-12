@@ -5,7 +5,6 @@
     "dev": "botmate dev",
     "start": "botmate start",
     "build": "botmate build",
-    "postinstall": "botmate postinstall",
     "dev:client": "vite dev",
     "prepare": "husky install",
     "commitlint": "commitlint --edit $1",
@@ -15,8 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@botmate/build": "workspace:^",
-    "@botmate/cli": "workspace:^",
+    "@botmate/server": "workspace:^",
     "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^19.4.1",
     "@commitlint/config-conventional": "^19.4.1",

@@ -15,6 +15,11 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 
 <br/>
 
+<p align="center">
+  <img src="https://wakatime.com/badge/github/xencodes/botmate.svg" alt="wakatime"/>
+  <img src="https://img.shields.io/npm/v/%40botmate%2Fserver" alt="wakatime"/>
+</p>
+
 > [!IMPORTANT]  
 > This project is still in development and not ready for production use.
 

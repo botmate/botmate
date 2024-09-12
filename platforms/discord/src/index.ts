@@ -59,6 +59,10 @@ export class Discord extends Platform<Client> {
       });
     });
   }
+
+  async start() {}
+
+  async stop() {}
 }
 
 export default Discord;

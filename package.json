@@ -8,7 +8,8 @@
     "prepare": "husky install",
     "commitlint": "commitlint --edit $1",
     "create-botmate": "ts-node -r tsconfig-paths/register ./packages/create-botmate/src/index.ts",
-    "local-registery": "verdaccio --config .verdaccio/config.yml"
+    "local-registery": "verdaccio --config .verdaccio/config.yml",
+    "gen:docs": "typedoc"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +50,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.2.4",
+    "typedoc": "^0.26.7",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0",
     "verdaccio": "^5.32.1",

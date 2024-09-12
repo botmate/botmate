@@ -20,11 +20,11 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 
 BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Here's what BotMate offers:
 
-- 🤖 Manage Multiple Bots: Control bots from platforms like Telegram and Discord, all from one central dashboard.
-- ⚙️ Customizable with Plugins: Easily extend bot functionality by installing or removing plugins with a single click.
-- 🖥️ Interactive Dashboard: Add widgets and adjust settings to personalize your bot management experience.
-- 🚀 Blazing Fast and Robust: Built on top of Node.js and TypeScript, BotMate delivers reliable and solid performance.
-- 💎 Simple for Everyone: Designed for developers and regular users alike—no coding skills required to manage bots!
+- 🤖 **Manage Multiple Bots**: Control bots from platforms like Telegram and Discord, all from one central dashboard.
+- ⚙️ **Customizable with Plugins**: Easily extend bot functionality by installing or removing plugins with a single click.
+- 🖥️ **Interactive Dashboard**: Add widgets and adjust settings to personalize your bot management experience.
+- 🚀 **Blazing Fast and Robust**: Built on top of Node.js and TypeScript, BotMate delivers reliable and solid performance.
+- 💎 **Simple for Everyone**: Designed for developers and regular users alike—no coding skills required to manage bots!
 
 ## Insights
 

@@ -7,7 +7,7 @@ import { Application } from './application';
 
 export async function setupVite({
   server,
-  isDev,
+  version,
   mode,
   isTSProject,
 }: Application) {
@@ -42,6 +42,10 @@ export async function setupVite({
 
   server.use(vite.middlewares);
 
+  const clientParams = {
+    version,
+  };
+
   server.get('*', async (req, res) => {
     res.end(
       await vite.transformIndexHtml(
@@ -57,9 +61,9 @@ export async function setupVite({
   <body>
     <div id="root"></div>
     <script type="module">
-      ${isTSProject ? 'import "@botmate/client/lib/style.css";' : ''}
+      ${!isTSProject ? 'import "@botmate/client/lib/style.css";' : ''}
       import { Application } from '@botmate/client';
-      const app = new Application();
+      const app = new Application(${JSON.stringify(clientParams)});
       app.render('root');
     </script>
   </body>

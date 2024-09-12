@@ -25,6 +25,7 @@ export class Application {
   port = process.env.PORT || 8233;
   rootPath = process.cwd();
   database = new Database();
+  version: string = require('../package.json').version;
 
   protected _pluginManager: PluginManager;
   protected _platformManager: PlatformManager;
@@ -81,6 +82,18 @@ export class Application {
     await this.pluginManager.init();
 
     process.on('SIGINT', () => this.stop());
+  }
+
+  async getLatestVersion() {
+    try {
+      const response = await fetch(
+        `https://registry.npmjs.org/-/package/@botmate/server/dist-tags`,
+      );
+      const data = await response.json();
+      return data.latest;
+    } catch (e) {
+      this.logger.error('Failed to get latest version');
+    }
   }
 
   async start() {

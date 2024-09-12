@@ -28,6 +28,11 @@ import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { store } from './store';
 
+type ClientParams = {
+  version: string;
+  latestVersion: string;
+};
+
 export class EventEmitter {
   private _events = new Map<string, Subject<any>>();
 
@@ -53,8 +58,13 @@ export class Application {
 
   bot: IBot | null = null;
   emitter = new EventEmitter();
+  version = '';
 
   private _pluginSettings = new Map<string, React.ReactNode>();
+
+  constructor(private _options: ClientParams) {
+    this.version = _options.version;
+  }
 
   get routes() {
     return this._routes;
@@ -62,6 +72,10 @@ export class Application {
 
   get pluginSettings() {
     return this._pluginSettings;
+  }
+
+  get options() {
+    return this._options;
   }
 
   getRootComponent() {

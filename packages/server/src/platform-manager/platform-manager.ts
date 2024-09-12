@@ -28,7 +28,7 @@ export class PlatformManager {
       for (const dep of Object.keys(dependencies)) {
         if (dep.startsWith('@botmate/platform')) {
           try {
-            const pkg = await import(`${dep}/package.json`);
+            const pkg = require(`${dep}/package.json`);
             platforms.push({
               name: pkg.name,
               displayName: pkg.displayName,

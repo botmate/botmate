@@ -5,15 +5,21 @@ import { createServer } from 'vite';
 
 import { Application } from './application';
 
-export async function setupVite({ server, isDev, mode }: Application) {
+export async function setupVite({
+  server,
+  isDev,
+  mode,
+  isTSProject,
+}: Application) {
   const client = require.resolve('@botmate/client/package.json');
   const clientDir = dirname(client);
 
   const vite = await createServer({
     mode,
-    plugins: [react()],
+    plugins: [isTSProject && react()],
     server: {
       middlewareMode: true,
+      hmr: isTSProject ? true : false,
     },
     root: join(clientDir, 'public'),
     appType: 'custom',
@@ -26,7 +32,7 @@ export async function setupVite({ server, isDev, mode }: Application) {
       include: ['react', 'react/jsx-runtime'],
     },
     resolve: {
-      alias: isDev()
+      alias: isTSProject
         ? {
             '@botmate/client': join(clientDir, 'src/index.ts'),
           }
@@ -51,6 +57,7 @@ export async function setupVite({ server, isDev, mode }: Application) {
   <body>
     <div id="root"></div>
     <script type="module">
+      ${isTSProject ? 'import "@botmate/client/lib/style.css";' : ''}
       import { Application } from '@botmate/client';
       const app = new Application();
       app.render('root');

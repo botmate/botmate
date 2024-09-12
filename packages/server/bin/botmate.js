@@ -10,6 +10,9 @@ const tsConfigPath = join(__dirname, '..', 'tsconfig.json');
 const isTsProject = existsSync(tsConfigPath);
 
 if (isTsProject) {
+  process.env.IS_TS_PROJECT = 'true';
+  process.env.NODE_ENV = 'development';
+
   const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
   const cliPath = join(__dirname, '..', 'src', 'cli.ts');
   const [, , ...argv] = process.argv;

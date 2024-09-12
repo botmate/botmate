@@ -4,6 +4,9 @@
   "description": "HTTP Server for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "bin": {
+    "botmate": "./bin/botmate.js"
+  },
   "scripts": {
     "build": "tsup"
   },
@@ -22,10 +25,13 @@
     "@botmate/ui": "workspace:^",
     "@lerna/project": "^6.4.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "colors": "^1.4.0",
     "commander": "^12.1.0",
+    "execa": "5.1.1",
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
     "sqlite3": "^5.1.7",
+    "tsx": "^4.17.0",
     "vite": "^5.4.2"
   },
   "devDependencies": {

@@ -1,6 +1,0 @@
-{
-  "name": "web",
-  "scripts": {
-    "build": "vite build"
-  }
-}

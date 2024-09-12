@@ -21,6 +21,7 @@ export class Application {
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
+  port = process.env.PORT || 8233;
   rootPath = process.cwd();
   database = new Database();
 
@@ -79,14 +80,12 @@ export class Application {
     await this.pluginManager.init();
 
     process.on('SIGINT', () => this.stop());
-    await this.cli.parseAsync(process.argv);
   }
 
   async start() {
-    const { PORT = 8233 } = process.env;
-    this.server.listen(PORT);
+    this.server.listen(this.port);
 
-    this.logger.info(`Application started on port ${PORT}`);
+    this.logger.info(`Application started on port ${this.port}`);
   }
 
   async stop() {
@@ -96,12 +95,6 @@ export class Application {
 
   protected createCLI() {
     const command = new Command('botmate');
-
-    command.command('dev').action(() => {
-      this.mode = 'development';
-      this.start();
-    });
-
     return command;
   }
 

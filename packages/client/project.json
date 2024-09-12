@@ -1,5 +1,5 @@
 {
-  "root": "packages/client",
+  "name": "client",
   "targets": {
     "build": {
       "cache": true

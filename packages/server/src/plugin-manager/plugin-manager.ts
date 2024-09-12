@@ -341,7 +341,7 @@ export class PluginManager {
             author: module.author,
             dependencies: module.dependencies,
             version: module.version,
-            platformType: module.platformType,
+            platformType: module.botmate.platformType,
           });
         }
       } catch (e) {}

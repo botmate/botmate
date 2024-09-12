@@ -8,7 +8,8 @@
   "keywords": [],
   "files": [
     "lib",
-    "styles.css"
+    "theme.css",
+    "tailwind.theme.config.js"
   ],
   "author": "",
   "license": "ISC",
@@ -30,8 +31,5 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.436.0",
     "recharts": "^2.12.7"
-  },
-  "devDependencies": {
-    "tailwindcss-animate": "1.0.7"
   }
 }

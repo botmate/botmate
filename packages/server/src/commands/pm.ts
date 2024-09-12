@@ -104,8 +104,8 @@ export default function pm(app: Application) {
     ]);
 
     let pluginFolder = join(process.cwd(), 'plugins');
-    if (existsSync('plugins')) {
-      pluginFolder = join(process.cwd(), 'plugins');
+    if (!existsSync(pluginFolder)) {
+      pluginFolder = join(process.cwd(), 'packages');
     }
 
     if (existsSync(`${pluginFolder}/${name}`)) {
@@ -113,7 +113,7 @@ export default function pm(app: Application) {
       return;
     }
 
-    const templatesFolder = join(__dirname, '../templates/plugin');
+    const templatesFolder = join(__dirname, '../../templates/plugin');
     const files = await fg(`${templatesFolder}/**/*`, { dot: true });
 
     const content = await Promise.all(

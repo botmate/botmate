@@ -4,6 +4,7 @@
   "description": "Frontned client for BotMate",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "vite build"
   },

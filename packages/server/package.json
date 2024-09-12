@@ -15,7 +15,8 @@
   "license": "ISC",
   "files": [
     "lib",
-    "public"
+    "public",
+    "templates"
   ],
   "dependencies": {
     "@botmate/client": "workspace:^",

@@ -8,7 +8,7 @@
   Open-source bot management platform, self-hosted.
 </h3>
 <p align="center">
-The ultimate platform for managing multiple bots across different platforms, 100% JavaScript/TypeScript, flexible and customizable.
+The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible and customizable.
 </p>
 
 <p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://demo.botmate.dev">Try live demo</a> · <a href="https://t.me/chatbotmate">Support chat</a></p>

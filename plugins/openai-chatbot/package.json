@@ -4,6 +4,9 @@
   "version": "1.0.2-next.0",
   "description": "OpenAI Chatbot plugin for BotMate",
   "main": "lib/server/index.js",
+  "scripts": {
+    "build": "tsup && vite build"
+  },
   "keywords": [],
   "author": "BotMate Team",
   "license": "ISC",

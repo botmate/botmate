@@ -1,4 +1,4 @@
-import { createLogger } from '@botmate/logger';
+import { createLogger, winston } from '@botmate/logger';
 import { Sequelize } from 'sequelize';
 
 interface DatabaseOptions {
@@ -7,7 +7,7 @@ interface DatabaseOptions {
 
 export class Database {
   sequelize: Sequelize;
-  logger = createLogger({ name: Database.name });
+  logger: winston.Logger = createLogger({ name: Database.name });
 
   constructor(options?: DatabaseOptions) {
     const { dbPath = 'storage/db/dev.sqlite3' } = options || {};

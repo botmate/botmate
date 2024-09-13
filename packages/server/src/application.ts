@@ -1,5 +1,5 @@
 import { Database } from '@botmate/database';
-import { createLogger } from '@botmate/logger';
+import { createLogger, winston } from '@botmate/logger';
 import { Command } from 'commander';
 import express from 'express';
 
@@ -15,8 +15,8 @@ import { setupCoreRoutes } from './routes';
 import { setupVite } from './vite';
 
 export class Application {
-  server = express();
-  logger = createLogger({ name: Application.name });
+  server: express.Application = express();
+  logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
 
   mode: 'development' | 'production' = 'development';

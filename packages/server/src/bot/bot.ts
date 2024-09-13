@@ -1,4 +1,4 @@
-import { createLogger } from '@botmate/logger';
+import { createLogger, winston } from '@botmate/logger';
 import { Platform, PlatformType } from '@botmate/platform';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -19,7 +19,7 @@ const pkgMap: Record<PlatformType, string> = {
 
 export class Bot {
   status = BotStatus.INACTIVE;
-  logger = createLogger({ name: Bot.name });
+  logger: winston.Logger = createLogger({ name: Bot.name });
   plugins = new Map<string, Plugin>();
 
   private _bot?: Platform;
@@ -50,7 +50,7 @@ export class Bot {
       const platform = await import(
         join(platformsDir, `${this.type}/src/index.ts`)
       );
-      return platform.default;
+      return platform.default?.default || platform.default;
     } else {
       const _export = await import(pkgMap[this.type]);
       const [first] = Object.values(_export);

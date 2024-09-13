@@ -3,6 +3,7 @@
   "version": "1.0.2-next.6",
   "description": "Logger for BotMate",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsup"
   },

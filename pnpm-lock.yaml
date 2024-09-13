@@ -374,6 +374,9 @@ importers:
       '@botmate/logger':
         specifier: 1.0.2-next.6
         version: link:../../packages/logger
+      '@botmate/platform':
+        specifier: 1.0.2-next.6
+        version: link:../../packages/platform
       axios:
         specifier: ^1.7.7
         version: 1.7.7

@@ -7,6 +7,8 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
+import { ListItem } from '@botmate/ui';
+
 import useCurrentBot from '../hooks/use-bot';
 import { useGetPluginsQuery } from '../services/plugins';
 
@@ -52,19 +54,15 @@ function SettingsLayout() {
               '',
             );
             const isActive = item.regex.test(relativePath || '/');
-
-            const absolutePath = `/bots/${params.id}/settings${item.path}`;
+            const absolutePath = `/bots/${params.botId}/settings${item.path}`;
 
             return (
-              <Link
-                key={item.id}
-                to={absolutePath}
-                className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
-              >
-                <h2 className="font-medium">{item.name}</h2>
-                <p className="mt-2 text-muted-foreground text-sm">
-                  {item.description}
-                </p>
+              <Link key={item.id} to={absolutePath}>
+                <ListItem
+                  label={item.name}
+                  description={item.description}
+                  isActive={isActive}
+                />
               </Link>
             );
           })}
@@ -78,16 +76,16 @@ function SettingsLayout() {
             {plugins?.length === 0
               ? NoPlugins
               : plugins?.map((plugin) => {
-                  const absolutePath = `/bots/${params.id}/settings/plugins?name=${plugin.name}`;
+                  // todo: create helper function to generate path
+                  const absolutePath = `/bots/${params.botId}/settings/plugins?name=${plugin.name}`;
                   const isActive = searchParams.get('name') === plugin.name;
 
                   return (
                     <Link key={plugin.name} to={absolutePath}>
-                      <div
-                        className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
-                      >
-                        <h2 className="font-medium">{plugin.displayName}</h2>
-                      </div>
+                      <ListItem
+                        label={plugin.displayName}
+                        isActive={isActive}
+                      />
                     </Link>
                   );
                 })}

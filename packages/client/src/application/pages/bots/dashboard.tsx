@@ -24,7 +24,7 @@ function DashboardPage() {
         title: 'Plugins',
         description: 'Discover more about the plugins and how to use them.',
         icon: PlugIcon,
-        link: `/bots/${params.id}/marketplace`,
+        link: `/bots/${params.botId}/marketplace`,
       },
       {
         title: 'Blogs',
@@ -39,7 +39,7 @@ function DashboardPage() {
         link: 'https://t.me/chatbotmate',
       },
     ],
-    [params.id],
+    [params.botId],
   );
   return (
     <PageLayout

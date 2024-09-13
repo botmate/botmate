@@ -1,6 +1,6 @@
 {
   "name": "@botmate/database",
-  "version": "1.0.2-next.1",
+  "version": "1.0.2-next.2",
   "description": "Database package for BotMate",
   "main": "lib/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/logger": "workspace:^",
+    "@botmate/logger": "1.0.2-next.2",
     "sequelize": "^6.37.3"
   }
 }

@@ -1,3 +1,14 @@
+## 1.0.2-next.5 (2024-09-13)
+
+
+### 🩹 Fixes
+
+- disable source file analysis in @nx/js plugin ([0c2e46e](https://github.com/botmate/botmate/commit/0c2e46e))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.0.2-next.4 (2024-09-13)
 
 This was a version bump only, there were no code changes.

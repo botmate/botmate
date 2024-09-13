@@ -1,12 +1,16 @@
+import { ModelStatic } from '@botmate/database';
+
 import { Application } from '../application';
 import { Bot } from '../bot/bot';
-import { initBotsModel } from '../models/bot';
+import { BotModel, initBotsModel } from '../models/bot';
 
 export class BotManager {
-  private _model = initBotsModel(this.app.database.sequelize);
+  private _model: ModelStatic<BotModel>;
   private _bots: Map<string, Bot> = new Map();
 
-  constructor(private app: Application) {}
+  constructor(private app: Application) {
+    this._model = initBotsModel(this.app.database.sequelize);
+  }
 
   /**
    * `init` method initializes the bot manager loads all the added bots in the `_bots` map.
@@ -29,6 +33,7 @@ export class BotManager {
 
   async startAll() {
     for (const bot of this._bots.values()) {
+      // todo: check for enabled
       // if (bot.enabled)
       bot.start();
     }

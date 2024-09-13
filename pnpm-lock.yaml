@@ -92,6 +92,9 @@ importers:
       lint-staged:
         specifier: ^15.2.10
         version: 15.2.10
+      lucide-react:
+        specifier: ^0.436.0
+        version: 0.436.0(react@18.3.1)
       nx:
         specifier: 19.5.7
         version: 19.5.7(@swc-node/register@1.9.2)(@swc/core@1.5.29)
@@ -110,6 +113,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.26.1
+        version: 6.26.1(react-dom@18.3.1)(react@18.3.1)
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -397,6 +403,24 @@ importers:
         version: 4.59.0
 
   plugins/random-number:
+    dependencies:
+      '@botmate/client':
+        specifier: 1.0.2-next.6
+        version: link:../../packages/client
+      '@botmate/platform-telegram':
+        specifier: 1.0.2-next.6
+        version: link:../../platforms/telegram
+      '@botmate/server':
+        specifier: 1.0.2-next.6
+        version: link:../../packages/server
+      '@botmate/ui':
+        specifier: 1.0.2-next.6
+        version: link:../../packages/ui
+      grammy:
+        specifier: ^1.29.0
+        version: 1.29.0
+
+  plugins/telegram-moderation:
     dependencies:
       '@botmate/client':
         specifier: 1.0.2-next.6
@@ -4449,7 +4473,6 @@ packages:
   /@remix-run/router@1.19.1:
     resolution: {integrity: sha512-S45oynt/WH19bHbIXjtli6QmwNYvaz+vtnubvNpNDvUOoA/OWh6j1OikIP3G+v5GHdxyC6EXoChG3HgYGEUfcg==}
     engines: {node: '>=14.0.0'}
-    dev: false
 
   /@rollup/pluginutils@5.1.0:
     resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
@@ -10268,7 +10291,6 @@ packages:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
     dependencies:
       react: 18.3.1
-    dev: false
 
   /lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
@@ -12214,7 +12236,6 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-router: 6.26.1(react@18.3.1)
-    dev: false
 
   /react-router@6.26.1(react@18.3.1):
     resolution: {integrity: sha512-kIwJveZNwp7teQRI5QmwWo39A5bXRyqpH0COKKmPnyD2vBvDwgFXSqDUYtt1h+FEyfnE8eXr7oe0MxRzVwCcvQ==}
@@ -12224,7 +12245,6 @@ packages:
     dependencies:
       '@remix-run/router': 1.19.1
       react: 18.3.1
-    dev: false
 
   /react-smooth@4.0.1(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-OE4hm7XqR0jNOq3Qmk9mFLyd6p2+j6bvbPJ7qlB7+oo0eNcL2l7WQzG6MBnT3EXY6xzkLMUBec3AfewJdA0J8w==}

@@ -156,7 +156,7 @@ importers:
   packages/client:
     dependencies:
       '@botmate/ui':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../ui
       '@loadable/component':
         specifier: ^5.16.4
@@ -222,7 +222,7 @@ importers:
   packages/database:
     dependencies:
       '@botmate/logger':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../logger
       sequelize:
         specifier: ^6.37.3
@@ -237,25 +237,25 @@ importers:
   packages/platform:
     dependencies:
       '@botmate/logger':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../logger
 
   packages/server:
     dependencies:
       '@botmate/client':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../client
       '@botmate/database':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../database
       '@botmate/logger':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../logger
       '@botmate/platform':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../platform
       '@botmate/ui':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../ui
       '@lerna/project':
         specifier: ^6.4.1
@@ -354,7 +354,7 @@ importers:
   platforms/discord:
     dependencies:
       '@botmate/logger':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/logger
       axios:
         specifier: ^1.7.7
@@ -366,7 +366,7 @@ importers:
   platforms/telegram:
     dependencies:
       '@botmate/logger':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/logger
       axios:
         specifier: ^1.7.7
@@ -378,16 +378,16 @@ importers:
   plugins/openai-chatbot:
     dependencies:
       '@botmate/client':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/client
       '@botmate/platform-telegram':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../platforms/telegram
       '@botmate/server':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/server
       '@botmate/ui':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/ui
       grammy:
         specifier: ^1.29.0
@@ -399,16 +399,16 @@ importers:
   plugins/random-number:
     dependencies:
       '@botmate/client':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/client
       '@botmate/platform-telegram':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../platforms/telegram
       '@botmate/server':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/server
       '@botmate/ui':
-        specifier: 1.0.2-next.3
+        specifier: 1.0.2-next.4
         version: link:../../packages/ui
       grammy:
         specifier: ^1.29.0

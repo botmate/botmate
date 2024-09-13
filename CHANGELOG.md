@@ -1,3 +1,23 @@
+## 1.0.2-next.7 (2024-09-13)
+
+
+### 🚀 Features
+
+- add plugin routes component for setting up routes for plugins ([033e835](https://github.com/botmate/botmate/commit/033e835))
+- allow plugin to insert routes ([580ca10](https://github.com/botmate/botmate/commit/580ca10))
+- add PageLayout component and ListItem component ([be4bb83](https://github.com/botmate/botmate/commit/be4bb83))
+- add telegram modertaion plugin [wip] ([2517058](https://github.com/botmate/botmate/commit/2517058))
+
+### 🩹 Fixes
+
+- remove plugins from the map when uninstalled ([080bc1f](https://github.com/botmate/botmate/commit/080bc1f))
+- use require instead of import for plugin loading ([1a051f1](https://github.com/botmate/botmate/commit/1a051f1))
+- double plugin load ([167941c](https://github.com/botmate/botmate/commit/167941c))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.0.2-next.6 (2024-09-13)
 
 This was a version bump only, there were no code changes.

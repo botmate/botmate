@@ -21,7 +21,7 @@ export class Application {
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
-  isTSProject = process.env.IS_TS_PROJECT !== undefined;
+  isMonorepo = process.env.IS_MONOREPO !== undefined;
   port = process.env.PORT || 8233;
   rootPath = process.cwd();
   database = new Database();

@@ -10,7 +10,7 @@ const tsConfigPath = join(__dirname, '..', 'tsconfig.json');
 const isTsProject = existsSync(tsConfigPath);
 
 if (isTsProject) {
-  process.env.IS_TS_PROJECT = 'true';
+  process.env.IS_MONOREPO = 'true';
   process.env.NODE_ENV = 'development';
 
   const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');

@@ -1,6 +1,6 @@
 {
   "name": "@botmate/platform",
-  "version": "1.0.2-next.5",
+  "version": "1.0.2-next.6",
   "description": "Platform interface for BotMate",
   "main": "lib/index.js",
   "scripts": {
@@ -13,6 +13,6 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/logger": "1.0.2-next.5"
+    "@botmate/logger": "1.0.2-next.6"
   }
 }

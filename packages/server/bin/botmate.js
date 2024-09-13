@@ -40,6 +40,7 @@ function run() {
     if (argv.length > 0) {
       const [cmd] = argv;
       if (cmd === 'dev') {
+        process.env.NODE_ENV = 'development';
         spawn(
           tsx,
           [

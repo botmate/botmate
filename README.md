@@ -13,6 +13,10 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 
 <p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://demo.botmate.dev">Try live demo</a> · <a href="https://t.me/chatbotmate">Support chat</a></p>
 
+<p align="center">
+<img src="https://skillicons.dev/icons?i=ts,tailwind,docker,github"/>
+</p>
+
 <br/>
 
 <p align="center">
@@ -30,6 +34,33 @@ BotMate is a web platform for managing multiple bots across different platforms,
 - 🖥️ **Interactive Dashboard**: Add widgets and adjust settings to personalize your bot management experience.
 - 🚀 **Blazing Fast and Robust**: Built on top of Node.js and TypeScript, BotMate delivers reliable and solid performance.
 - 💎 **Simple for Everyone**: Designed for developers and regular users alike—no coding skills required to manage bots!
+
+## Installation
+
+### CLI
+
+Run the following command to create a new BotMate project:
+
+```bash
+pnpm create botmate
+```
+
+After the project is created, navigate to the project directory and install the dependencies:
+
+```bash
+cd botmate
+pnpm install
+```
+
+Finally, start the development server:
+
+```bash
+pnpm dev
+```
+
+### Docker (coming soon)
+
+> Docker images will be available soon.
 
 ## Insights
 

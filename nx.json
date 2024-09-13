@@ -7,5 +7,10 @@
       "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/dist", "{projectRoot}/lib"]
     }
+  },
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": false
+    }
   }
 }

@@ -8,17 +8,23 @@
     "prepare": "husky install",
     "commitlint": "commitlint --edit $1",
     "create-botmate": "ts-node -r tsconfig-paths/register ./packages/create-botmate/src/index.ts",
-    "local-registery": "verdaccio --config .verdaccio/config.yml"
+    "local-registery": "verdaccio --config .verdaccio/config.yml",
+    "gen:docs": "typedoc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@botmate/server": "workspace:^",
+    "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^19.4.1",
     "@commitlint/config-conventional": "^19.4.1",
     "@eslint/js": "^9.9.0",
+    "@nx/js": "19.5.7",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/ejs": "^3.1.5",
     "@types/inquirer": "^9.0.7",
@@ -43,16 +49,19 @@
     "prettier-plugin-tailwindcss": "^0.6.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.2",
     "tailwindcss": "^3.4.10",
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.2.4",
+    "typedoc": "^0.26.7",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0",
     "verdaccio": "^5.32.1",
     "vite": "^5.4.2",
     "vite-plugin-css-injected-by-js": "^3.5.1",
+    "vite-plugin-dts": "^4.2.1",
     "vite-tsconfig-paths": "^5.0.1"
   },
   "lint-staged": {
@@ -63,5 +72,6 @@
     "**/*.{html,json,css,scss,md,mdx}": [
       "prettier -w"
     ]
-  }
+  },
+  "dependencies": {}
 }

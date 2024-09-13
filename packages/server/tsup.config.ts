@@ -17,4 +17,5 @@ export default defineConfig({
   bundle: false,
   treeshake: true,
   skipNodeModulesBundle: true,
+  dts: true,
 });

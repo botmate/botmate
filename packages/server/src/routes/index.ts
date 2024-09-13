@@ -24,4 +24,8 @@ export async function setupCoreRoutes(app: Application) {
     }
     res.status(404).end('File not found');
   });
+
+  app.server.get('/version', (req, res) => {
+    res.end(app.version);
+  });
 }

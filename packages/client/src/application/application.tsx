@@ -6,7 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import type { IBot } from '@botmate/server';
-import '@botmate/ui/styles.css';
+import '@botmate/ui/theme.css';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 import { Toaster } from 'sonner';
@@ -27,6 +27,11 @@ import { AppProvider } from './providers/app';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { store } from './store';
+
+type ClientParams = {
+  version: string;
+  latestVersion: string;
+};
 
 export class EventEmitter {
   private _events = new Map<string, Subject<any>>();
@@ -53,8 +58,13 @@ export class Application {
 
   bot: IBot | null = null;
   emitter = new EventEmitter();
+  version = '';
 
   private _pluginSettings = new Map<string, React.ReactNode>();
+
+  constructor(private _options: ClientParams) {
+    this.version = _options.version;
+  }
 
   get routes() {
     return this._routes;
@@ -62,6 +72,10 @@ export class Application {
 
   get pluginSettings() {
     return this._pluginSettings;
+  }
+
+  get options() {
+    return this._options;
   }
 
   getRootComponent() {

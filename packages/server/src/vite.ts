@@ -7,29 +7,30 @@ import { Application } from './application';
 
 export async function setupVite({
   server,
-  isDev,
+  version,
   mode,
   isTSProject,
+  isDev,
 }: Application) {
   const client = require.resolve('@botmate/client/package.json');
   const clientDir = dirname(client);
 
   const vite = await createServer({
     mode,
-    plugins: [isTSProject && react()],
+    plugins: [isDev() && react()],
     server: {
       middlewareMode: true,
-      hmr: isTSProject ? true : false,
+      hmr: isDev() ? true : false,
     },
     root: join(clientDir, 'public'),
     appType: 'custom',
     logLevel: 'error',
     build: {
-      minify: false,
-      sourcemap: true,
+      minify: isDev() ? false : 'terser',
+      sourcemap: isDev() ? 'inline' : false,
     },
     optimizeDeps: {
-      include: ['react', 'react/jsx-runtime'],
+      include: ['react', 'react/jsx-runtime', 'react-dom'],
     },
     resolve: {
       alias: isTSProject
@@ -41,6 +42,10 @@ export async function setupVite({
   });
 
   server.use(vite.middlewares);
+
+  const clientParams = {
+    version,
+  };
 
   server.get('*', async (req, res) => {
     res.end(
@@ -57,9 +62,9 @@ export async function setupVite({
   <body>
     <div id="root"></div>
     <script type="module">
-      ${isTSProject ? 'import "@botmate/client/lib/style.css";' : ''}
+      ${!isTSProject ? 'import "@botmate/client/lib/style.css";' : ''}
       import { Application } from '@botmate/client';
-      const app = new Application();
+      const app = new Application(${JSON.stringify(clientParams)});
       app.render('root');
     </script>
   </body>

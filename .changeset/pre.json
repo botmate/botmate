@@ -1,0 +1,21 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@botmate/client": "1.0.1",
+    "create-botmate": "1.0.1",
+    "@botmate/database": "1.0.1",
+    "@botmate/logger": "1.0.1",
+    "@botmate/platform": "1.0.1",
+    "@botmate/server": "1.0.1",
+    "@botmate/ui": "1.0.1",
+    "@botmate/utils": "1.0.1",
+    "@botmate/platform-discord": "1.0.1",
+    "@botmate/platform-telegram": "1.0.1",
+    "@botmate/plugin-openai-chatbot": "1.0.1",
+    "@botmate/plugin-random-number": "1.0.1"
+  },
+  "changesets": [
+    "wicked-students-play"
+  ]
+}

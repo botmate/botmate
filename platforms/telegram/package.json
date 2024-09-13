@@ -1,7 +1,7 @@
 {
   "name": "@botmate/platform-telegram",
   "displayName": "Telegram",
-  "version": "1.0.0",
+  "version": "1.0.2-next.0",
   "description": "Telegram platform support for BotMate",
   "main": "lib/index.js",
   "scripts": {

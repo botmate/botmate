@@ -1,7 +1,7 @@
 {
   "name": "@botmate/plugin-openai-chatbot",
   "displayName": "OpenAI Chatbot",
-  "version": "1.0.0",
+  "version": "1.0.2-next.0",
   "description": "OpenAI Chatbot plugin for BotMate",
   "main": "lib/server/index.js",
   "keywords": [],

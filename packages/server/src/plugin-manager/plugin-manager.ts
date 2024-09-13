@@ -164,7 +164,7 @@ export class PluginManager {
     if (bot) {
       this.logger.debug(`loading plugin ${plugin.serverPath}`);
 
-      const server = await import(plugin.serverPath);
+      const server = require(plugin.serverPath);
       const [exportKey] = Object.keys(server);
       const _class = server[exportKey];
 

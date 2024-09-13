@@ -21,6 +21,10 @@
     "@commitlint/cli": "^19.4.1",
     "@commitlint/config-conventional": "^19.4.1",
     "@eslint/js": "^9.9.0",
+    "@nx/js": "19.5.7",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/ejs": "^3.1.5",
     "@types/inquirer": "^9.0.7",
@@ -68,5 +72,6 @@
     "**/*.{html,json,css,scss,md,mdx}": [
       "prettier -w"
     ]
-  }
+  },
+  "dependencies": {}
 }

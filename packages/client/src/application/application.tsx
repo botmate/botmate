@@ -1,17 +1,18 @@
 import { Subscribe } from '@react-rxjs/core';
 import * as Sentry from '@sentry/react';
+import { LucideIcon } from 'lucide-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import type { IBot } from '@botmate/server';
-import '@botmate/ui/theme.css';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 import { Toaster } from 'sonner';
 
 import { Api } from './api';
+import PluginRoutes from './components/plugin-routes';
 import MainLayout from './layouts/main';
 import SettingsLayout from './layouts/settings';
 import AnalyticsPage from './pages/bots/analytics';
@@ -51,6 +52,13 @@ export class EventEmitter {
   }
 }
 
+export type SidebarItem = {
+  label: string;
+  path: string;
+  icon: LucideIcon;
+  regex?: RegExp;
+};
+
 export class Application {
   api = new Api();
 
@@ -60,10 +68,19 @@ export class Application {
   emitter = new EventEmitter();
   version = '';
 
+  private _sidebar: SidebarItem[] = [];
   private _pluginSettings = new Map<string, React.ReactNode>();
 
   constructor(private _options: ClientParams) {
     this.version = _options.version;
+  }
+
+  /**
+   * The method to add a new item to the sidebar.
+   * All the items listed here are from the plugins.
+   */
+  get sidebar() {
+    return this._sidebar;
   }
 
   get routes() {
@@ -91,7 +108,10 @@ export class Application {
                   <Route index path="/" element={<HomePage />} />
                   <Route path="/setup" element={<SetupPage />} />
                   <Route path="/login" element={<LoginPage />} />
-                  <Route element={<BotProvider app={this} />} path="/bots/:id">
+                  <Route
+                    element={<BotProvider app={this} />}
+                    path="/bots/:botId"
+                  >
                     <Route element={<PluginsProvider />}>
                       <Route element={<MainLayout />}>
                         <Route index element={<DashboardPage />} />
@@ -111,6 +131,7 @@ export class Application {
                             element={<PluginSettingsPage />}
                           />
                         </Route>
+                        <Route path="*" element={<PluginRoutes />} />
                       </Route>
                     </Route>
                   </Route>

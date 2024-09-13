@@ -114,6 +114,20 @@ export class PluginManager {
       throw new Error(`Plugin ${name} not found`);
     }
 
+    const bot = this.app.botManager.bots.get(botId);
+    if (bot) {
+      const pluginInstance = bot.plugins.get(name);
+      if (pluginInstance) {
+        try {
+          // await pluginInstance.();
+          bot.plugins.delete(name);
+        } catch (error) {
+          console.error(error);
+          this.logger.error(`Error unloading plugin ${name}`);
+        }
+      }
+    }
+
     return await exist.destroy();
   }
 

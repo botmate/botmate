@@ -1,5 +1,14 @@
 # @botmate/client
 
+## 1.0.2-next.1
+
+### Patch Changes
+
+- package scripts
+
+- Updated dependencies []:
+  - @botmate/ui@1.0.2-next.1
+
 ## 1.0.2-next.0
 
 ### Patch Changes

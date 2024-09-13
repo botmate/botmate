@@ -16,6 +16,7 @@
     "@botmate/plugin-random-number": "1.0.1"
   },
   "changesets": [
+    "friendly-llamas-scream",
     "wicked-students-play"
   ]
 }

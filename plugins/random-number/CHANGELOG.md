@@ -1,5 +1,17 @@
 # @botmate/plugin-random-number
 
+## 1.0.2-next.1
+
+### Patch Changes
+
+- package scripts
+
+- Updated dependencies []:
+  - @botmate/platform-telegram@1.0.2-next.1
+  - @botmate/client@1.0.2-next.1
+  - @botmate/server@1.0.2-next.1
+  - @botmate/ui@1.0.2-next.1
+
 ## 1.0.2-next.0
 
 ### Patch Changes

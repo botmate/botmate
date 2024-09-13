@@ -1,7 +1,7 @@
 {
   "name": "@botmate/plugin-random-number",
   "displayName": "Random Number",
-  "version": "1.0.2-next.0",
+  "version": "1.0.2-next.1",
   "description": "A plugin that generates a random number.",
   "main": "lib/server/index.js",
   "scripts": {

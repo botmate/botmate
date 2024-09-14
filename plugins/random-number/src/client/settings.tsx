@@ -27,7 +27,7 @@ function SettingsPage() {
   }, []);
 
   return (
-    <div className="max-w-2xl p-8">
+    <div className="max-w-2xl">
       <Card>
         <CardHeader>
           <CardTitle className="text-md">Configure Range</CardTitle>

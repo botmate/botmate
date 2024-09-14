@@ -298,7 +298,7 @@ export class PluginManager {
 
     const isDev = this.app.isDev();
 
-    const pluginsLocal = await Promise.all(
+    const pluginsLocal = (await Promise.all(
       packages.map(async (pkg) => {
         let serverPath, clientPath;
         const botmate = pkg.get('botmate');
@@ -337,7 +337,7 @@ export class PluginManager {
           platformType,
         } as PluginMeta;
       }),
-    );
+    ).then((plugins) => plugins.filter(Boolean))) as PluginMeta[];
 
     const pkgJSON = join(this.app.rootPath, 'package.json');
     const deps = require(pkgJSON).dependencies || {};

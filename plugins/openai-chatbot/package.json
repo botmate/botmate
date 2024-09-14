@@ -14,14 +14,18 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/ui": "1.0.2-next.8",
-    "@botmate/server": "1.0.2-next.8",
     "@botmate/client": "1.0.2-next.8",
     "@botmate/platform-telegram": "1.0.2-next.8",
+    "@botmate/server": "1.0.2-next.8",
+    "@botmate/ui": "1.0.2-next.8",
     "grammy": "^1.29.0",
     "openai": "4.59.0"
   },
   "botmate": {
     "platformType": "telegram"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41"
   }
 }

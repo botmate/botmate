@@ -8,7 +8,7 @@ export default defineConfig({
     outDir: 'lib/client',
     emptyOutDir: true,
     lib: {
-      entry: 'src/client/index.ts',
+      entry: 'src/client/entry.ts',
       formats: ['es'],
       fileName() {
         return `index.js`;

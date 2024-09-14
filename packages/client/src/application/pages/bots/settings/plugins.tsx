@@ -96,7 +96,7 @@ function PluginSettingsPage() {
           </div>
         </div>
 
-        <div>{Settings}</div>
+        <div className="p-8">{Settings}</div>
       </div>
     );
   }

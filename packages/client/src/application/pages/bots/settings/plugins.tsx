@@ -45,60 +45,58 @@ function PluginSettingsPage() {
           </div>
         </div>
 
-        <div>
-          <div className="px-8 py-4 border-b w-full bg-card/80">
-            <div className="flex gap-2 items-center">
-              <Badge
-                className="cursor-pointer"
-                onClick={async () => {
-                  if (data) {
-                    if (data.enabled) {
-                      await disablePluginMutation({
-                        botId: bot.id,
-                        name: plugin.name,
-                      }).unwrap();
-                    } else {
-                      await enablePluginMutation({
-                        botId: bot.id,
-                        name: plugin.name,
-                      }).unwrap();
-                    }
-                  } else {
-                    await installPluginMutation({
+        <div className="px-8 py-4 border-b w-full bg-card/80">
+          <div className="flex gap-2 items-center">
+            <Badge
+              className="cursor-pointer"
+              onClick={async () => {
+                if (data) {
+                  if (data.enabled) {
+                    await disablePluginMutation({
                       botId: bot.id,
                       name: plugin.name,
                     }).unwrap();
-                    window.location.reload();
+                  } else {
+                    await enablePluginMutation({
+                      botId: bot.id,
+                      name: plugin.name,
+                    }).unwrap();
                   }
+                } else {
+                  await installPluginMutation({
+                    botId: bot.id,
+                    name: plugin.name,
+                  }).unwrap();
+                  window.location.reload();
+                }
+              }}
+            >
+              click to{' '}
+              {data ? (data?.enabled ? 'disable' : 'enable') : 'install'}
+            </Badge>
+            {/* {plugin.installed && <Badge variant="outline">installed</Badge>} */}
+            <Badge variant="outline">v{plugin.version}</Badge>
+            <Badge variant="outline">latest</Badge>
+            <div className="flex-1" />
+            {!!data && (
+              <Badge
+                variant="danger"
+                className="bg-red-500 text-white cursor-pointer hover:bg-red-400"
+                onClick={async () => {
+                  await uninstallPluginMutation({
+                    botId: bot.id,
+                    name: plugin.name,
+                  }).unwrap();
+                  window.location.reload();
                 }}
               >
-                click to{' '}
-                {data ? (data?.enabled ? 'disable' : 'enable') : 'install'}
+                uninstall
               </Badge>
-              {/* {plugin.installed && <Badge variant="outline">installed</Badge>} */}
-              <Badge variant="outline">v{plugin.version}</Badge>
-              <Badge variant="outline">latest</Badge>
-              <div className="flex-1" />
-              {!!data && (
-                <Badge
-                  variant="danger"
-                  className="bg-red-500 text-white cursor-pointer hover:bg-red-400"
-                  onClick={async () => {
-                    await uninstallPluginMutation({
-                      botId: bot.id,
-                      name: plugin.name,
-                    }).unwrap();
-                    window.location.reload();
-                  }}
-                >
-                  uninstall
-                </Badge>
-              )}
-            </div>
+            )}
           </div>
-
-          <div className="p-8">{Settings}</div>
         </div>
+
+        <div className="p-8">{Settings}</div>
       </div>
     );
   }

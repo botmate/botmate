@@ -1,10 +1,14 @@
+import { ModelStatic } from '@botmate/database';
+
 import { Application } from './application';
-import { initPluginModel } from './models/plugin';
+import { PluginModel, initPluginModel } from './models/plugin';
 
 export class ConfigManager {
-  constructor(private app: Application) {}
+  private _pluginModel: ModelStatic<PluginModel>;
 
-  private _pluginModel = initPluginModel(this.app.database.sequelize);
+  constructor(private app: Application) {
+    this._pluginModel = initPluginModel(this.app.database.sequelize);
+  }
 
   async savePluginConfig<T = any>(pluginId: string, key: string, value: T) {
     this.app.logger.debug(`Saving config key: ${key}`);

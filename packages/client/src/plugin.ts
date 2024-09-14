@@ -1,6 +1,8 @@
+import { RouteObject } from 'react-router-dom';
+
 import { IPlugin } from '@botmate/server';
 
-import { Application } from './application';
+import { Application, SidebarItem } from './application';
 
 export abstract class Plugin {
   abstract displayName: string;
@@ -20,14 +22,34 @@ export abstract class Plugin {
     return this.app.routes;
   }
 
-  addRoute(path: string, element: React.ReactNode) {
-    this.routes.push({ path, element });
+  /**
+   * Add a route to the application
+   * @param path
+   * @param element
+   */
+  addRoute(route: RouteObject) {
+    this.routes.push(route);
   }
 
+  /**
+   * Add a sidebar item to the application
+   * @param item SidebarItem
+   */
+  addToSidebar(item: SidebarItem) {
+    this.app.sidebar.push(item);
+  }
+
+  /**
+   * Provide settings for the plugin to be displayed in the settings page
+   * @param element
+   */
   provideSettings(element: React.ReactNode) {
     this.app.pluginSettings.set(this.pluginData.name, element);
   }
 
+  /**
+   * @internal
+   */
   getSettingsPage() {
     return this.app.pluginSettings.get(this.pluginData.name);
   }

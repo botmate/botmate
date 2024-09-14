@@ -9,11 +9,14 @@ export async function setupVite({
   server,
   version,
   mode,
-  isTSProject,
+  isMonorepo,
   isDev,
 }: Application) {
   const client = require.resolve('@botmate/client/package.json');
   const clientDir = dirname(client);
+
+  const ui = require.resolve('@botmate/ui/package.json');
+  const uiDir = dirname(ui);
 
   const vite = await createServer({
     mode,
@@ -33,9 +36,10 @@ export async function setupVite({
       include: ['react', 'react/jsx-runtime', 'react-dom'],
     },
     resolve: {
-      alias: isTSProject
+      alias: isMonorepo
         ? {
             '@botmate/client': join(clientDir, 'src/index.ts'),
+            '@botmate/ui': join(uiDir, 'src/index.ts'),
           }
         : {},
     },
@@ -62,7 +66,12 @@ export async function setupVite({
   <body>
     <div id="root"></div>
     <script type="module">
-      ${!isTSProject ? 'import "@botmate/client/lib/style.css";' : ''}
+      ${
+        !isMonorepo
+          ? 'import "@botmate/client/lib/style.css";\n' +
+            'import "@botmate/ui/theme.css";'
+          : ''
+      }
       import { Application } from '@botmate/client';
       const app = new Application(${JSON.stringify(clientParams)});
       app.render('root');

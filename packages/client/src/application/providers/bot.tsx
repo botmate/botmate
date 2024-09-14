@@ -11,8 +11,12 @@ type Props = {
 function BotProvider({ app }: Props) {
   const params = useParams();
 
-  const { isLoading, data: botInfo } = useGetBotInfoQuery(params.id as string, {
-    skip: !params.id,
+  const {
+    isLoading,
+    data: botInfo,
+    error,
+  } = useGetBotInfoQuery(params.botId as string, {
+    skip: !params.botId,
     refetchOnMountOrArgChange: true,
   });
 
@@ -28,6 +32,12 @@ function BotProvider({ app }: Props) {
         <Loader2 className="animate-spin" size={24} />
       </div>
     );
+  }
+
+  if (error && 'status' in error) {
+    if (error.status === 404) {
+      return <div>Bot not found</div>;
+    }
   }
 
   return <Outlet />;

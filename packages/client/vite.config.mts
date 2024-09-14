@@ -12,8 +12,8 @@ export default defineConfig({
     outDir: 'lib',
     emptyOutDir: true,
     lib: {
-      entry: 'src/index.ts',
-      formats: ['es', 'cjs'],
+      entry: 'src/entry.ts',
+      formats: ['es'],
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {

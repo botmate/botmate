@@ -4,7 +4,7 @@ import { useGetBotInfoQuery } from '../services';
 
 function useCurrentBot() {
   const params = useParams();
-  const { data } = useGetBotInfoQuery(params.id as string);
+  const { data } = useGetBotInfoQuery(params.botId as string);
   return data!;
 }
 

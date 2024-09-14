@@ -15,6 +15,7 @@ function PluginsProvider() {
   const { data: botPlugins } = useGetBotPluginsQuery(bot.id);
 
   useEffect(() => {
+    app.sidebar.length = 0;
     async function loadPlugins() {
       for (const plugin of botPlugins!) {
         try {

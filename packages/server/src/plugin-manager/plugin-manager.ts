@@ -1,4 +1,5 @@
-import { createLogger } from '@botmate/logger';
+import { ModelStatic } from '@botmate/database';
+import { createLogger, winston } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 import { getPackagesSync } from '@lerna/project';
 import { existsSync } from 'fs';
@@ -6,7 +7,7 @@ import { join } from 'path';
 
 import { Application } from '../application';
 import { Bot } from '../bot';
-import { initPluginModel } from '../models/plugin';
+import { PluginModel, initPluginModel } from '../models/plugin';
 
 export type PluginMeta = {
   name: string;
@@ -22,12 +23,14 @@ export type PluginMeta = {
 
 // todo: refactor
 export class PluginManager {
-  private model = initPluginModel(this.app.database.sequelize);
-  private logger = createLogger({ name: PluginManager.name });
+  private model: ModelStatic<PluginModel>;
+  private logger: winston.Logger = createLogger({ name: PluginManager.name });
 
   private _plugins = new Map<string, PluginMeta>();
 
-  constructor(private app: Application) {}
+  constructor(private app: Application) {
+    this.model = initPluginModel(this.app.database.sequelize);
+  }
 
   get plugins() {
     return this._plugins;
@@ -71,7 +74,6 @@ export class PluginManager {
       }
     }
 
-    await this.loadAll();
     await this.app.botManager.startAll();
   }
 
@@ -164,7 +166,7 @@ export class PluginManager {
     if (bot) {
       this.logger.debug(`loading plugin ${plugin.serverPath}`);
 
-      const server = await import(plugin.serverPath);
+      const server = require(plugin.serverPath);
       const [exportKey] = Object.keys(server);
       const _class = server[exportKey];
 
@@ -296,7 +298,7 @@ export class PluginManager {
 
     const isDev = this.app.isDev();
 
-    const pluginsLocal = await Promise.all(
+    const pluginsLocal = (await Promise.all(
       packages.map(async (pkg) => {
         let serverPath, clientPath;
         const botmate = pkg.get('botmate');
@@ -335,7 +337,7 @@ export class PluginManager {
           platformType,
         } as PluginMeta;
       }),
-    );
+    ).then((plugins) => plugins.filter(Boolean))) as PluginMeta[];
 
     const pkgJSON = join(this.app.rootPath, 'package.json');
     const deps = require(pkgJSON).dependencies || {};

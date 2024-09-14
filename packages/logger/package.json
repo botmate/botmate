@@ -1,8 +1,9 @@
 {
   "name": "@botmate/logger",
-  "version": "1.0.2-next.6",
+  "version": "1.0.2-next.8",
   "description": "Logger for BotMate",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsup"
   },

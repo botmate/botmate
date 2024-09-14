@@ -1,5 +1,5 @@
 import { Database } from '@botmate/database';
-import { createLogger } from '@botmate/logger';
+import { createLogger, winston } from '@botmate/logger';
 import { Command } from 'commander';
 import express from 'express';
 
@@ -15,13 +15,13 @@ import { setupCoreRoutes } from './routes';
 import { setupVite } from './vite';
 
 export class Application {
-  server = express();
-  logger = createLogger({ name: Application.name });
+  server: express.Application = express();
+  logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
-  isTSProject = process.env.IS_TS_PROJECT !== undefined;
+  isMonorepo = process.env.IS_MONOREPO !== undefined;
   port = process.env.PORT || 8233;
   rootPath = process.cwd();
   database = new Database();

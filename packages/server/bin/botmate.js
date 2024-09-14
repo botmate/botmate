@@ -9,33 +9,66 @@ process.env['VITE_CJS_IGNORE_WARNING'] = 'true';
 const tsConfigPath = join(__dirname, '..', 'tsconfig.json');
 const isTsProject = existsSync(tsConfigPath);
 
-if (isTsProject) {
-  process.env.IS_TS_PROJECT = 'true';
-  process.env.NODE_ENV = 'development';
+const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
 
-  const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
-  const cliPath = join(__dirname, '..', 'src', 'cli.ts');
-  const [, , ...argv] = process.argv;
+function run() {
+  if (isTsProject) {
+    process.env.IS_MONOREPO = 'true';
+    process.env.NODE_ENV = 'development';
 
-  spawn(
-    tsx,
-    [
-      'watch',
-      '--ignore=./storage/**',
-      '-r',
-      'tsconfig-paths/register',
-      cliPath,
-      ...argv,
-    ],
-    {
+    const cliPath = join(__dirname, '..', 'src', 'cli.ts');
+    const [, , ...argv] = process.argv;
+
+    const [cmd] = argv;
+
+    let watchMode = false;
+    if (cmd === 'dev') {
+      watchMode = true;
+    }
+
+    spawn(
+      tsx,
+      [
+        ...(watchMode ? ['watch', '--ignore=./storage/**'] : []),
+        '-r',
+        'tsconfig-paths/register',
+        cliPath,
+        ...argv,
+      ],
+      {
+        stdio: 'inherit',
+      },
+    );
+  } else {
+    const cliPath = join(__dirname, '..', 'lib', 'cli.js');
+    const [, , ...argv] = process.argv;
+
+    if (argv.length > 0) {
+      const [cmd] = argv;
+      if (cmd === 'dev') {
+        process.env.NODE_ENV = 'development';
+        spawn(
+          tsx,
+          [
+            'watch',
+            '--ignore=./storage/**',
+            '-r',
+            'tsconfig-paths/register',
+            cliPath,
+            ...argv,
+          ],
+          {
+            stdio: 'inherit',
+          },
+        );
+        return;
+      }
+    }
+
+    spawn('node', [cliPath, ...argv], {
       stdio: 'inherit',
-    },
-  );
-} else {
-  const cliPath = join(__dirname, '..', 'lib', 'cli.js');
-  const [, , ...argv] = process.argv;
-
-  spawn('node', [cliPath, ...argv], {
-    stdio: 'inherit',
-  });
+    });
+  }
 }
+
+run();

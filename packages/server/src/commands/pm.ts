@@ -1,11 +1,13 @@
 import colors from 'colors';
 import { Table } from 'console-table-printer';
 import ejs from 'ejs';
+import execa from 'execa';
 import fg from 'fast-glob';
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import { writeFile } from 'fs/promises';
 import inquirer from 'inquirer';
+import ora from 'ora';
 import { dirname, join } from 'path';
 
 import { Application } from '../application';
@@ -15,6 +17,17 @@ function toKebabCase(str: string) {
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .replace(/[\s_]+/g, '-')
     .toLowerCase();
+}
+
+function toCamelCase(str: string) {
+  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+function toPascalCase(str: string) {
+  return str
+    .replace(/(\w)(\w*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase())
+    .replace(/[\s_]+/g, '')
+    .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
 export default function pm(app: Application) {
@@ -64,7 +77,20 @@ export default function pm(app: Application) {
   });
 
   pm.command('create').action(async () => {
-    const { pkg, name, description } = await inquirer.prompt([
+    const { platform, pkg, name, description } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'platform',
+        message: 'Platform',
+        default: 'Telegram',
+        validate: (value) => {
+          if (value.length === 0) {
+            return 'Platform is required';
+          }
+          return true;
+        },
+        choices: ['Telegram', 'Discord', 'Slack'],
+      },
       {
         type: 'input',
         name: 'pkg',
@@ -116,12 +142,21 @@ export default function pm(app: Application) {
     const templatesFolder = join(__dirname, '../../templates/plugin');
     const files = await fg(`${templatesFolder}/**/*`, { dot: true });
 
+    const pkgName = toKebabCase(pkg);
+    const className = toPascalCase(name);
+
+    const vars = {
+      pkg: pkgName,
+      className: className,
+      name,
+      description,
+      platform,
+    };
+
     const content = await Promise.all(
       files.map(async (file) => {
-        const template = await ejs.renderFile(file, {
-          pkg: toKebabCase(pkg),
-          name,
-          description,
+        const template = await ejs.renderFile(file, vars, {
+          async: true,
         });
         return {
           file: file.replace('.ejs', '').replace(`${templatesFolder}/`, ''),
@@ -138,5 +173,16 @@ export default function pm(app: Application) {
       await mkdir(folder, { recursive: true });
       await writeFile(path, file.content);
     }
+
+    const spinner = ora('Formatting...').start();
+
+    await execa('prettier', [
+      '--write',
+      `${pluginFolder}/${toKebabCase(name)}`,
+    ]);
+
+    spinner.succeed('Formatted');
+
+    console.log(colors.green(`Plugin ${name} created`));
   });
 }

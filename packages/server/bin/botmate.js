@@ -19,11 +19,17 @@ function run() {
     const cliPath = join(__dirname, '..', 'src', 'cli.ts');
     const [, , ...argv] = process.argv;
 
+    const [cmd] = argv;
+
+    let watchMode = false;
+    if (cmd === 'dev') {
+      watchMode = true;
+    }
+
     spawn(
       tsx,
       [
-        'watch',
-        '--ignore=./storage/**',
+        ...(watchMode ? ['watch', '--ignore=./storage/**'] : []),
         '-r',
         'tsconfig-paths/register',
         cliPath,

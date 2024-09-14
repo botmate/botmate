@@ -82,10 +82,11 @@ function SettingsLayout() {
 
                   return (
                     <Link key={plugin.name} to={absolutePath}>
-                      <ListItem
-                        label={plugin.displayName}
-                        isActive={isActive}
-                      />
+                      <div
+                        className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
+                      >
+                        <h2 className="font-medium">{plugin.displayName}</h2>
+                      </div>
                     </Link>
                   );
                 })}

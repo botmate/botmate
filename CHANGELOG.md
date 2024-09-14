@@ -1,3 +1,14 @@
+## 1.1.0-beta.2 (2024-09-14)
+
+
+### 🩹 Fixes
+
+- ora support cjs ([2e39acc](https://github.com/botmate/botmate/commit/2e39acc))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.1 (2024-09-14)
 
 

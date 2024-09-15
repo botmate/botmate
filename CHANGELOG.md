@@ -1,3 +1,29 @@
+## 1.1.0-beta.2 (2024-09-14)
+
+
+### 🩹 Fixes
+
+- ora support cjs ([2e39acc](https://github.com/botmate/botmate/commit/2e39acc))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
+## 1.1.0-beta.1 (2024-09-14)
+
+
+### 🩹 Fixes
+
+- plugin template ([cc36cb6](https://github.com/botmate/botmate/commit/cc36cb6))
+- watch only on `dev` command ([3ea75d0](https://github.com/botmate/botmate/commit/3ea75d0))
+- revert settings page padding ([2ca28ef](https://github.com/botmate/botmate/commit/2ca28ef))
+- add check for bot not found ([b1d5ca2](https://github.com/botmate/botmate/commit/b1d5ca2))
+- plugin stylings ([e60bd9f](https://github.com/botmate/botmate/commit/e60bd9f))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.0.2-next.8 (2024-09-13)
 
 This was a version bump only, there were no code changes.

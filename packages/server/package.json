@@ -1,6 +1,6 @@
 {
   "name": "@botmate/server",
-  "version": "1.0.2-next.8",
+  "version": "1.1.0-beta.2",
   "description": "HTTP Server for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -20,11 +20,11 @@
     "templates"
   ],
   "dependencies": {
-    "@botmate/client": "1.0.2-next.8",
-    "@botmate/database": "1.0.2-next.8",
-    "@botmate/logger": "1.0.2-next.8",
-    "@botmate/platform": "1.0.2-next.8",
-    "@botmate/ui": "1.0.2-next.8",
+    "@botmate/client": "1.1.0-beta.2",
+    "@botmate/database": "1.1.0-beta.2",
+    "@botmate/logger": "1.1.0-beta.2",
+    "@botmate/platform": "1.1.0-beta.2",
+    "@botmate/ui": "1.1.0-beta.2",
     "@lerna/project": "^6.4.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "colors": "^1.4.0",
@@ -34,7 +34,7 @@
     "execa": "5.1.1",
     "express": "^4.19.2",
     "inquirer": "^8.0.0",
-    "ora": "^8.1.0",
+    "ora": "^5.4.1",
     "prettier": "^3.3.3",
     "socket.io": "^4.7.5",
     "sqlite3": "^5.1.7",

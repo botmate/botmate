@@ -19,16 +19,17 @@ function toKebabCase(str: string) {
     .toLowerCase();
 }
 
-function toCamelCase(str: string) {
-  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
-
 function toPascalCase(str: string) {
   return str
     .replace(/(\w)(\w*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase())
     .replace(/[\s_]+/g, '')
     .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
+
+const libraries: Record<string, string> = {
+  telegram: 'grammy',
+  discord: 'discord.js',
+};
 
 export default function pm(app: Application) {
   const pm = app.cli.command('pm');
@@ -150,7 +151,7 @@ export default function pm(app: Application) {
       className: className,
       name,
       description,
-      platform,
+      platform: platform.toLowerCase(),
     };
 
     const content = await Promise.all(
@@ -165,6 +166,8 @@ export default function pm(app: Application) {
       }),
     );
 
+    console.log();
+
     for (const file of content) {
       console.log(colors.green(`CREATE:`), file.file);
 
@@ -173,6 +176,8 @@ export default function pm(app: Application) {
       await mkdir(folder, { recursive: true });
       await writeFile(path, file.content);
     }
+
+    console.log();
 
     const spinner = ora('Formatting...').start();
 
@@ -183,6 +188,30 @@ export default function pm(app: Application) {
 
     spinner.succeed('Formatted');
 
-    console.log(colors.green(`Plugin ${name} created`));
+    const spinner2 = ora('Installing dependencies...').start();
+
+    const cwd = join(pluginFolder, toKebabCase(name));
+
+    const library = libraries[platform.toLowerCase()];
+
+    if (!library) {
+      console.error(`Library for ${platform} not found`);
+      spinner2.fail('Dependencies not installed');
+      return;
+    }
+
+    await execa('pnpm', ['add', libraries[platform.toLowerCase()]], {
+      cwd,
+    });
+
+    spinner2.succeed('Dependencies installed');
+
+    console.log();
+    console.log(colors.cyan(`Plugin "${colors.bold(name)}" created.`));
+    console.log();
+    console.log(colors.bold.green(`Learn more about the plugin at:`));
+    console.log(
+      colors.underline.green(`https://docs.botmate.dev/plugins/introduction`),
+    );
   });
 }

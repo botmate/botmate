@@ -19,7 +19,7 @@ function SettingsPage() {
   const defaultValue = config.get('openai.apiKey', '');
 
   return (
-    <div className="max-w-xl p-8">
+    <div className="max-w-xl">
       <Card>
         <CardHeader>
           <CardTitle className="text-md">OpenAI API</CardTitle>

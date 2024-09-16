@@ -24,7 +24,7 @@ function DashboardPage() {
         title: 'Plugins',
         description: 'Discover more about the plugins and how to use them.',
         icon: PlugIcon,
-        link: `/bots/${params.botId}/marketplace`,
+        link: `https://docs.botmate.dev/plugins/introduction`,
       },
       {
         title: 'Blogs',

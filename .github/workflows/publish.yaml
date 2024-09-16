@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      id-token: write # needed for provenance data generation
     timeout-minutes: 10
     steps:
       - name: Checkout repository
@@ -19,32 +19,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
-
-      - name: Install Node.js
+      - name: Install Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
         shell: bash
 
       - name: Print Environment Info
-        run: pnpm nx report
-        shell: bash
-
-      - name: Build packages
-        run: pnpm nx run-many -t=build
+        run: npx nx report
         shell: bash
 
       - name: Publish packages
-        run: pnpm nx release publish
+        run: npx nx release publish
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}

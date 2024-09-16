@@ -1,3 +1,24 @@
+## 1.1.0-beta.3 (2024-09-16)
+
+
+### 🚀 Features
+
+- add plugins reducer and selectCurrentPlugin selector ([439043a](https://github.com/botmate/botmate/commit/439043a))
+- add CONTRIBUTING.md file with contribution guidelines ([98c92c2](https://github.com/botmate/botmate/commit/98c92c2))
+- add CODE_OF_CONDUCT.md file with code of conduct guidelines ([35e41fe](https://github.com/botmate/botmate/commit/35e41fe))
+
+### 🩹 Fixes
+
+- plugin not getting removed when uninstalled ([5372958](https://github.com/botmate/botmate/commit/5372958))
+- store plugin data along with the route ([4f50996](https://github.com/botmate/botmate/commit/4f50996))
+- plugin routes to handle mounting and unmounting of plugins ([efe271f](https://github.com/botmate/botmate/commit/efe271f))
+- plugin routes to handle mounting and unmounting of plugins ([bf6a0fa](https://github.com/botmate/botmate/commit/bf6a0fa))
+- **client:** export all from `react-router-dom` ([0fa3e01](https://github.com/botmate/botmate/commit/0fa3e01))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.2 (2024-09-14)
 
 

@@ -9,7 +9,8 @@
     "commitlint": "commitlint --edit $1",
     "create-botmate": "ts-node -r tsconfig-paths/register ./packages/create-botmate/src/index.ts",
     "local-registery": "verdaccio --config .verdaccio/config.yml",
-    "gen:docs": "typedoc"
+    "gen:docs": "typedoc",
+    "release": "nx release --skip-publish"
   },
   "keywords": [],
   "author": "",

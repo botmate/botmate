@@ -28,7 +28,10 @@ export abstract class Plugin {
    * @param element
    */
   addRoute(route: RouteObject) {
-    this.routes.push(route);
+    this.routes.push({
+      ...route,
+      _plugin: this.pluginData,
+    });
   }
 
   /**

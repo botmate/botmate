@@ -26,12 +26,19 @@ export class PluginManager {
   private model: ModelStatic<PluginModel>;
   private logger: winston.Logger = createLogger({ name: PluginManager.name });
 
+  /**
+   * Map of plugins with plugin name as key and plugin meta as value.
+   * @internal
+   */
   private _plugins = new Map<string, PluginMeta>();
 
   constructor(private app: Application) {
     this.model = initPluginModel(this.app.database.sequelize);
   }
 
+  /**
+   * Returns the map of local plugins
+   */
   get plugins() {
     return this._plugins;
   }
@@ -118,21 +125,22 @@ export class PluginManager {
 
     const bot = this.app.botManager.bots.get(botId);
     if (bot) {
-      const pluginInstance = bot.plugins.get(name);
-      if (pluginInstance) {
-        try {
-          // await pluginInstance.();
-          bot.plugins.delete(name);
-        } catch (error) {
-          console.error(error);
-          this.logger.error(`Error unloading plugin ${name}`);
-        }
+      try {
+        await this.disable(name, botId);
+      } catch (error) {
+        console.error(error);
+        this.logger.error(`Error unloading plugin ${name}`);
       }
     }
 
     return await exist.destroy();
   }
 
+  /**
+   * Loads a plugin for a bot and initializes the plugin instance.
+   * @param pluginName
+   * @param botId
+   */
   async loadBotPlugin(pluginName: string, botId: string) {
     const plugin = this._plugins.get(pluginName);
 

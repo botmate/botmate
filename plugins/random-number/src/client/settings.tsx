@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { toast, usePluginConfig } from '@botmate/client';
 import {
@@ -15,16 +15,16 @@ import {
 function SettingsPage() {
   const config = usePluginConfig();
 
-  const minRef = React.useRef<HTMLInputElement>(null);
-  const maxRef = React.useRef<HTMLInputElement>(null);
+  const [min, setMin] = useState('0');
+  const [max, setMax] = useState('100');
 
-  React.useEffect(() => {
-    const min = config.get('min', '0');
-    const max = config.get('max', '100');
+  useEffect(() => {
+    const storedMin = config.get<number>('min', 0);
+    const storedMax = config.get<number>('max', 100);
 
-    minRef.current!.value = min;
-    maxRef.current!.value = max;
-  }, []);
+    setMin(storedMin.toString());
+    setMax(storedMax.toString());
+  }, [config]);
 
   return (
     <div className="max-w-2xl">
@@ -38,19 +38,28 @@ function SettingsPage() {
         <CardContent className="flex items-center justify-between gap-4">
           <div className="flex-1 space-y-1">
             <label htmlFor="min">Min</label>
-            <Input id="min" type="number" placeholder="0" ref={minRef} />
+            <Input
+              id="min"
+              type="number"
+              placeholder="0"
+              value={min}
+              onChange={(e) => setMin(e.target.value)}
+            />
           </div>
           <div className="flex-1 space-y-1">
             <label htmlFor="max">Max</label>
-            <Input id="max" type="number" placeholder="100" ref={maxRef} />
+            <Input
+              id="max"
+              type="number"
+              placeholder="100"
+              value={max}
+              onChange={(e) => setMax(e.target.value)}
+            />
           </div>
         </CardContent>
         <CardFooter>
           <Button
             onClick={async () => {
-              const min = minRef.current?.value;
-              const max = maxRef.current?.value;
-
               if (min && max) {
                 await config.save('min', min);
                 await config.save('max', max);

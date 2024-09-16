@@ -11,8 +11,13 @@ export function usePluginConfig() {
     save: (key: string, value: string) =>
       saveMutation({ pluginId: plugin!.id, key, value }).unwrap(),
     isSaving: isLoading,
-    get: function <T = any>(key: string, def: T) {
-      return (config?.[key] || def) as T;
+    get: function <T = any>(key: string, def?: T) {
+      const value = (config?.[key] || def) as T;
+      if (typeof value === 'number') {
+        return Number(value);
+      } else {
+        return value;
+      }
     },
   };
 }

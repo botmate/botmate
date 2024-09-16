@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { baseApi } from './api';
+import plugins from './reducers/plugins';
 
 export const store = configureStore({
   reducer: {
+    plugins,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {

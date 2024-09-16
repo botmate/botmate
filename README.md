@@ -25,7 +25,7 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 </p>
 
 > [!IMPORTANT]  
-> This project is still in development and not ready for production use.
+> This project is still in beta, expect breaking changes and bugs.
 
 BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Here's what BotMate offers:
 

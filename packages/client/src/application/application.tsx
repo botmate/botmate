@@ -6,11 +6,12 @@ import { createRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
-import type { IBot } from '@botmate/server';
+import type { IBot, IPlugin } from '@botmate/server';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 import { Toaster } from 'sonner';
 
+import { Plugin } from '../plugin';
 import { Api } from './api';
 import PluginRoutes from './components/plugin-routes';
 import MainLayout from './layouts/main';
@@ -62,7 +63,7 @@ export type SidebarItem = {
 export class Application {
   api = new Api();
 
-  private _routes: RouteObject[] = [];
+  private _routes: (RouteObject & { _plugin: IPlugin })[] = [];
 
   bot: IBot | null = null;
   emitter = new EventEmitter();
@@ -70,6 +71,7 @@ export class Application {
 
   private _sidebar: SidebarItem[] = [];
   private _pluginSettings = new Map<string, React.ReactNode>();
+  private _pluginInstances = new Map<string, Plugin>();
 
   constructor(private _options: ClientParams) {
     this.version = _options.version;
@@ -93,6 +95,10 @@ export class Application {
 
   get options() {
     return this._options;
+  }
+
+  get pluginInstances() {
+    return this._pluginInstances;
   }
 
   getRootComponent() {

@@ -7,8 +7,6 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
-import { ListItem } from '@botmate/ui';
-
 import useCurrentBot from '../hooks/use-bot';
 import { useGetPluginsQuery } from '../services/plugins';
 
@@ -58,11 +56,14 @@ function SettingsLayout() {
 
             return (
               <Link key={item.id} to={absolutePath}>
-                <ListItem
-                  label={item.name}
-                  description={item.description}
-                  isActive={isActive}
-                />
+                <div
+                  className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
+                >
+                  <h2 className="font-medium">{item.name}</h2>
+                  <p className="mt-1 text-muted-foreground text-sm">
+                    {item.description}
+                  </p>
+                </div>
               </Link>
             );
           })}

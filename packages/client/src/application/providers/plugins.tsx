@@ -20,6 +20,11 @@ function PluginsProvider() {
       for (const plugin of botPlugins!) {
         try {
           const pluginData = plugins?.find((p) => p.name === plugin.name);
+          if (!pluginData) {
+            // the code should never reach here...
+            console.error(`this should never be logged`);
+            continue;
+          }
           const module = await import(
             /* @vite-ignore */ `${pluginData?.clientPath}`
           );
@@ -30,6 +35,8 @@ function PluginsProvider() {
           // run beforeLoad hook
           console.debug(`running beforeLoad hook for ${plugin.name}`);
           await i.beforeLoad();
+
+          app.pluginInstances.set(pluginData?.name, i);
         } catch (error) {
           console.error('Error loading plugin', plugin.name, error);
         }

@@ -47,7 +47,6 @@ function SettingsPage() {
                 toast.error('API key is required');
                 return;
               }
-
               await config.save('openai.apiKey', apiKey);
               toast.success('API key saved');
             }}

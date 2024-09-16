@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
+import { PluginMeta } from '@botmate/server';
 import { Badge } from '@botmate/ui';
 
 import { useApp } from '../../../hooks/use-app';
 import useCurrentBot from '../../../hooks/use-bot';
 import { useBotPlugins, usePlugins } from '../../../hooks/use-plugins';
+import { setCurrentPlugin } from '../../../reducers/plugins';
 import {
   useDisablePluginMutation,
   useEnablePluginMutation,
@@ -20,6 +23,7 @@ function PluginSettingsPage() {
   const plugins = usePlugins();
   const botPlugins = useBotPlugins();
   const bot = useCurrentBot();
+  const dispatch = useDispatch();
 
   const [installPluginMutation] = useInstallPluginMutation();
   const [uninstallPluginMutation] = useUninstallPluginMutation();
@@ -28,7 +32,19 @@ function PluginSettingsPage() {
 
   const plugin = plugins?.find(
     (plugin) => plugin.name === searchParams.get('name'),
-  );
+  ) as PluginMeta | undefined;
+
+  useEffect(() => {
+    if (plugin) {
+      const data = botPlugins.find((p) => p.name === plugin.name);
+      if (data) {
+        dispatch(setCurrentPlugin(data));
+      }
+    }
+    return () => {
+      dispatch(setCurrentPlugin(null));
+    };
+  }, [plugin]);
 
   if (plugin) {
     const data = botPlugins.find((p) => p.name === plugin.name);

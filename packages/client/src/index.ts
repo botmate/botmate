@@ -9,3 +9,5 @@ export * from './application/hooks/use-plugins';
 export * from './application/hooks/use-config';
 
 export { toast } from 'sonner';
+
+export * from 'react-router-dom';

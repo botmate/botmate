@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "defaultBase": "master",
+  "defaultBase": "dev",
   "nxCloudAccessToken": "MjQ2N2RlMDQtMjQ4Ny00NzU1LTg2M2UtZjE2YzE4ZTc4MDhjfHJlYWQtd3JpdGU=",
   "targetDefaults": {
     "build": {
@@ -12,5 +12,20 @@
     "@nx/js": {
       "analyzeSourceFiles": false
     }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
+      }
+    }
+  ],
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/pr.yml"]
   }
 }

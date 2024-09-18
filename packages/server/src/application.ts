@@ -14,17 +14,23 @@ import { PluginManager } from './plugin-manager';
 import { setupCoreRoutes } from './routes';
 import { setupVite } from './vite';
 
+export type ApplicationOptions = {
+  dbPath?: string;
+  mode?: 'development' | 'production';
+  port?: number;
+};
+
 export class Application {
   server: express.Application = express();
   logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
+  database: Database;
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
   isMonorepo = process.env.IS_MONOREPO !== undefined;
   port = process.env.PORT || 8233;
   rootPath = process.cwd();
-  database = new Database();
   version: string = require('../package.json').version;
 
   protected _pluginManager: PluginManager;
@@ -49,7 +55,18 @@ export class Application {
     return this._configManager;
   }
 
-  constructor() {
+  constructor(private options?: ApplicationOptions) {
+    if (process.env.NODE_ENV === 'development') {
+      this.mode = 'development';
+    }
+
+    this.port = options?.port || this.port;
+    this.mode = options?.mode || this.mode;
+
+    this.database = new Database({
+      dbPath: options?.dbPath,
+    });
+
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
@@ -73,10 +90,6 @@ export class Application {
     await setupVite(this);
 
     await this.database.sequelize.sync();
-
-    if (process.env.NODE_ENV === 'development') {
-      this.mode = 'development';
-    }
 
     await this.botManager.init();
     await this.pluginManager.init();

@@ -19,17 +19,15 @@ export function PageLayout({
 
   return (
     <div
-      className={`flex-1 flex flex-col gap-6 container mx-auto overflow-auto ${
-        {
-          default: '2xl:p-24 p-16',
-          settings: '2xl:p-12 p-8',
-        }[page]
-      }`}
+      className={`flex-1 flex flex-col gap-6 container mx-auto overflow-auto 2xl:p-12 p-8`}
     >
       <div className="flex justify-between items-center">
         <div>
+          {/* <span className="text-muted-foreground text-sm">
+            {page === 'settings' ? 'Settings' : 'Dashboard'} &gt;
+          </span> */}
           <h1 className="text-2xl font-semibold">{title}</h1>
-          <p className="text-muted-foreground text-lg">{subtitle}</p>
+          <p className="text-muted-foreground">{subtitle}</p>
         </div>
         <div>{actions}</div>
       </div>

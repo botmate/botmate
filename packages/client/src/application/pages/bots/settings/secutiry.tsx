@@ -1,11 +1,10 @@
 import React from 'react';
 
-import PageLayout from '../../../layouts/page';
+import { PageLayout } from '@botmate/ui';
 
 function AdvancedSettingsPage() {
   return (
     <PageLayout
-      page="settings"
       title="Advanced"
       subtitle="Configure advanced settings for the bot"
     ></PageLayout>

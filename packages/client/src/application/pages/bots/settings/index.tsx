@@ -16,11 +16,11 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  PageLayout,
 } from '@botmate/ui';
 import { toast } from 'sonner';
 
 import useCurrentBot from '../../../hooks/use-bot';
-import PageLayout from '../../../layouts/page';
 import { useDeleteBotMutation } from '../../../services';
 
 function GeneralSettingsPage() {
@@ -29,7 +29,6 @@ function GeneralSettingsPage() {
   const navigate = useNavigate();
   return (
     <PageLayout
-      page="settings"
       title="General"
       subtitle="Configure general settings for the bot"
     >

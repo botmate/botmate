@@ -5,7 +5,8 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/lib"]
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/lib"],
+      "cache": true
     }
   },
   "pluginsConfig": {

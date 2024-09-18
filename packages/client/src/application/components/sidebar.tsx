@@ -65,7 +65,7 @@ function SidebarItem({
       >
         <TooltipTrigger
           className={
-            `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-black/70 dark:text-white'}` +
+            `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-neutral-500/10 text-black/70 dark:text-white'}` +
             `transition-all duration-150`
           }
         >

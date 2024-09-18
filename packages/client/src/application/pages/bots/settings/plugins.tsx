@@ -7,11 +7,7 @@ import { Badge, Section } from '@botmate/ui';
 
 import { useApp } from '../../../hooks/use-app';
 import useCurrentBot from '../../../hooks/use-bot';
-import {
-  useBotPlugins,
-  useCurrentPlugin,
-  usePlugins,
-} from '../../../hooks/use-plugins';
+import { useBotPlugins, usePlugins } from '../../../hooks/use-plugins';
 import { setCurrentPlugin } from '../../../reducers/plugins';
 import {
   useDisablePluginMutation,
@@ -28,7 +24,6 @@ function PluginSettingsPage() {
   const botPlugins = useBotPlugins();
   const bot = useCurrentBot();
   const dispatch = useDispatch();
-  const currentPlugin = useCurrentPlugin();
 
   const [installPluginMutation] = useInstallPluginMutation();
   const [uninstallPluginMutation] = useUninstallPluginMutation();

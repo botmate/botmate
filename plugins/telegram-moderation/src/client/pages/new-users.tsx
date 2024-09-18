@@ -1,23 +1,6 @@
 import React from 'react';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Checkbox,
-  Editor,
-  PageLayout,
-  Section,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectValue,
-} from '@botmate/ui';
-import { SelectTrigger } from '@botmate/ui';
+import { Button, Checkbox, Editor, PageLayout, Section } from '@botmate/ui';
 
 import { NewUserPolicies } from '../../constants';
 
@@ -37,9 +20,15 @@ function NewUsers() {
               }}
             />
             <p className="mt-1 text-sm text-muted-foreground">
-              Your message can include Markdown and HTML.
+              The message can include{' '}
+              <a href="#" className="text-primary">
+                variables
+              </a>{' '}
+              to personalize the message.
             </p>
           </div>
+
+          <Button>Save</Button>
         </Section>
 
         <div className="border-t-[1px] border-border" />
@@ -48,23 +37,26 @@ function NewUsers() {
           title="Policies"
           description="These policies will be applied to new users."
         >
-          {NewUserPolicies.map((policy) => (
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id={policy.key}
-                // checked={config.get('enabled')}
-                onCheckedChange={(checked) => {
-                  // config.save('enabled', Boolean(checked));
-                }}
-              />
-              <label
-                htmlFor={policy.key}
-                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                {policy.label}
-              </label>
-            </div>
-          ))}
+          <div className="space-y-4">
+            {NewUserPolicies.map((policy) => (
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={policy.key}
+                  // checked={config.get('enabled')}
+                  onCheckedChange={(checked) => {
+                    // config.save('enabled', Boolean(checked));
+                  }}
+                />
+                <label
+                  htmlFor={policy.key}
+                  className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {policy.label}
+                </label>
+              </div>
+            ))}
+          </div>
+          <Button>Save</Button>
         </Section>
       </div>
     </PageLayout>

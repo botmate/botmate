@@ -3,17 +3,15 @@ import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import type { PluginMeta } from '@botmate/server';
-import {
-  Badge,
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@botmate/ui';
+import { Badge, Section } from '@botmate/ui';
 
 import { useApp } from '../../../hooks/use-app';
 import useCurrentBot from '../../../hooks/use-bot';
-import { useBotPlugins, usePlugins } from '../../../hooks/use-plugins';
+import {
+  useBotPlugins,
+  useCurrentPlugin,
+  usePlugins,
+} from '../../../hooks/use-plugins';
 import { setCurrentPlugin } from '../../../reducers/plugins';
 import {
   useDisablePluginMutation,
@@ -30,6 +28,7 @@ function PluginSettingsPage() {
   const botPlugins = useBotPlugins();
   const bot = useCurrentBot();
   const dispatch = useDispatch();
+  const currentPlugin = useCurrentPlugin();
 
   const [installPluginMutation] = useInstallPluginMutation();
   const [uninstallPluginMutation] = useUninstallPluginMutation();
@@ -52,16 +51,16 @@ function PluginSettingsPage() {
     };
   }, [plugin]);
 
-  if (plugin) {
+  if (plugin && currentPlugin) {
     const data = botPlugins.find((p) => p.name === plugin.name);
     const Settings = app.pluginSettings.get(plugin.name);
 
     return (
       <div>
-        <div className="p-8 bg-card border-b flex justify-between items-start relative">
+        <div className="flex justify-between items-center p-8 border-b">
           <div>
-            <h1 className="text-xl">{plugin.displayName}</h1>
-            <p className="text-gray-500 dark:text-neutral-500 mt-1">
+            <h1 className="text-2xl font-semibold">{plugin.displayName}</h1>
+            <p className="text-muted-foreground text-lg">
               {plugin.description}
             </p>
           </div>
@@ -122,25 +121,22 @@ function PluginSettingsPage() {
           {Settings ? (
             Settings
           ) : (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-md">No settings found</CardTitle>
-                <CardDescription className="text-sm">
-                  This plugin does not have any settings.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <Section
+              title="Settings not found"
+              description="This plugin does not provide any settings."
+            ></Section>
           )}
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="h-screen flex items-center justify-center">
-      <h1>Plugin not found</h1>
-    </div>
-  );
+  if (!plugin)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <h1>Plugin not found</h1>
+      </div>
+    );
 }
 
 export default PluginSettingsPage;

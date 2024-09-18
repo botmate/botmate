@@ -89,9 +89,9 @@ function Sidebar() {
   const params = useParams();
   const location = useLocation();
   const bot = useCurrentBot();
-  
+
   return (
-    <div className="w-24 h-full flex flex-col py-3 bg-card overflow-hidden">
+    <div className="w-24 h-full flex flex-col py-3 bg-card overflow-hidden border-r">
       <div className="w-full h-20 flex items-center justify-center">
         <Link to="/" draggable="false">
           <img

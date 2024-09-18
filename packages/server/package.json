@@ -21,7 +21,6 @@
     "templates"
   ],
   "dependencies": {
-    "@botmate/client": "1.1.0-beta.4",
     "@botmate/database": "1.1.0-beta.4",
     "@botmate/logger": "1.1.0-beta.4",
     "@botmate/platform": "1.1.0-beta.4",

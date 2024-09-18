@@ -12,7 +12,7 @@ export async function setupVite({
   isMonorepo,
   isDev,
 }: Application) {
-  const client = require.resolve('@botmate/client/package.json');
+  const client = dirname(require.resolve('@botmate/client'));
   const clientDir = dirname(client);
 
   const ui = require.resolve('@botmate/ui/package.json');

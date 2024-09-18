@@ -12,6 +12,13 @@ export async function setupVite({
   isMonorepo,
   isDev,
 }: Application) {
+  try {
+    require.resolve('@botmate/client');
+  } catch (e) {
+    throw new Error(
+      'Cannot find @botmate/client. Make sure it is installed in your project.',
+    );
+  }
   const client = dirname(require.resolve('@botmate/client'));
   const clientDir = dirname(client);
 

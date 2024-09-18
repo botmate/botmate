@@ -1,5 +1,5 @@
 import os from 'os';
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Application } from './application';
 import { BotManager } from './bot-manager';
@@ -27,8 +27,6 @@ describe('Application', () => {
     });
   });
 
-  afterAll(() => {});
-
   it('should initialize with default values', () => {
     expect(app.mode).toBe('development');
     expect(app.port).toBe(8233);
@@ -52,7 +50,7 @@ describe('Application', () => {
 
   it('should start the server', async () => {
     vi.spyOn(app.server, 'listen').mockImplementation(() => {
-      return {} as any;
+      return {} as never;
     });
     await app.start();
     expect(app.server.listen).toHaveBeenCalledWith(app.port);

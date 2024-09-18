@@ -10,7 +10,7 @@ export class ConfigManager {
     this._pluginModel = initPluginModel(this.app.database.sequelize);
   }
 
-  async savePluginConfig<T = any>(pluginId: string, key: string, value: T) {
+  async savePluginConfig<T = unknown>(pluginId: string, key: string, value: T) {
     this.app.logger.debug(`Saving config key: ${key}`);
 
     const plugin = await this._pluginModel.findOne({
@@ -40,7 +40,7 @@ export class ConfigManager {
     );
   }
 
-  async getPluginConfig<T = any>(
+  async getPluginConfig<T = unknown>(
     pluginId: string,
     key: string,
     def?: T,

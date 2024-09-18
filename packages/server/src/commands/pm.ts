@@ -108,7 +108,7 @@ export default function pm(app: Application) {
         type: 'input',
         name: 'name',
         message: 'Plugin name',
-        default: (answers: any) => answers.pkg,
+        default: (answers: Record<string, string>) => answers.pkg,
         validate: (value) => {
           if (value.length === 0) {
             return 'Plugin name is required';

@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
   Input,
+  Section,
 } from '@botmate/ui';
 
 import { Config } from '../config.types';
@@ -19,6 +20,35 @@ function SettingsPage() {
 
   const apiKeyRef = useRef<HTMLInputElement>(null);
   const defaultValue = config.get('key', '');
+
+  return (
+    <div className="max-w-xl">
+      <Section
+        title="OpenAI API"
+        description="Set your OpenAI API key to enable the chatbot plugin."
+      >
+        <Input
+          placeholder="Enter your OpenAI API key (eg. sk-....P20J)"
+          ref={apiKeyRef}
+          defaultValue={defaultValue}
+        />
+        <Button
+          onClick={() => {
+            const apiKey = apiKeyRef.current?.value;
+            if (!apiKey) {
+              toast.error('API key is required');
+              return;
+            }
+            config.save('key', apiKey).then(() => {
+              toast.success('API key saved');
+            });
+          }}
+        >
+          Save
+        </Button>
+      </Section>
+    </div>
+  );
 
   return (
     <div className="max-w-xl">

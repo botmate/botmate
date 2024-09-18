@@ -26,6 +26,9 @@ importers:
       '@eslint/js':
         specifier: ^9.9.0
         version: 9.9.0
+      '@mxssfd/typedoc-theme':
+        specifier: ^1.1.7
+        version: 1.1.7(typedoc@0.26.7)
       '@nx/eslint':
         specifier: 19.7.3
         version: 19.7.3(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@22.5.0)(eslint@8.57.1)(nx@19.5.7)(verdaccio@5.32.1)
@@ -3186,6 +3189,15 @@ packages:
 
   /@microsoft/tsdoc@0.15.0:
     resolution: {integrity: sha512-HZpPoABogPvjeJOdzCOSJsXeL/SMCBgBZMVC3X3d7YYp2gf31MfxhUoYUNwf1ERPJOnQc0wkFn9trqI6ZEdZuA==}
+    dev: true
+
+  /@mxssfd/typedoc-theme@1.1.7(typedoc@0.26.7):
+    resolution: {integrity: sha512-dj4p0TjIoudD8j1u+Kf+KzcEc+je3IB/B1oohWcVJmMRfbw5uZYX6qOGHzfUzAPiU1pYe2u5Vo1IPqgLo58taA==}
+    engines: {node: '>= 14'}
+    peerDependencies:
+      typedoc: ^0.26.7
+    dependencies:
+      typedoc: 0.26.7(typescript@5.5.4)
     dev: true
 
   /@napi-rs/wasm-runtime@0.2.4:

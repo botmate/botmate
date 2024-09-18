@@ -1,3 +1,7 @@
+/**
+ * @module @botmate/server
+ */
+
 export * from './application';
 export * from './plugin';
 

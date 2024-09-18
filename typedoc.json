@@ -1,7 +1,8 @@
 {
+  "name": "BotMate",
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": [
-    "./packages/server/src/**/*",
+    "./packages/server/src/index.ts",
     "./packages/client/src/index.ts"
   ],
   "out": "docs"

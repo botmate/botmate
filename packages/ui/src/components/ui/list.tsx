@@ -11,8 +11,8 @@ export const ListItem = ({ label, description, isActive }: ListItemProps) => {
     <div
       className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${
         isActive
-          ? 'bg-gray-100 dark:bg-neutral-500/20'
-          : 'hover:bg-gray-100/50 dark:hover:bg-neutral-500/10'
+          ? 'bg-gray-100 dark:bg-accent'
+          : 'hover:bg-gray-100/50 dark:hover:bg-accent/50'
       }`}
     >
       <h2 className="font-medium line-clamp-1">{label}</h2>

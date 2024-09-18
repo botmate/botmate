@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { getPackages } from '@lerna/project';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -36,7 +37,10 @@ export class PlatformManager {
               version: pkg.version,
               credentials: pkg.credentials,
             });
-          } catch {}
+          } catch (e) {
+            console.error(e);
+            this.app.logger.error(`Error loading platform ${dep}`);
+          }
         }
       }
 

@@ -1,16 +1,44 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "defaultBase": "master",
+  "defaultBase": "dev",
   "nxCloudAccessToken": "MjQ2N2RlMDQtMjQ4Ny00NzU1LTg2M2UtZjE2YzE4ZTc4MDhjfHJlYWQtd3JpdGU=",
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/lib"]
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/lib"],
+      "cache": true
     }
   },
   "pluginsConfig": {
     "@nx/js": {
       "analyzeSourceFiles": false
     }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ],
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/pr.yml"]
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ModelStatic } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
@@ -160,7 +161,7 @@ export class PluginManager {
         this.logger.debug(`creating bot instance ${botData.id}`);
         bot = new Bot(
           botData.platformType as PlatformType,
-          botData.credentials!,
+          botData.credentials as Record<string, string>,
           botData,
         );
         await bot.init();
@@ -368,14 +369,21 @@ export class PluginManager {
             platformType: module.botmate.platformType,
           });
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error(e);
+        this.logger.error(`Error loading plugin ${dep}`);
+      }
     }
 
     return pluginsLocal.filter(Boolean) as PluginMeta[];
   }
 
-  async create() {}
-  async delete() {}
+  async create() {
+    throw new Error('Method not implemented.');
+  }
+  async delete() {
+    throw new Error('Method not implemented.');
+  }
 
   async loadAll() {
     const bots = this.app.botManager.bots;

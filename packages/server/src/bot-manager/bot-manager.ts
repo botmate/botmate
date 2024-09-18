@@ -18,7 +18,11 @@ export class BotManager {
   async init() {
     const allBots = await this._model.findAll();
     for (const bot of allBots) {
-      const botInstance = new Bot(bot.platformType, bot.credentials as {}, bot);
+      const botInstance = new Bot(
+        bot.platformType,
+        bot.credentials as Record<string, string>,
+        bot,
+      );
       this._bots.set(bot.id, botInstance);
     }
   }

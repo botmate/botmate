@@ -12,11 +12,13 @@ import {
   Input,
 } from '@botmate/ui';
 
+import { Config } from '../config.types';
+
 function SettingsPage() {
-  const config = usePluginConfig();
+  const config = usePluginConfig<Config>();
 
   const apiKeyRef = useRef<HTMLInputElement>(null);
-  const defaultValue = config.get('openai.apiKey', '');
+  const defaultValue = config.get('key', '');
 
   return (
     <div className="max-w-xl">
@@ -47,7 +49,7 @@ function SettingsPage() {
                 toast.error('API key is required');
                 return;
               }
-              await config.save('openai.apiKey', apiKey);
+              await config.save('key', apiKey);
               toast.success('API key saved');
             }}
           >

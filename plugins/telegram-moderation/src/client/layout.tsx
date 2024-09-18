@@ -5,14 +5,14 @@ import { ListItem } from '@botmate/ui';
 
 const options = [
   {
-    label: 'Basic',
-    description: 'Basic settings for moderation',
+    label: 'Moderation',
+    description: 'Basic moderation settings',
     path: '',
   },
   {
-    label: 'Welcome',
-    description: 'Configure welcome messages',
-    path: '/welcome',
+    label: 'New Users',
+    description: 'Policies, welcome message',
+    path: '/new-users',
   },
   {
     label: 'Anti-spam',

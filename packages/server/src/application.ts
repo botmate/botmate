@@ -24,15 +24,13 @@ export class Application {
   server: express.Application = express();
   logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
+  database: Database;
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
   isMonorepo = process.env.IS_MONOREPO !== undefined;
   port = process.env.PORT || 8233;
   rootPath = process.cwd();
-  database = new Database({
-    dbPath: this.options?.dbPath,
-  });
   version: string = require('../package.json').version;
 
   protected _pluginManager: PluginManager;
@@ -64,6 +62,10 @@ export class Application {
 
     this.port = options?.port || this.port;
     this.mode = options?.mode || this.mode;
+
+    this.database = new Database({
+      dbPath: options?.dbPath,
+    });
 
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);

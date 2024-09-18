@@ -22,5 +22,6 @@ export * from './components/ui/radio-group';
 export * from './components/ui/label';
 
 export * from './components/layouts/page';
+export * from './components/layouts/sidebar';
 
 export * from './input-builder';

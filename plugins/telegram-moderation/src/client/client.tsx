@@ -11,7 +11,7 @@ import HomePage from './pages/home';
 import NewUsers from './pages/new-users';
 
 export class TelegramModeration extends Plugin {
-  displayName = 'Moderation';
+  static displayName = 'Telegram Moderation';
 
   async beforeLoad() {
     this.addToSidebar({

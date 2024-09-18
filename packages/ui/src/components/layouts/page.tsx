@@ -18,21 +18,13 @@ export function PageLayout({
   const [first, second] = elements;
 
   return (
-    <div
-      className={`flex-1 flex flex-col gap-6 container mx-auto overflow-auto 2xl:p-12 p-8`}
-    >
-      <div className="flex justify-between items-center">
-        <div>
-          {/* <span className="text-muted-foreground text-sm">
-            {page === 'settings' ? 'Settings' : 'Dashboard'} &gt;
-          </span> */}
-          <h1 className="text-2xl font-semibold">{title}</h1>
-          <p className="text-muted-foreground">{subtitle}</p>
-        </div>
+    <div className={`flex-1 flex flex-col`}>
+      <div className="h-20 flex items-center justify-between px-4 border-b">
+        <h1 className="text-xl font-medium">{title}</h1>
         <div>{actions}</div>
       </div>
 
-      <div className="flex-1 flex items-start gap-4">
+      <div className="flex-1 flex items-start gap-4 p-4">
         <div className="flex-1">{first}</div>
         <div className="2xl:w-[30rem] w-[20rem]">{second}</div>
       </div>

@@ -13,7 +13,7 @@ function AntiSpamPage() {
       >
         <div className="space-y-4">
           {AntiSpam.map((policy) => (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2" key={policy.key}>
               <Checkbox
                 id={policy.key}
                 // checked={config.get('enabled')}

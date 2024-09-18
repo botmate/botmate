@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import type { PluginMeta } from '@botmate/server';
 import { Badge, Section } from '@botmate/ui';
@@ -22,7 +22,7 @@ import {
 
 function PluginSettingsPage() {
   const app = useApp();
-  const [searchParams] = useSearchParams();
+  const params = useParams();
 
   const plugins = usePlugins();
   const botPlugins = useBotPlugins();
@@ -35,9 +35,11 @@ function PluginSettingsPage() {
   const [enablePluginMutation] = useEnablePluginMutation();
   const [disablePluginMutation] = useDisablePluginMutation();
 
-  const plugin = plugins?.find(
-    (plugin) => plugin.name === searchParams.get('name'),
-  ) as PluginMeta | undefined;
+  const name = params.name;
+
+  const plugin = plugins?.find((plugin) => plugin.name === name) as
+    | PluginMeta
+    | undefined;
 
   useEffect(() => {
     if (plugin) {
@@ -51,22 +53,20 @@ function PluginSettingsPage() {
     };
   }, [plugin]);
 
-  if (plugin && currentPlugin) {
+  if (plugin) {
     const data = botPlugins.find((p) => p.name === plugin.name);
     const Settings = app.pluginSettings.get(plugin.name);
 
     return (
       <div>
-        <div className="flex justify-between items-center p-8 border-b">
+        <div className="flex justify-between items-center p-4 border-b">
           <div>
-            <h1 className="text-2xl font-semibold">{plugin.displayName}</h1>
-            <p className="text-muted-foreground text-lg">
-              {plugin.description}
-            </p>
+            <h1 className="text-xl font-medium">{plugin.displayName}</h1>
+            <p className="text-muted-foreground">{plugin.description}</p>
           </div>
         </div>
 
-        <div className="px-8 py-4 border-b w-full bg-card/80">
+        <div className="px-4 py-4 border-b w-full bg-card/80">
           <div className="flex gap-2 items-center">
             <Badge
               className="cursor-pointer"
@@ -117,7 +117,7 @@ function PluginSettingsPage() {
           </div>
         </div>
 
-        <div className="p-8">
+        <div className="p-4">
           {Settings ? (
             Settings
           ) : (

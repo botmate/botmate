@@ -5,7 +5,7 @@ import { IPlugin } from '@botmate/server';
 import { Application, SidebarItem } from './application';
 
 export abstract class Plugin {
-  abstract displayName: string;
+  static displayName: string;
 
   loaded = false;
 
@@ -13,10 +13,7 @@ export abstract class Plugin {
   async load() {}
   async afterLoad() {}
 
-  constructor(
-    private app: Application,
-    private pluginData: IPlugin,
-  ) {}
+  constructor(private app: Application, private pluginData: IPlugin) {}
 
   get routes() {
     return this.app.routes;

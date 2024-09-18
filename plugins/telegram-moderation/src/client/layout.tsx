@@ -1,26 +1,28 @@
-import React from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
-import { ListItem } from '@botmate/ui';
+import { SidebarItem, SidebarLayout } from '@botmate/ui';
 
-const options = [
+import { TelegramModeration } from './client';
+
+const options: SidebarItem[] = [
   {
-    label: 'Moderation',
+    title: 'Moderation',
     description: 'Basic moderation settings',
     path: '',
   },
   {
-    label: 'New Users',
+    title: 'New Users',
     description: 'Policies, welcome message',
     path: '/new-users',
   },
   {
-    label: 'Anti-spam',
+    title: 'Anti-spam',
     description: 'Prevent spam messages',
     path: '/anti-spam',
   },
   {
-    label: 'Filters',
+    title: 'Filters',
     description: 'Apply filters to messages',
     path: '/filters',
   },
@@ -32,29 +34,21 @@ type Props = {
 function Layout({ children }: Props) {
   const params = useParams();
   const location = useLocation();
-  const relativePath = location.pathname.replace(/\/bots\/\d+\/moderation/, '');
+  const items = useMemo(() => {
+    return options.map((item) => {
+      const path = `/bots/${params.botId}/moderation${item.path}`;
+      return {
+        ...item,
+        path,
+        regex: new RegExp(`^${path}$`),
+      };
+    });
+  }, [location]);
 
   return (
-    <div className="flex flex-1 h-screen overflow-hidden">
-      <div className="w-72 py-6 p-4 space-y-6 bg-card border-r overflow-auto">
-        <div className="flex flex-col gap-1">
-          {options.map((item) => {
-            const path = `/bots/${params.botId}/moderation${item.path}`;
-            const isActive = relativePath === item.path;
-            return (
-              <Link to={path} key={item.label}>
-                <ListItem
-                  label={item.label}
-                  description={item.description}
-                  isActive={isActive}
-                />
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-      <div className="flex-1 overflow-auto">{children}</div>
-    </div>
+    <SidebarLayout title={TelegramModeration.displayName} items={items}>
+      {children}
+    </SidebarLayout>
   );
 }
 

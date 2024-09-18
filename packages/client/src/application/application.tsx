@@ -135,7 +135,7 @@ export class Application {
                               element={<AppearanceSettingsPage />}
                             />
                             <Route
-                              path="plugins"
+                              path="plugins/:name"
                               element={<PluginSettingsPage />}
                             />
                           </Route>

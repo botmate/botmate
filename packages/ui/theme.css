@@ -22,8 +22,8 @@
     --muted: 0 0% 90%;
     --muted-foreground: 215deg 13.79% 34.12%;
 
-    --accent: 233 81% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 95.02%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -53,7 +53,7 @@
     --background: 0 0% 6.02%;
     --foreground: 210 40% 98%;
 
-    --card: 0 0% 8.02%;
+    --card: 0 0% 6.02%;
     --card-foreground: 210 40% 98%;
 
     --popover: 0 0% 10%;
@@ -68,7 +68,7 @@
     --muted: 0 0% 16%;
     --muted-foreground: 0deg 0% 45.1%;
 
-    --accent: 233 81% 65%;
+    --accent: 0 0% 10.02%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;

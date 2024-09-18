@@ -31,6 +31,7 @@ export class Application {
   isMonorepo = process.env.IS_MONOREPO !== undefined;
   port = process.env.PORT || 8233;
   rootPath = process.cwd();
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   version: string = require('../package.json').version;
 
   protected _pluginManager: PluginManager;

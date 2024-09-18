@@ -17,9 +17,12 @@ export abstract class Plugin implements PluginInterface {
 
   logger!: ReturnType<typeof createLogger>;
 
-  async beforeLoad() {}
-  async load() {}
-  async afterLoad() {}
+  async beforeLoad() {
+    this.logger.warn('beforeLoad not implemented');
+  }
+  async load() {
+    this.logger.warn('load not implemented');
+  }
 
   constructor(
     private _app: Application,
@@ -38,9 +41,9 @@ export abstract class Plugin implements PluginInterface {
   get config() {
     const configManager = this._app.configManager;
     return {
-      get: (key: string, def?: any) =>
+      get: <T>(key: string, def?: T) =>
         configManager.getPluginConfig(this.data.id, key, def),
-      set: (key: string, value: any) =>
+      set: <T>(key: string, value: T) =>
         configManager.savePluginConfig(this.data.id, key, value),
     };
   }

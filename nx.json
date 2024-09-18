@@ -24,5 +24,8 @@
         "serveStaticTargetName": "serve-static"
       }
     }
-  ]
+  ],
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/pr.yml"]
+  }
 }

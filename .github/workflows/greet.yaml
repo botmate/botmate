@@ -1,0 +1,19 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            Hi there! Thanks for opening an issue! 🎉
+            It looks like this is your first issue. If this is a bug, please make sure you've provided enough information for us to reproduce the bug.
+            If this is a feature request, tell us more about why you think it's important.
+          pr-message: |
+            Hi there! Thanks for opening a pull request! 🎉
+            It looks like this is your first pull request. If it's a bug fix, make sure it's clear what the problem was and how it was fixed.
+            If it's a feature, make sure it's clear what problem it's solving.

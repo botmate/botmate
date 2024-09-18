@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { usePluginConfig } from '@botmate/client';
+
+import type { Config } from '../config.types';
+
 import {
   Card,
   CardDescription,
@@ -8,6 +12,8 @@ import {
 } from '@botmate/ui';
 
 function SettingsPage() {
+  const config = usePluginConfig<Config>();
+
   return (
     <div className="max-w-2xl">
       <Card>

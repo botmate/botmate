@@ -2,8 +2,14 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
-import { PluginMeta } from '@botmate/server';
-import { Badge } from '@botmate/ui';
+import type { PluginMeta } from '@botmate/server';
+import {
+  Badge,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@botmate/ui';
 
 import { useApp } from '../../../hooks/use-app';
 import useCurrentBot from '../../../hooks/use-bot';
@@ -112,10 +118,29 @@ function PluginSettingsPage() {
           </div>
         </div>
 
-        <div className="p-8">{Settings}</div>
+        <div className="p-8">
+          {Settings ? (
+            Settings
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-md">No settings found</CardTitle>
+                <CardDescription className="text-sm">
+                  This plugin does not have any settings.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          )}
+        </div>
       </div>
     );
   }
+
+  return (
+    <div className="h-screen flex items-center justify-center">
+      <h1>Plugin not found</h1>
+    </div>
+  );
 }
 
 export default PluginSettingsPage;

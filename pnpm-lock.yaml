@@ -248,12 +248,21 @@ importers:
       ejs:
         specifier: ^3.1.10
         version: 3.1.10
+      execa:
+        specifier: 5.1.1
+        version: 5.1.1
       fast-glob:
         specifier: 3.2.7
         version: 3.2.7
       inquirer:
         specifier: ^8.0.0
         version: 8.2.6
+      ora:
+        specifier: ^5.4.1
+        version: 5.4.1
+      prettier:
+        specifier: ^3.3.3
+        version: 3.3.3
 
   packages/database:
     dependencies:
@@ -3408,14 +3417,6 @@ packages:
       - nx
     dev: true
 
-  /@nrwl/devkit@19.7.3(nx@19.7.3):
-    resolution: {integrity: sha512-g9vANTuxgHan6uAkI6M6tkfLjHECLmbZ4A80UqpxJNQJsCJFEHkzIC9oxhf8bWV3PjgCH6Xm4VyQ2GHwb3sgWw==}
-    dependencies:
-      '@nx/devkit': 19.7.3(nx@19.7.3)
-    transitivePeerDependencies:
-      - nx
-    dev: true
-
   /@nrwl/eslint-plugin-nx@19.7.3(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@22.5.0)(@typescript-eslint/parser@7.18.0)(eslint-config-prettier@9.1.0)(eslint@8.57.1)(nx@19.5.7)(typescript@5.5.4)(verdaccio@5.32.1):
     resolution: {integrity: sha512-lb3BUM+6AxRWWFl0+nbcpu2QXQ1S7PV+srQO9Xb70rbRkgFIdnevrM3PVL+Z3oQrl0oxqazBYSid6e6ISUpTQw==}
     dependencies:
@@ -3623,7 +3624,7 @@ packages:
     peerDependencies:
       nx: '>= 17 <= 20'
     dependencies:
-      '@nrwl/devkit': 19.7.3(nx@19.7.3)
+      '@nrwl/devkit': 19.7.3(nx@19.5.7)
       ejs: 3.1.10
       enquirer: 2.3.6
       ignore: 5.3.2

@@ -26,11 +26,6 @@ function toPascalCase(str: string) {
     .replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
-const libraries: Record<string, string> = {
-  telegram: 'grammy',
-  discord: 'discord.js',
-};
-
 export default function pm(app: Application) {
   const pm = app.cli.command('pm');
 
@@ -187,24 +182,6 @@ export default function pm(app: Application) {
     ]);
 
     spinner.succeed('Formatted');
-
-    const spinner2 = ora('Installing dependencies...').start();
-
-    const cwd = join(pluginFolder, toKebabCase(name));
-
-    const library = libraries[platform.toLowerCase()];
-
-    if (!library) {
-      console.error(`Library for ${platform} not found`);
-      spinner2.fail('Dependencies not installed');
-      return;
-    }
-
-    await execa('pnpm', ['add', libraries[platform.toLowerCase()]], {
-      cwd,
-    });
-
-    spinner2.succeed('Dependencies installed');
 
     console.log();
     console.log(colors.cyan(`Plugin "${colors.bold(name)}" created.`));

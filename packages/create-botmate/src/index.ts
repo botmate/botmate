@@ -2,15 +2,24 @@
 import { execSync } from 'child_process';
 import colors from 'colors';
 import ejs from 'ejs';
+import execa from 'execa';
 import fg from 'fast-glob';
 import { existsSync } from 'fs';
 import { mkdir, writeFile } from 'fs/promises';
 import inquirer from 'inquirer';
-import { dirname } from 'path';
+import ora from 'ora';
+import { dirname, join } from 'path';
 
 const cwd = process.cwd();
 
+const libraries: Record<string, string> = {
+  telegram: 'grammy@1.30.0',
+  discord: 'discord.js',
+};
+
 async function run() {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const version = require('../package.json').version;
   try {
     execSync('pnpm --version');
   } catch {
@@ -46,18 +55,20 @@ async function run() {
   ]);
 
   const name = prompt.name;
-  const projectDir = `${cwd}/${name}`;
+  const projectDir = join(cwd, name);
 
   if (existsSync(projectDir)) {
     console.error(colors.red('Directory already exists'));
-    return;
+    process.exit(1);
   }
 
-  console.info('Creating botmate project...');
+  console.log();
+
+  const creating = ora('Creating project').start();
 
   await mkdir(projectDir, { recursive: true });
 
-  const templateDir = `${__dirname}/../files`;
+  const templateDir = join(__dirname, '..', 'files');
   const files = await fg(`${templateDir}/**/*`, { dot: true });
 
   for (const file of files) {
@@ -67,13 +78,12 @@ async function run() {
       relativePath = relativePath.replace('.ejs', '');
     }
 
-    const targetPath = `${projectDir}${relativePath}`;
+    const targetPath = join(projectDir, relativePath);
     const content = await ejs.renderFile(file, {
       name,
       platform: prompt.platform.toLowerCase(),
+      version,
     });
-
-    console.info(colors.green(`CREATE:`), `${relativePath}`);
 
     const dir = dirname(targetPath);
 
@@ -81,10 +91,31 @@ async function run() {
     await writeFile(targetPath, content);
   }
 
-  console.info('Project created');
+  creating.succeed('Project created');
+
+  const formatting = ora('Formatting...').start();
+
+  await execa('prettier', ['--write', projectDir]);
+
+  formatting.succeed('Formatted');
+
+  const installing = ora('Installing dependencies').start();
+
+  const library = libraries[prompt.platform.toLowerCase()];
+
+  await execa('pnpm', ['install', library], {
+    cwd: projectDir,
+  });
+
+  installing.succeed('Dependencies installed');
+
+  ora('Done').succeed();
+
+  console.log();
+
   console.info('Run the following commands to start the project:');
-  console.info(colors.cyan.bold(`$ cd ${name}`));
-  console.info(colors.cyan.bold('$ pnpm install'));
+  console.info(colors.cyan(`$ cd ${name}`));
+  console.info(colors.cyan('$ pnpm dev'));
 }
 
 run();

@@ -28,6 +28,7 @@ import SetupPage from './pages/setup';
 import { AppProvider } from './providers/app';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
+import { SocketProvider } from './providers/socket';
 import { store } from './store';
 
 type ClientParams = {
@@ -104,49 +105,51 @@ export class Application {
   getRootComponent() {
     // todo: setup dynamic routes
     return () => (
-      <Subscribe>
-        <Toaster />
-        <ThemeProvider attribute="class">
-          <BrowserRouter>
-            <ReduxProvider store={store}>
-              <Routes>
-                <Route element={<AppProvider app={this} />}>
-                  <Route index path="/" element={<HomePage />} />
-                  <Route path="/setup" element={<SetupPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route
-                    element={<BotProvider app={this} />}
-                    path="/bots/:botId"
-                  >
-                    <Route element={<PluginsProvider />}>
-                      <Route element={<MainLayout />}>
-                        <Route index element={<DashboardPage />} />
-                        <Route path="analytics" element={<AnalyticsPage />} />
-                        <Route
-                          path="marketplace"
-                          element={<MarketplacePage />}
-                        />
-                        <Route path="settings" element={<SettingsLayout />}>
-                          <Route index element={<GeneralSettingsPage />} />
+      <SocketProvider>
+        <Subscribe>
+          <Toaster />
+          <ThemeProvider attribute="class">
+            <BrowserRouter>
+              <ReduxProvider store={store}>
+                <Routes>
+                  <Route element={<AppProvider app={this} />}>
+                    <Route index path="/" element={<HomePage />} />
+                    <Route path="/setup" element={<SetupPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route
+                      element={<BotProvider app={this} />}
+                      path="/bots/:botId"
+                    >
+                      <Route element={<PluginsProvider />}>
+                        <Route element={<MainLayout />}>
+                          <Route index element={<DashboardPage />} />
+                          <Route path="analytics" element={<AnalyticsPage />} />
                           <Route
-                            path="advanced"
-                            element={<AppearanceSettingsPage />}
+                            path="marketplace"
+                            element={<MarketplacePage />}
                           />
-                          <Route
-                            path="plugins"
-                            element={<PluginSettingsPage />}
-                          />
+                          <Route path="settings" element={<SettingsLayout />}>
+                            <Route index element={<GeneralSettingsPage />} />
+                            <Route
+                              path="advanced"
+                              element={<AppearanceSettingsPage />}
+                            />
+                            <Route
+                              path="plugins"
+                              element={<PluginSettingsPage />}
+                            />
+                          </Route>
+                          <Route path="*" element={<PluginRoutes />} />
                         </Route>
-                        <Route path="*" element={<PluginRoutes />} />
                       </Route>
                     </Route>
                   </Route>
-                </Route>
-              </Routes>
-            </ReduxProvider>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Subscribe>
+                </Routes>
+              </ReduxProvider>
+            </BrowserRouter>
+          </ThemeProvider>
+        </Subscribe>
+      </SocketProvider>
     );
   }
 

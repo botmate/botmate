@@ -161,7 +161,7 @@ export class PluginManager {
         this.logger.debug(`creating bot instance ${botData.id}`);
         bot = new Bot(
           botData.platformType as PlatformType,
-          botData.credentials!,
+          botData.credentials as Record<string, string>,
           botData,
         );
         await bot.init();

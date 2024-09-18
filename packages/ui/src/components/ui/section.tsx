@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '../../utils';
 
 type SectionProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  title: string;
+  title?: string;
   description?: string;
   children?: React.ReactNode;
   className?: string;
@@ -11,7 +11,7 @@ type SectionProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export const Section = React.forwardRef<HTMLDivElement, SectionProps>(
   ({ title, description, children, className }, ref) => {
     return (
-      <div className={cn(className, 'space-y-4')} ref={ref}>
+      <div className={cn(className, 'space-y-6')} ref={ref}>
         <div>
           <h2 className="text-lg font-medium">{title}</h2>
           {description && (

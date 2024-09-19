@@ -52,6 +52,23 @@ const PLATFORMS: Record<string, Platform> = {
       },
     ],
   },
+  Slack: {
+    id: 'slack',
+    name: 'Slack',
+    logo: '/platforms/slack.svg',
+    steps: [
+      {
+        title: 'Step 1: Create a bot',
+        description:
+          'To create a bot, you need to create a new application on Slack API.',
+      },
+      {
+        title: 'Step 2: Get the token and signing secret',
+        description:
+          'Copy and paste the values in the input box to connect your bot.',
+      },
+    ],
+  },
 };
 
 function SetupPage() {
@@ -65,9 +82,10 @@ function SetupPage() {
   const [credentials, setCredentials] = useState<Record<string, string>>({});
 
   const credentialsList =
-    platforms?.filter(
-      (platform) => platform.displayName === platform.displayName,
-    )?.[0]?.credentials || {};
+    platforms?.filter((p) => p.displayName === platform?.name)?.[0]
+      ?.credentials || {};
+
+  console.log('credentialsList', credentialsList);
 
   return (
     <div className="flex items-center h-screen">
@@ -97,7 +115,7 @@ function SetupPage() {
             </p>
           </div>
           <div className="flex flex-col gap-4 2xl:p-24 p-12">
-            <div className="grid grid-cols-3 gap-4 mt-2">
+            <div className="grid grid-cols-4 gap-4 mt-2">
               {Object.entries(PLATFORMS).map(([key, platform]) => (
                 <div
                   key={key}
@@ -187,6 +205,7 @@ function SetupPage() {
                         }}
                       />
                     ))}
+
                     <Button
                       onClick={() => {
                         createBot({

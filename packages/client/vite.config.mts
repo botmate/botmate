@@ -13,7 +13,7 @@ export default defineConfig({
     emptyOutDir: true,
     lib: {
       entry: 'src/entry.ts',
-      formats: ['es'],
+      formats: ['es', 'cjs'],
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {

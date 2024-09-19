@@ -1,5 +1,5 @@
 {
-  "root": "platforms/discord",
+  "root": "platforms/slack",
   "targets": {
     "build": {
       "cache": true

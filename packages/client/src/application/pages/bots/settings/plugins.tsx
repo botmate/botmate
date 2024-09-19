@@ -61,8 +61,6 @@ function PluginSettingsPage() {
 
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
-  console.log('isDesktop', isDesktop);
-
   const name = params.name;
 
   const plugin = plugins?.find((plugin) => plugin.name === name) as

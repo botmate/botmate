@@ -1,6 +1,7 @@
 import {
   ChartAreaIcon,
   LayoutDashboard,
+  LucideIcon,
   Settings2Icon,
   ShoppingBagIcon,
 } from 'lucide-react';
@@ -14,11 +15,11 @@ import {
   TooltipTrigger,
 } from '@botmate/ui';
 
+import { MainSidebarItem } from '../application';
 import { useApp } from '../hooks/use-app';
 import useCurrentBot from '../hooks/use-bot';
-import { SidebarItem } from '../application';
 
-const items: SidebarItem[] = [
+const items: MainSidebarItem[] = [
   {
     label: 'Dashboard',
     icon: LayoutDashboard,
@@ -45,7 +46,7 @@ const items: SidebarItem[] = [
   },
 ];
 
-function SidebarItem({
+function MainSidebarItem({
   path,
   isActive,
   Icon,
@@ -53,7 +54,7 @@ function SidebarItem({
 }: {
   path: string;
   isActive: boolean;
-  Icon: any;
+  Icon: LucideIcon;
   item: (typeof items)[0];
 }) {
   return (
@@ -65,8 +66,11 @@ function SidebarItem({
       >
         <TooltipTrigger
           className={
-            `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-neutral-500/10 text-black/70 dark:text-white'}` +
-            `transition-all duration-150`
+            `p-3 rounded-xl cursor-default ${
+              isActive
+                ? 'bg-primary/10 text-primary'
+                : 'hover:bg-neutral-500/10 text-black/70 dark:text-white'
+            }` + `transition-all duration-150`
           }
         >
           <Icon
@@ -105,19 +109,24 @@ function Sidebar() {
 
       <div className="flex flex-col py-4 gap-1 h-full overflow-auto">
         <TooltipProvider>
-          {[...items,...(app.sidebar.length > 0 ? ['', ...app.sidebar] : [])].map((item, index) => {
+          {[
+            ...items,
+            ...(app.sidebar.length > 0 ? ['', ...app.sidebar] : []),
+          ].map((item, index) => {
             if (typeof item === 'string') {
               return <div key={index} className="h-px bg-muted/80 mx-5 my-2" />;
             }
 
             const Icon = item.icon;
             const relativePath = location.pathname.replace(/^\/bots\/\d+/, '');
-            const isActive = item.regex ? item.regex.test(relativePath || '/') : item.path === relativePath;
+            const isActive = item.regex
+              ? item.regex.test(relativePath || '/')
+              : item.path === relativePath;
 
             const absolutePath = `/bots/${params.botId}${item.path}`;
 
             return (
-              <SidebarItem
+              <MainSidebarItem
                 key={index}
                 path={absolutePath}
                 isActive={isActive}
@@ -128,7 +137,10 @@ function Sidebar() {
           })}
         </TooltipProvider>
       </div>
-      <div className="relative flex items-center justify-center py-4" role="group">
+      <div
+        className="relative flex items-center justify-center py-4"
+        role="group"
+      >
         <img
           src={`/${bot.avatar}`}
           alt="botmate"

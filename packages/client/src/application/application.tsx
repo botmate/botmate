@@ -54,7 +54,7 @@ export class EventEmitter {
   }
 }
 
-export type SidebarItem = {
+export type MainSidebarItem = {
   label: string;
   path: string;
   icon: LucideIcon;
@@ -70,7 +70,7 @@ export class Application {
   emitter = new EventEmitter();
   version = '';
 
-  private _sidebar: SidebarItem[] = [];
+  private _sidebar: MainSidebarItem[] = [];
   private _pluginSettings = new Map<string, React.ReactNode>();
   private _pluginInstances = new Map<string, Plugin>();
 

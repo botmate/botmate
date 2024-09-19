@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-export type SidebarListItem = {
+export type SidebarItem = {
   title: string;
   description?: string;
   path: string;
   regex?: RegExp;
 };
 type Props = {
-  items: (SidebarListItem | string)[];
+  items: (SidebarItem | string)[];
   children?: React.ReactNode;
   title?: string;
 };
-export function SidebarListLayout({ items, children, title }: Props) {
+export function SidebarLayout({ items, children, title }: Props) {
   const location = useLocation();
 
   return (

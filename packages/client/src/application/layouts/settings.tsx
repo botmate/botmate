@@ -3,9 +3,9 @@ import { Outlet, useParams } from 'react-router-dom';
 
 import useCurrentBot from '../hooks/use-bot';
 import { useGetPluginsQuery } from '../services/plugins';
-import { SidebarListItem, SidebarListLayout } from './sidebar-list';
+import { SidebarItem, SidebarLayout } from './sidebar';
 
-const items: SidebarListItem[] = [
+const items: SidebarItem[] = [
   {
     title: 'General',
     description: 'Configure general settings',
@@ -34,7 +34,7 @@ function SettingsLayout() {
   }));
 
   const pluginsItems =
-    plugins?.map<SidebarListItem>((plugin) => ({
+    plugins?.map<SidebarItem>((plugin) => ({
       title: plugin.displayName,
       path: `/bots/${params.botId}/settings/plugins/${encodeURIComponent(
         plugin.name,
@@ -42,12 +42,12 @@ function SettingsLayout() {
     })) || [];
 
   return (
-    <SidebarListLayout
+    <SidebarLayout
       title="Settings"
       items={[...settingsItems, 'Plugins', ...pluginsItems]}
     >
       <Outlet />
-    </SidebarListLayout>
+    </SidebarLayout>
   );
 }
 

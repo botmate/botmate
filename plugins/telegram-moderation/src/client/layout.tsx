@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { SidebarListItem, SidebarListLayout } from '@botmate/client';
+import { SidebarItem, SidebarLayout } from '@botmate/client';
 
 import { TelegramModeration } from './client';
 
-const options: SidebarListItem[] = [
+const options: SidebarItem[] = [
   {
     title: 'Moderation',
     description: 'Basic moderation settings',
@@ -46,9 +46,9 @@ function Layout({ children }: Props) {
   }, [location]);
 
   return (
-    <SidebarListLayout title={TelegramModeration.displayName} items={items}>
+    <SidebarLayout title={TelegramModeration.displayName} items={items}>
       {children}
-    </SidebarListLayout>
+    </SidebarLayout>
   );
 }
 

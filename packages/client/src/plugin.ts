@@ -2,7 +2,7 @@ import { RouteObject } from 'react-router-dom';
 
 import { IPlugin } from '@botmate/server';
 
-import { Application, SidebarItem } from './application';
+import { Application, MainSidebarItem } from './application';
 
 export abstract class Plugin {
   static displayName: string;
@@ -35,7 +35,7 @@ export abstract class Plugin {
    * Add a sidebar item to the application
    * @param item SidebarItem
    */
-  addToSidebar(item: SidebarItem) {
+  addToSidebar(item: MainSidebarItem) {
     this.app.sidebar.push(item);
   }
 

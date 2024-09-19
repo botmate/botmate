@@ -7,6 +7,7 @@ import socket, { Socket } from 'socket.io';
 import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
 import { ConfigManager } from './config';
+import { Migrations } from './migrations';
 import { initBotsModel } from './models/bot';
 import { initPluginModel } from './models/plugin';
 import { PlatformManager } from './platform-manager';
@@ -41,6 +42,7 @@ export class Application {
   protected _configManager: ConfigManager;
   protected _cli: Command;
   protected _socket?: Socket;
+  protected _migrations: Migrations;
 
   get pluginManager() {
     return this._pluginManager;
@@ -70,6 +72,7 @@ export class Application {
       dbPath: options?.dbPath,
     });
 
+    this._migrations = new Migrations(this.database);
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
@@ -82,6 +85,8 @@ export class Application {
 
   async init() {
     this.logger.info('Initializing application...');
+
+    await this._migrations.runMigrations();
 
     initPluginModel(this.database.sequelize);
     initBotsModel(this.database.sequelize);

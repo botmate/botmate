@@ -85,8 +85,6 @@ function SetupPage() {
     platforms?.filter((p) => p.displayName === platform?.name)?.[0]
       ?.credentials || {};
 
-  console.log('credentialsList', credentialsList);
-
   return (
     <div className="flex items-center h-screen">
       <div className="w-[1200px] h-[600px] 2xl:h-[800px] mx-auto relative">

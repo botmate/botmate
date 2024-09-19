@@ -1,12 +1,11 @@
 import React from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
-import { SidebarItem, SidebarLayout } from '@botmate/ui';
-
 import useCurrentBot from '../hooks/use-bot';
 import { useGetPluginsQuery } from '../services/plugins';
+import { SidebarListItem, SidebarListLayout } from './sidebar-list';
 
-const items: SidebarItem[] = [
+const items: SidebarListItem[] = [
   {
     title: 'General',
     description: 'Configure general settings',
@@ -35,7 +34,7 @@ function SettingsLayout() {
   }));
 
   const pluginsItems =
-    plugins?.map<SidebarItem>((plugin) => ({
+    plugins?.map<SidebarListItem>((plugin) => ({
       title: plugin.displayName,
       path: `/bots/${params.botId}/settings/plugins/${encodeURIComponent(
         plugin.name,
@@ -43,12 +42,12 @@ function SettingsLayout() {
     })) || [];
 
   return (
-    <SidebarLayout
+    <SidebarListLayout
       title="Settings"
       items={[...settingsItems, 'Plugins', ...pluginsItems]}
     >
       <Outlet />
-    </SidebarLayout>
+    </SidebarListLayout>
   );
 }
 

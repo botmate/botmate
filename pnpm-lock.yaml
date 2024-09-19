@@ -274,7 +274,7 @@ importers:
         version: link:../logger
       sequelize:
         specifier: ^6.37.3
-        version: 6.37.3
+        version: 6.37.3(sqlite3@5.1.7)
 
   packages/logger:
     dependencies:
@@ -291,8 +291,8 @@ importers:
   packages/server:
     dependencies:
       '@botmate/database':
-        specifier: 1.1.0-beta.8
-        version: link:../database
+        specifier: 1.1.0-beta.2
+        version: 1.1.0-beta.2(sqlite3@5.1.7)
       '@botmate/logger':
         specifier: 1.1.0-beta.8
         version: link:../logger
@@ -347,6 +347,9 @@ importers:
       tsx:
         specifier: ^4.17.0
         version: 4.17.0
+      umzug:
+        specifier: ^3.8.1
+        version: 3.8.1(@types/node@22.5.0)
       vite:
         specifier: ^5.4.2
         version: 5.4.2(@types/node@22.5.0)
@@ -1196,6 +1199,12 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+
+  '@botmate/database@1.1.0-beta.2':
+    resolution: {integrity: sha512-V0hkaJBy8qLwb74kGpbNjNdGxhUKwQdZ1cvVbiRO7oLp6frpmAMyigDkeLljVmxbY9aa3nzI/i6s2Ph99tzHDw==}
+
+  '@botmate/logger@1.1.0-beta.2':
+    resolution: {integrity: sha512-HwZO6XWP6QUdhJq/RMoHcGpiJSmAk1dcttXb3yUJmZrejP+lTz9RCUsKA7V/tPWk6T4QTfTWHUvJf0t4kQdh+w==}
 
   '@changesets/apply-release-plan@7.0.4':
     resolution: {integrity: sha512-HLFwhKWayKinWAul0Vj+76jVx1Pc2v55MGPVjZ924Y/ROeSsBMFutv9heHmCUj48lJyRfOTJG5+ar+29FUky/A==}
@@ -4737,6 +4746,10 @@ packages:
   electron-to-chromium@1.5.13:
     resolution: {integrity: sha512-lbBcvtIJ4J6sS4tb5TLp1b4LyfCdMkwStzXPyAgVgTRAsep4bvrAGaBOP7ZJtQMNJpSQ9SqG4brWOroNaQtm7Q==}
 
+  emittery@0.13.1:
+    resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
+    engines: {node: '>=12'}
+
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
 
@@ -7024,6 +7037,10 @@ packages:
     resolution: {integrity: sha512-8xCNE/aT/EXKenuMDZ+xTVwkT8gsoHN2z/Q29l80u0ppGEXVvsKRzNMbtKhg8LS8k1tJLAHHylf6p4VFmP6XUQ==}
     engines: {node: '>= 0.4.0'}
 
+  pony-cause@2.1.11:
+    resolution: {integrity: sha512-M7LhCsdNbNgiLYiP4WjsfLUuFmCfnjdF6jKe2R9NKl4WFN+HZPGHJZ9lnLP7f9ZnKe3U9nuWD0szirmj+migUg==}
+    engines: {node: '>=12.0.0'}
+
   portfinder@1.0.32:
     resolution: {integrity: sha512-on2ZJVVDXRADWE6jnQaX0ioEylzgBpQk8r55NE4wjXW1ZxO+BgDlY6DXwj20i0V8eB4SenDQ00WEaxfiIQPcxg==}
     engines: {node: '>= 0.12.0'}
@@ -8367,6 +8384,10 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
+  type-fest@4.26.1:
+    resolution: {integrity: sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg==}
+    engines: {node: '>=16'}
+
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
@@ -8429,6 +8450,10 @@ packages:
     resolution: {integrity: sha512-S8KA6DDI47nQXJSi2ctQ629YzwOVs+bQML6DAtvy0wgNdpi+0ySpQK0g2pxBq2xfF2z3YCscu7NNA8nXT9PlIQ==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+
+  umzug@3.8.1:
+    resolution: {integrity: sha512-k0HjOc3b/s8vH24BUTvnaFiKhfWI9UQAGpqHDG+3866CGlBTB83Xs5wZ1io1mwYLj/GHvQ34AxKhbpYnWtkRJg==}
+    engines: {node: '>=12'}
 
   unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -9837,6 +9862,26 @@ snapshots:
       to-fast-properties: 2.0.0
 
   '@bcoe/v8-coverage@0.2.3': {}
+
+  '@botmate/database@1.1.0-beta.2(sqlite3@5.1.7)':
+    dependencies:
+      '@botmate/logger': 1.1.0-beta.2
+      sequelize: 6.37.3(sqlite3@5.1.7)
+    transitivePeerDependencies:
+      - ibm_db
+      - mariadb
+      - mysql2
+      - oracledb
+      - pg
+      - pg-hstore
+      - snowflake-sdk
+      - sqlite3
+      - supports-color
+      - tedious
+
+  '@botmate/logger@1.1.0-beta.2':
+    dependencies:
+      winston: 3.14.2
 
   '@changesets/apply-release-plan@7.0.4':
     dependencies:
@@ -14253,6 +14298,8 @@ snapshots:
 
   electron-to-chromium@1.5.13: {}
 
+  emittery@0.13.1: {}
+
   emoji-regex@10.4.0: {}
 
   emoji-regex@8.0.0: {}
@@ -17024,6 +17071,8 @@ snapshots:
 
   pkginfo@0.4.1: {}
 
+  pony-cause@2.1.11: {}
+
   portfinder@1.0.32:
     dependencies:
       async: 2.6.4
@@ -17730,7 +17779,7 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize@6.37.3:
+  sequelize@6.37.3(sqlite3@5.1.7):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.1
@@ -17748,6 +17797,8 @@ snapshots:
       uuid: 8.3.2
       validator: 13.12.0
       wkx: 0.5.0
+    optionalDependencies:
+      sqlite3: 5.1.7
     transitivePeerDependencies:
       - supports-color
 
@@ -18508,6 +18559,8 @@ snapshots:
 
   type-fest@0.8.1: {}
 
+  type-fest@4.26.1: {}
+
   type-is@1.6.18:
     dependencies:
       media-typer: 0.3.0
@@ -18581,6 +18634,16 @@ snapshots:
 
   uglify-js@3.19.2:
     optional: true
+
+  umzug@3.8.1(@types/node@22.5.0):
+    dependencies:
+      '@rushstack/ts-command-line': 4.22.6(@types/node@22.5.0)
+      emittery: 0.13.1
+      fast-glob: 3.3.2
+      pony-cause: 2.1.11
+      type-fest: 4.26.1
+    transitivePeerDependencies:
+      - '@types/node'
 
   unbox-primitive@1.0.2:
     dependencies:

@@ -1,7 +1,11 @@
 import { Database } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
 import { Command } from 'commander';
+import execa from 'execa';
 import express from 'express';
+import { writeFile } from 'fs/promises';
+import ora from 'ora';
+import { join } from 'path';
 import socket, { Socket } from 'socket.io';
 
 import { BotManager } from './bot-manager';
@@ -132,6 +136,50 @@ export class Application {
   async stop() {
     this.logger.warn('Exiting application');
     process.exit(0);
+  }
+
+  async update() {
+    console.log();
+
+    const spinner = ora(`Checking for updates...`).start();
+    const latestVersion = await this.getLatestVersion();
+
+    if (latestVersion !== this.version) {
+      spinner.succeed(`Found new version ${latestVersion}`);
+
+      const updateSpinner = ora('Updating...').start();
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const pkgJson = require(join(this.rootPath, 'package.json'));
+
+      let pkgFound = false;
+      for (const [pkg, version] of Object.entries(pkgJson.dependencies || {})) {
+        if (pkg.startsWith('@botmate/')) {
+          if (version !== latestVersion) {
+            pkgFound = true;
+            pkgJson.dependencies[pkg] = latestVersion;
+          }
+        }
+      }
+
+      if (!pkgFound) {
+        updateSpinner.succeed('No updates found');
+        return;
+      }
+
+      await writeFile(
+        join(this.rootPath, 'package.json'),
+        JSON.stringify(pkgJson, null, 2),
+      );
+
+      updateSpinner.text = 'Installing dependencies...';
+
+      await execa('pnpm', ['install']);
+
+      updateSpinner.succeed('Dependencies installed');
+    } else {
+      spinner.succeed(`No update needed. Already on latest version.`);
+    }
   }
 
   protected createCLI() {

@@ -195,8 +195,8 @@ importers:
   packages/client:
     dependencies:
       '@botmate/ui':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.1.0-beta.5
+        version: link:../ui
       '@loadable/component':
         specifier: ^5.16.4
         version: 5.16.4(react@18.3.1)
@@ -270,11 +270,11 @@ importers:
   packages/database:
     dependencies:
       '@botmate/logger':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../logger
       sequelize:
         specifier: ^6.37.3
-        version: 6.37.3(sqlite3@5.1.7)
+        version: 6.37.3
 
   packages/logger:
     dependencies:
@@ -285,23 +285,23 @@ importers:
   packages/platform:
     dependencies:
       '@botmate/logger':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../logger
 
   packages/server:
     dependencies:
       '@botmate/database':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(sqlite3@5.1.7)
+        specifier: 1.1.0-beta.5
+        version: link:../database
       '@botmate/logger':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../logger
       '@botmate/platform':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../platform
       '@botmate/ui':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.1.0-beta.5
+        version: link:../ui
       '@lerna/project':
         specifier: ^6.4.1
         version: 6.4.1
@@ -432,8 +432,8 @@ importers:
   platforms/discord:
     dependencies:
       '@botmate/logger':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/logger
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -444,8 +444,8 @@ importers:
   platforms/slack:
     dependencies:
       '@botmate/logger':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/logger
       '@slack/bolt':
         specifier: 3.21.4
         version: 3.21.4
@@ -456,11 +456,11 @@ importers:
   platforms/telegram:
     dependencies:
       '@botmate/logger':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/logger
       '@botmate/platform':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/platform
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -471,17 +471,17 @@ importers:
   plugins/openai-chatbot:
     dependencies:
       '@botmate/client':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/client
       '@botmate/platform-telegram':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(encoding@0.1.13)
+        specifier: 1.1.0-beta.5
+        version: link:../../platforms/telegram
       '@botmate/server':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@swc/helpers@0.5.13)(@types/node@22.5.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/server
       '@botmate/ui':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/ui
       grammy:
         specifier: ^1.29.0
         version: 1.29.0(encoding@0.1.13)
@@ -499,17 +499,17 @@ importers:
   plugins/random-number:
     dependencies:
       '@botmate/client':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/client
       '@botmate/platform-telegram':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(encoding@0.1.13)
+        specifier: 1.1.0-beta.5
+        version: link:../../platforms/telegram
       '@botmate/server':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@swc/helpers@0.5.13)(@types/node@22.5.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/server
       '@botmate/ui':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/ui
       grammy:
         specifier: ^1.29.0
         version: 1.29.0(encoding@0.1.13)
@@ -517,17 +517,17 @@ importers:
   plugins/telegram-moderation:
     dependencies:
       '@botmate/client':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/client
       '@botmate/platform-telegram':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(encoding@0.1.13)
+        specifier: 1.1.0-beta.5
+        version: link:../../platforms/telegram
       '@botmate/server':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@swc/helpers@0.5.13)(@types/node@22.5.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/server
       '@botmate/ui':
-        specifier: 1.1.0-beta.4
-        version: 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.1.0-beta.5
+        version: link:../../packages/ui
       grammy:
         specifier: ^1.29.0
         version: 1.29.0(encoding@0.1.13)
@@ -1199,28 +1199,6 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
-
-  '@botmate/client@1.1.0-beta.4':
-    resolution: {integrity: sha512-eqjoZ48auUbbZB5w+g7RPjJTvrtC1ANqaxlKMG7hy2C13q/AFxTXSwraGO6UpNzNiWqbDSAMB8iM6+j3F+feCw==}
-
-  '@botmate/database@1.1.0-beta.4':
-    resolution: {integrity: sha512-i/dOw+qAhz6WAOSykGGwV2YqLZcwkLU1UKG6DiuVZgW7YGFsj+/HiaRSpWvV0F045w+9tb2Mpb/6nGnR0OLm9g==}
-
-  '@botmate/logger@1.1.0-beta.4':
-    resolution: {integrity: sha512-ijKD0jbznTfw5BBicJ/N5cxuxbsL4zTw5OT3hVIJFemr+JI7+Roz4cjfYZemqPbCu2y1ibOsIzcsgx1D6QI39w==}
-
-  '@botmate/platform-telegram@1.1.0-beta.4':
-    resolution: {integrity: sha512-meI+gcWcXDloO4jFp2HUZB7nXW00W1ifEE6NzQmVhJHcKGVGKh4Sh40xc0hYJC0kWw9BYWq7wuuh2UwLZCxgNw==}
-
-  '@botmate/platform@1.1.0-beta.4':
-    resolution: {integrity: sha512-HUvTQcDdCckCfPvZu5TgKDr1IK2EFqZGmBgo+VUCwIyGd8PAW0fYz8MESCO6WCxz7lnfsBex/wuEir0jwlSuSQ==}
-
-  '@botmate/server@1.1.0-beta.4':
-    resolution: {integrity: sha512-7PJYZpS13rWDkE8DUlq1xUZ+lnSFiZkZd0ICzlXLr8Af3abqUaTYo+969J9+5pmpcYwTTFcef36hwik7qAVKzw==}
-    hasBin: true
-
-  '@botmate/ui@1.1.0-beta.4':
-    resolution: {integrity: sha512-EwA+nsNWau6QqTk1pAskM/KfW1WCM8nFCm7CrzJrMLmqQY/M2f3KezLe1QdHfda3j85UUiblshWmo8yaN0++7g==}
 
   '@changesets/apply-release-plan@7.0.4':
     resolution: {integrity: sha512-HLFwhKWayKinWAul0Vj+76jVx1Pc2v55MGPVjZ924Y/ROeSsBMFutv9heHmCUj48lJyRfOTJG5+ar+29FUky/A==}
@@ -9868,142 +9846,6 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@botmate/client@1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)':
-    dependencies:
-      '@botmate/ui': 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@loadable/component': 5.16.4(react@18.3.1)
-      '@react-rxjs/core': 0.10.7(react@18.3.1)(rxjs@7.8.1)
-      '@react-rxjs/utils': 0.9.7(@react-rxjs/core@0.10.7(react@18.3.1)(rxjs@7.8.1))(react@18.3.1)(rxjs@7.8.1)
-      '@reduxjs/toolkit': 2.2.7(react-redux@9.1.2(@types/react@18.3.4)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
-      '@sentry/react': 8.28.0(react@18.3.1)
-      framer-motion: 11.3.31(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      lucide-react: 0.436.0(react@18.3.1)
-      next-themes: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-error-boundary: 4.0.13(react@18.3.1)
-      react-redux: 9.1.2(@types/react@18.3.4)(react@18.3.1)(redux@5.0.1)
-      react-router-dom: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      recharts: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rxjs: 7.8.1
-      socket.io-client: 4.7.5
-      sonner: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    transitivePeerDependencies:
-      - '@emotion/is-prop-valid'
-      - '@types/react'
-      - '@types/react-dom'
-      - bufferutil
-      - react
-      - react-dom
-      - redux
-      - supports-color
-      - utf-8-validate
-
-  '@botmate/database@1.1.0-beta.4(sqlite3@5.1.7)':
-    dependencies:
-      '@botmate/logger': 1.1.0-beta.4
-      sequelize: 6.37.3(sqlite3@5.1.7)
-    transitivePeerDependencies:
-      - ibm_db
-      - mariadb
-      - mysql2
-      - oracledb
-      - pg
-      - pg-hstore
-      - snowflake-sdk
-      - sqlite3
-      - supports-color
-      - tedious
-
-  '@botmate/logger@1.1.0-beta.4':
-    dependencies:
-      winston: 3.14.2
-
-  '@botmate/platform-telegram@1.1.0-beta.4(encoding@0.1.13)':
-    dependencies:
-      '@botmate/logger': 1.1.0-beta.4
-      '@botmate/platform': 1.1.0-beta.4
-      axios: 1.7.7
-      grammy: 1.29.0(encoding@0.1.13)
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
-  '@botmate/platform@1.1.0-beta.4':
-    dependencies:
-      '@botmate/logger': 1.1.0-beta.4
-
-  '@botmate/server@1.1.0-beta.4(@swc/helpers@0.5.13)(@types/node@22.5.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)':
-    dependencies:
-      '@botmate/client': 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@5.0.1)
-      '@botmate/database': 1.1.0-beta.4(sqlite3@5.1.7)
-      '@botmate/logger': 1.1.0-beta.4
-      '@botmate/platform': 1.1.0-beta.4
-      '@botmate/ui': 1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@lerna/project': 6.4.1
-      '@vitejs/plugin-react-swc': 3.7.0(@swc/helpers@0.5.13)(vite@5.4.2(@types/node@22.5.0))
-      colors: 1.4.0
-      commander: 12.1.0
-      console-table-printer: 2.12.1
-      ejs: 3.1.10
-      execa: 5.1.1
-      express: 4.19.2
-      inquirer: 8.2.6
-      ora: 5.4.1
-      prettier: 3.3.3
-      socket.io: 4.7.5
-      sqlite3: 5.1.7
-      tsx: 4.17.0
-      vite: 5.4.2(@types/node@22.5.0)
-    transitivePeerDependencies:
-      - '@emotion/is-prop-valid'
-      - '@swc/helpers'
-      - '@types/node'
-      - '@types/react'
-      - '@types/react-dom'
-      - bluebird
-      - bufferutil
-      - ibm_db
-      - less
-      - lightningcss
-      - mariadb
-      - mysql2
-      - oracledb
-      - pg
-      - pg-hstore
-      - react
-      - react-dom
-      - redux
-      - sass
-      - sass-embedded
-      - snowflake-sdk
-      - stylus
-      - sugarss
-      - supports-color
-      - tedious
-      - terser
-      - utf-8-validate
-
-  '@botmate/ui@1.1.0-beta.4(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@radix-ui/react-alert-dialog': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-checkbox': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-dropdown-menu': 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-hover-card': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-select': 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-slider': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.4)(react@18.3.1)
-      '@radix-ui/react-tabs': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-tooltip': 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      class-variance-authority: 0.7.0
-      clsx: 2.1.1
-      lucide-react: 0.436.0(react@18.3.1)
-      recharts: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - '@types/react-dom'
-      - react
-      - react-dom
-
   '@changesets/apply-release-plan@7.0.4':
     dependencies:
       '@babel/runtime': 7.25.6
@@ -10969,12 +10811,6 @@ snapshots:
     transitivePeerDependencies:
       - nx
 
-  '@nrwl/devkit@19.7.3(nx@19.7.3(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))':
-    dependencies:
-      '@nx/devkit': 19.7.3(nx@19.7.3(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))
-    transitivePeerDependencies:
-      - nx
-
   '@nrwl/eslint-plugin-nx@19.7.3(@babel/traverse@7.25.6)(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13))(@types/node@22.5.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.5.4))(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint@8.57.1)(nx@19.5.7(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))(typescript@5.5.4)(verdaccio@5.32.1(encoding@0.1.13)(typanion@3.14.0))':
     dependencies:
       '@nx/eslint-plugin': 19.7.3(@babel/traverse@7.25.6)(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13))(@types/node@22.5.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.5.4))(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint@8.57.1)(nx@19.5.7(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))(typescript@5.5.4)(verdaccio@5.32.1(encoding@0.1.13)(typanion@3.14.0))
@@ -11145,7 +10981,7 @@ snapshots:
 
   '@nx/devkit@19.7.3(nx@19.7.3(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))':
     dependencies:
-      '@nrwl/devkit': 19.7.3(nx@19.7.3(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))
+      '@nrwl/devkit': 19.7.3(nx@19.5.7(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.13))(@swc/types@0.1.12)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.13)))
       ejs: 3.1.10
       enquirer: 2.3.6
       ignore: 5.3.2
@@ -17898,7 +17734,7 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize@6.37.3(sqlite3@5.1.7):
+  sequelize@6.37.3:
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.1
@@ -17916,8 +17752,6 @@ snapshots:
       uuid: 8.3.2
       validator: 13.12.0
       wkx: 0.5.0
-    optionalDependencies:
-      sqlite3: 5.1.7
     transitivePeerDependencies:
       - supports-color
 

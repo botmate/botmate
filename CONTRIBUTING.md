@@ -2,6 +2,9 @@
 
 Thank you for your interest in contributing to **BotMate**! We welcome all kinds of contributions, from code improvements and bug fixes to documentation updates and feature suggestions. Please read through the following guidelines to get started.
 
+We use `main` as the default branch for the project. All contributions should be made against this branch,
+`stable` branch is used for the latest stable release.
+
 ## 🛠 How to Contribute
 
 ### 1. Fork the Repository

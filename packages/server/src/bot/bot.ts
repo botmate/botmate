@@ -14,7 +14,8 @@ export enum BotStatus {
 
 const pkgMap: Record<PlatformType, string> = {
   telegram: '@botmate/platform-telegram',
-  discord: '@botmate/bot-discord',
+  discord: '@botmate/platform-discord',
+  slack: '@botmate/platform-slack',
 };
 
 export class Bot {

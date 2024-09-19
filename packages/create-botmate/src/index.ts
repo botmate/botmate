@@ -15,6 +15,7 @@ const cwd = process.cwd();
 const libraries: Record<string, string> = {
   telegram: 'grammy',
   discord: 'discord.js',
+  slack: '@slack/bolt',
 };
 
 async function run() {

@@ -8,6 +8,7 @@ export type BotInfo = {
 export enum PlatformType {
   Telegram = 'telegram',
   Discord = 'discord',
+  Slack = 'slack',
 }
 
 export abstract class Platform<TInstance = unknown> {

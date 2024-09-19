@@ -13,7 +13,7 @@ import { dirname, join } from 'path';
 const cwd = process.cwd();
 
 const libraries: Record<string, string> = {
-  telegram: 'grammy@1.30.0',
+  telegram: 'grammy',
   discord: 'discord.js',
 };
 

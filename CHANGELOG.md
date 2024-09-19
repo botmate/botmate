@@ -1,3 +1,15 @@
+## 1.1.0-beta.8 (2024-09-19)
+
+
+### 🩹 Fixes
+
+- add slack in pkgMap ([fb54043](https://github.com/botmate/botmate/commit/fb54043))
+- `useLocation` issue in sidebar ([34fd94f](https://github.com/botmate/botmate/commit/34fd94f))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.7 (2024-09-19)
 
 This was a version bump only, there were no code changes.

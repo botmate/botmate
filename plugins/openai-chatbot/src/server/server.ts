@@ -27,18 +27,23 @@ export class OpenAIChatbot extends Plugin {
         });
       }
 
-      ctx.replyWithChatAction('typing');
+      try {
+        ctx.replyWithChatAction('typing');
 
-      const chatCompletion = await this.client.chat.completions.create({
-        messages: [{ role: 'user', content: ctx.message.text! }],
-        model: 'gpt-3.5-turbo',
-      });
+        const chatCompletion = await this.client.chat.completions.create({
+          messages: [{ role: 'user', content: ctx.message.text! }],
+          model: 'gpt-3.5-turbo',
+        });
 
-      if (chatCompletion.choices) {
-        const text = chatCompletion.choices[0].message.content;
-        if (text) {
-          ctx.reply(text);
+        if (chatCompletion.choices) {
+          const text = chatCompletion.choices[0].message.content;
+          if (text) {
+            ctx.reply(text);
+          }
         }
+      } catch (error) {
+        this.logger.error('Error:', error);
+        ctx.reply('An error occurred while processing your request');
       }
     });
   }

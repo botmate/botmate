@@ -3,7 +3,7 @@ name: PR Checks
 on:
   push:
     branches:
-      - main
+      - latest
   pull_request:
 
 permissions:

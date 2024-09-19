@@ -1,3 +1,7 @@
+## 1.1.0-beta.7 (2024-09-19)
+
+This was a version bump only, there were no code changes.
+
 ## 1.1.0-beta.6 (2024-09-19)
 
 

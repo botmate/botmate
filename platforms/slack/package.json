@@ -1,7 +1,7 @@
 {
   "name": "@botmate/platform-slack",
   "displayName": "Slack",
-  "version": "1.1.0-beta.6",
+  "version": "1.1.0-beta.7",
   "description": "Slack platform support for BotMate",
   "main": "lib/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@botmate/logger": "1.1.0-beta.6",
+    "@botmate/logger": "1.1.0-beta.7",
     "axios": "^1.7.7",
     "@slack/bolt": "3.21.4"
   },

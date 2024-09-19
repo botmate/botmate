@@ -27,15 +27,46 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 > [!IMPORTANT]  
 > This project is still in beta, expect breaking changes and bugs.
 
-BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Here's what BotMate offers:
+<img src="./botmate.svg" height="22px" > BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Quickly get your bots up and running with minimal setup. All you need is a single command to run in the terminal and you're good to go.
 
-- 🤖 **Manage Multiple Bots**: Control bots from platforms like Telegram and Discord, all from one central dashboard.
-- ⚙️ **Customizable with Plugins**: Easily extend bot functionality by installing or removing plugins with a single click.
-- 🖥️ **Interactive Dashboard**: Add widgets and adjust settings to personalize your bot management experience.
-- 🚀 **Blazing Fast and Robust**: Built on top of Node.js and TypeScript, BotMate delivers reliable and solid performance.
-- 💎 **Simple for Everyone**: Designed for developers and regular users alike—no coding skills required to manage bots!
+🌟 Please consider giving this project a star if you find it useful. It helps us to keep improving the project and adding new features. 😊
+
+## Table of contents
+
+- [Table of contents](#table-of-contents)
+- [Features](#features)
+  - [📦 Plugin system](#-plugin-system)
+  - [💎 Easy to use](#-easy-to-use)
+  - [🌎 Multi-platform](#-multi-platform)
+- [Installation](#installation)
+  - [Requirements](#requirements)
+  - [CLI](#cli)
+  - [Docker (coming soon)](#docker-coming-soon)
+- [Insights](#insights)
+
+## Features
+
+### 📦 Plugin system
+
+BotMate comes with a built-in plugin system that allows developers to extend the platform with custom features. Other users can install these plugins with a single command. To learn more about creating plugins, check out the [documentation](https://docs.botmate.dev).
+
+### 💎 Easy to use
+
+With minimal setup, you can get your bots up and running in no time. BotMate is designed to be user-friendly for both developers and non-technical users. It uses SQLite as the default database, so you don't need to worry about setting up a database server.
+
+### 🌎 Multi-platform
+
+Ever wanted to manage all your bots in one place? BotMate supports multiple platforms, including Discord, Slack, and Telegram. You can easily manage all your bots from a single dashboard. More platforms will be added in the future.
 
 ## Installation
+
+Get started with BotMate in just a few steps. Run the following commands in your terminal to create a new BotMate project.
+
+### Requirements
+
+- Node.js (v20 or higher)
+- pnpm (v8 or higher)
+- Linux, macOS, Android, or Windows
 
 ### CLI
 

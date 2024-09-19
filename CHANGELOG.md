@@ -1,3 +1,15 @@
+## 1.1.0-beta.6 (2024-09-19)
+
+
+### 🩹 Fixes
+
+- downgrade nanoid to support cjs ([f7709ac](https://github.com/botmate/botmate/commit/f7709ac))
+- update telegram library version to use the latest grammy package ([c30ce6e](https://github.com/botmate/botmate/commit/c30ce6e))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.5 (2024-09-19)
 
 

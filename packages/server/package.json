@@ -40,6 +40,7 @@
     "socket.io": "^4.7.5",
     "sqlite3": "^5.1.7",
     "tsx": "^4.17.0",
+    "umzug": "^3.8.1",
     "vite": "^5.4.2"
   },
   "devDependencies": {

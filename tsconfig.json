@@ -10,6 +10,7 @@
     "jsx": "react",
     "paths": {
       "@botmate/client": ["./packages/client/src/index.ts"],
+      "@botmate/client/*": ["./packages/client/src/*"],
       "@botmate/database": ["./packages/database/src/index.ts"],
       "@botmate/logger": ["./packages/logger/src/index.ts"],
       "@botmate/platform": ["./packages/platform/src/index.ts"],

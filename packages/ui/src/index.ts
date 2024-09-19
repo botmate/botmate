@@ -20,6 +20,7 @@ export * from './components/ui/section';
 export * from './components/ui/dialog';
 export * from './components/ui/radio-group';
 export * from './components/ui/label';
+export * from './components/ui/drawer';
 
 export * from './components/layouts/page';
 export * from './components/layouts/sidebar';

@@ -6,6 +6,7 @@ export * from './application';
 export * from './plugin';
 
 export * from './application/layouts/page';
+export * from './application/layouts/sidebar-list';
 
 export * from './application/hooks/use-app';
 export * from './application/hooks/use-bot';

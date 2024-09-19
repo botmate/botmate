@@ -23,6 +23,5 @@ export * from './components/ui/label';
 export * from './components/ui/drawer';
 
 export * from './components/layouts/page';
-export * from './components/layouts/sidebar';
 
 export * from './input-builder';

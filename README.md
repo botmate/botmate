@@ -11,7 +11,7 @@
 The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible and customizable.
 </p>
 
-<p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://demo.botmate.dev">Try live demo (soon)</a> · <a href="https://docs.botmate.dev">Docs</a></p>
+<p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://docs.botmate.dev">Documentation</a> · <a href="https://t.me/chatbotmate">Telegram Chat</a></p>
 
 <p align="center">
 <img src="https://skillicons.dev/icons?i=ts,tailwind,docker,github"/>
@@ -27,7 +27,7 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 > [!IMPORTANT]  
 > This project is still in beta, expect breaking changes and bugs.
 
-<img src="./botmate.svg" height="22px" > BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Quickly get your bots up and running with minimal setup. All you need is a single command to run in the terminal and you're good to go.
+BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Quickly get your bots up and running with minimal setup. All you need is a single command to run in the terminal and you're good to go.
 
 🌟 Please consider giving this project a star if you find it useful. It helps us to keep improving the project and adding new features. 😊
 

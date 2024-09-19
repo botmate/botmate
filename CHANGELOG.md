@@ -1,3 +1,38 @@
+## 1.1.0-beta.5 (2024-09-19)
+
+
+### 🚀 Features
+
+- add Vite workspace configuration ([79364e9](https://github.com/botmate/botmate/commit/79364e9))
+- setup eslint ([8836e2f](https://github.com/botmate/botmate/commit/8836e2f))
+- add greet.yaml workflow ([a45d065](https://github.com/botmate/botmate/commit/a45d065))
+- introduced SidebarLayout ([2e9b3b4](https://github.com/botmate/botmate/commit/2e9b3b4))
+- add slack platform ([e198950](https://github.com/botmate/botmate/commit/e198950))
+- add slack platform" ([1df5380](https://github.com/botmate/botmate/commit/1df5380))
+- add slack platform ([f27d4fe](https://github.com/botmate/botmate/commit/f27d4fe))
+- **ui:** update settings page ui ([e64996a](https://github.com/botmate/botmate/commit/e64996a))
+- **ui:** add InputBuilder class for dynamically generating input components ([410b105](https://github.com/botmate/botmate/commit/410b105))
+
+### 🩹 Fixes
+
+- setup vitest for `server` package ([35800bc](https://github.com/botmate/botmate/commit/35800bc))
+- update defaultBase to "dev" in nx.json ([f98f110](https://github.com/botmate/botmate/commit/f98f110))
+- initialize database inside the constructor ([df30d09](https://github.com/botmate/botmate/commit/df30d09))
+- server package linting ([e8f4999](https://github.com/botmate/botmate/commit/e8f4999))
+- add linting step to affected test build workflow ([fb189e6](https://github.com/botmate/botmate/commit/fb189e6))
+- do not create plugins folder ([8ce8c3c](https://github.com/botmate/botmate/commit/8ce8c3c))
+- create-botmate command to install dependencies and required bot library ([be5a4d9](https://github.com/botmate/botmate/commit/be5a4d9))
+- refactor botmate.js ([69d0534](https://github.com/botmate/botmate/commit/69d0534))
+- update config flow ([4071809](https://github.com/botmate/botmate/commit/4071809))
+- **server:** ui package location ([f391d38](https://github.com/botmate/botmate/commit/f391d38))
+- **ui:** add dialog component and related UI components ([4791e70](https://github.com/botmate/botmate/commit/4791e70))
+
+### ❤️  Thank You
+
+- Monawwar Abdullah
+- mxvsh @mxvsh
+- vectorCodes @vectorCodes
+
 ## 1.1.0-beta.4 (2024-09-16)
 
 This was a version bump only, there were no code changes.

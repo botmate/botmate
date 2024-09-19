@@ -1,0 +1,8 @@
+{
+  "root": "platforms/slack",
+  "targets": {
+    "build": {
+      "cache": true
+    }
+  }
+}

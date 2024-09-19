@@ -22,6 +22,7 @@
     "@commitlint/cli": "^19.4.1",
     "@commitlint/config-conventional": "^19.4.1",
     "@eslint/js": "^9.9.0",
+    "@mxssfd/typedoc-theme": "^1.1.7",
     "@nx/eslint": "19.7.3",
     "@nx/eslint-plugin": "19.7.3",
     "@nx/js": "19.5.7",
@@ -85,6 +86,5 @@
     "**/*.{html,json,css,scss,md,mdx}": [
       "prettier -w"
     ]
-  },
-  "dependencies": {}
+  }
 }

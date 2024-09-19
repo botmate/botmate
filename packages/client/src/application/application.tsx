@@ -28,6 +28,7 @@ import SetupPage from './pages/setup';
 import { AppProvider } from './providers/app';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
+import { SocketProvider } from './providers/socket';
 import { store } from './store';
 
 type ClientParams = {
@@ -104,49 +105,51 @@ export class Application {
   getRootComponent() {
     // todo: setup dynamic routes
     return () => (
-      <Subscribe>
-        <Toaster />
-        <ThemeProvider attribute="class">
-          <BrowserRouter>
-            <ReduxProvider store={store}>
-              <Routes>
-                <Route element={<AppProvider app={this} />}>
-                  <Route index path="/" element={<HomePage />} />
-                  <Route path="/setup" element={<SetupPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route
-                    element={<BotProvider app={this} />}
-                    path="/bots/:botId"
-                  >
-                    <Route element={<PluginsProvider />}>
-                      <Route element={<MainLayout />}>
-                        <Route index element={<DashboardPage />} />
-                        <Route path="analytics" element={<AnalyticsPage />} />
-                        <Route
-                          path="marketplace"
-                          element={<MarketplacePage />}
-                        />
-                        <Route path="settings" element={<SettingsLayout />}>
-                          <Route index element={<GeneralSettingsPage />} />
+      <SocketProvider>
+        <Subscribe>
+          <Toaster />
+          <ThemeProvider attribute="class">
+            <BrowserRouter>
+              <ReduxProvider store={store}>
+                <Routes>
+                  <Route element={<AppProvider app={this} />}>
+                    <Route index path="/" element={<HomePage />} />
+                    <Route path="/setup" element={<SetupPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route
+                      element={<BotProvider app={this} />}
+                      path="/bots/:botId"
+                    >
+                      <Route element={<PluginsProvider />}>
+                        <Route element={<MainLayout />}>
+                          <Route index element={<DashboardPage />} />
+                          <Route path="analytics" element={<AnalyticsPage />} />
                           <Route
-                            path="advanced"
-                            element={<AppearanceSettingsPage />}
+                            path="marketplace"
+                            element={<MarketplacePage />}
                           />
-                          <Route
-                            path="plugins"
-                            element={<PluginSettingsPage />}
-                          />
+                          <Route path="settings" element={<SettingsLayout />}>
+                            <Route index element={<GeneralSettingsPage />} />
+                            <Route
+                              path="advanced"
+                              element={<AppearanceSettingsPage />}
+                            />
+                            <Route
+                              path="plugins/:name"
+                              element={<PluginSettingsPage />}
+                            />
+                          </Route>
+                          <Route path="*" element={<PluginRoutes />} />
                         </Route>
-                        <Route path="*" element={<PluginRoutes />} />
                       </Route>
                     </Route>
                   </Route>
-                </Route>
-              </Routes>
-            </ReduxProvider>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Subscribe>
+                </Routes>
+              </ReduxProvider>
+            </BrowserRouter>
+          </ThemeProvider>
+        </Subscribe>
+      </SocketProvider>
     );
   }
 
@@ -158,20 +161,21 @@ export class Application {
 
       root.render(<App />);
 
-      Sentry.init({
-        dsn: 'https://5177382ad836b2ffc883c3938f310dfe@o4507889496096768.ingest.us.sentry.io/4507889504550912',
-        integrations: [
-          Sentry.browserTracingIntegration(),
-          Sentry.replayIntegration(),
-        ],
-        // Tracing
-        tracesSampleRate: 1.0, //  Capture 100% of the transactions
-        // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-        tracePropagationTargets: ['localhost'],
-        // Session Replay
-        replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-        replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-      });
+      // todo: enable sentry on first release
+      // Sentry.init({
+      //   dsn: 'https://5177382ad836b2ffc883c3938f310dfe@o4507889496096768.ingest.us.sentry.io/4507889504550912',
+      //   integrations: [
+      //     Sentry.browserTracingIntegration(),
+      //     Sentry.replayIntegration(),
+      //   ],
+      //   // Tracing
+      //   tracesSampleRate: 1.0, //  Capture 100% of the transactions
+      //   // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+      //   tracePropagationTargets: ['localhost'],
+      //   // Session Replay
+      //   replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+      //   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+      // });
 
       return root;
     }

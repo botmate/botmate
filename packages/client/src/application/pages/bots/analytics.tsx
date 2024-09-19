@@ -8,6 +8,7 @@ import {
   CardTitle,
   ChartConfig,
   ChartContainer,
+  PageLayout,
   Select,
   SelectContent,
   SelectItem,
@@ -15,8 +16,6 @@ import {
   SelectValue,
 } from '@botmate/ui';
 import { Bar, BarChart, XAxis } from 'recharts';
-
-import PageLayout from '../../layouts/page';
 
 const chartData = [
   { week: 'Friday', count: 189 },

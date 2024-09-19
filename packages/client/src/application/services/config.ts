@@ -3,7 +3,7 @@ import { baseApi } from '../api';
 type SavePluginConfigRequest = {
   pluginId: string;
   key: string;
-  value: string;
+  value: unknown;
 };
 
 type GetPluginConfigRequest = {

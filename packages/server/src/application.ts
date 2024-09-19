@@ -2,6 +2,7 @@ import { Database } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
 import { Command } from 'commander';
 import express from 'express';
+import socket, { Socket } from 'socket.io';
 
 import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
@@ -39,6 +40,7 @@ export class Application {
   protected _botManager: BotManager;
   protected _configManager: ConfigManager;
   protected _cli: Command;
+  protected _socket?: Socket;
 
   get pluginManager() {
     return this._pluginManager;
@@ -111,7 +113,13 @@ export class Application {
   }
 
   async start() {
-    this.server.listen(this.port);
+    const server = this.server.listen(this.port);
+
+    const io = new socket.Server(server);
+
+    io.on('connection', (socket) => {
+      this._socket = socket;
+    });
 
     this.logger.info(`Application started on port ${this.port}`);
   }

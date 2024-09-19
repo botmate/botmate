@@ -65,7 +65,7 @@ function SidebarItem({
       >
         <TooltipTrigger
           className={
-            `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-primary/10 text-black/70 dark:text-white'}` +
+            `p-3 rounded-xl cursor-default ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-neutral-500/10 text-black/70 dark:text-white'}` +
             `transition-all duration-150`
           }
         >
@@ -89,15 +89,15 @@ function Sidebar() {
   const params = useParams();
   const location = useLocation();
   const bot = useCurrentBot();
-  
+
   return (
-    <div className="w-24 h-full flex flex-col py-3 bg-card overflow-hidden">
-      <div className="w-full h-20 flex items-center justify-center">
+    <div className="w-24 h-full flex flex-col bg-card overflow-hidden border-r">
+      <div className="w-full min-h-20 flex items-center justify-center border-b">
         <Link to="/" draggable="false">
           <img
             src="/logo.svg"
             alt="botmate"
-            className="w-[3.5rem] rounded-2xl hover:-translate-y-1 transition-all duration-150 shadow-lg"
+            className="h-14 rounded-2xl hover:shadow-lg transition-all duration-150"
             draggable="false"
           />
         </Link>
@@ -128,7 +128,7 @@ function Sidebar() {
           })}
         </TooltipProvider>
       </div>
-      <div className="relative flex items-center justify-center" role="group">
+      <div className="relative flex items-center justify-center py-4" role="group">
         <img
           src={`/${bot.avatar}`}
           alt="botmate"

@@ -12,10 +12,18 @@ export async function setupVite({
   isMonorepo,
   isDev,
 }: Application) {
-  const client = require.resolve('@botmate/client/package.json');
+  try {
+    require.resolve('@botmate/client');
+    require.resolve('@botmate/ui');
+  } catch (e) {
+    throw new Error(
+      'Cannot find @botmate/client. Make sure it is installed in your project.',
+    );
+  }
+  const client = dirname(require.resolve('@botmate/client'));
   const clientDir = dirname(client);
 
-  const ui = require.resolve('@botmate/ui/package.json');
+  const ui = dirname(require.resolve('@botmate/ui'));
   const uiDir = dirname(ui);
 
   const vite = await createServer({

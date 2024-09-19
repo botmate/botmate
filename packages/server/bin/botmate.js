@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const { spawn } = require('child_process');
 const { existsSync } = require('fs');
 const { dirname, join } = require('path');
@@ -12,6 +10,8 @@ const isTsProject = existsSync(tsConfigPath);
 const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
 
 function run() {
+  let watchMode = false;
+
   if (isTsProject) {
     process.env.IS_MONOREPO = 'true';
     process.env.NODE_ENV = 'development';
@@ -21,7 +21,6 @@ function run() {
 
     const [cmd] = argv;
 
-    let watchMode = false;
     if (cmd === 'dev') {
       watchMode = true;
     }
@@ -43,26 +42,23 @@ function run() {
     const cliPath = join(__dirname, '..', 'lib', 'cli.js');
     const [, , ...argv] = process.argv;
 
-    if (argv.length > 0) {
-      const [cmd] = argv;
-      if (cmd === 'dev') {
-        process.env.NODE_ENV = 'development';
-        spawn(
-          tsx,
-          [
-            'watch',
-            '--ignore=./storage/**',
-            '-r',
-            'tsconfig-paths/register',
-            cliPath,
-            ...argv,
-          ],
-          {
-            stdio: 'inherit',
-          },
-        );
-        return;
-      }
+    if (watchMode) {
+      process.env.NODE_ENV = 'development';
+      spawn(
+        tsx,
+        [
+          'watch',
+          '--ignore=./storage/**',
+          '-r',
+          'tsconfig-paths/register',
+          cliPath,
+          ...argv,
+        ],
+        {
+          stdio: 'inherit',
+        },
+      );
+      return;
     }
 
     spawn('node', [cliPath, ...argv], {

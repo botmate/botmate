@@ -8,10 +8,10 @@ import Layout from './layout';
 import AntiSpamPage from './pages/anti-spam';
 import FiltersPage from './pages/filters';
 import HomePage from './pages/home';
-import WelcomePage from './pages/welcome';
+import NewUsers from './pages/new-users';
 
 export class TelegramModeration extends Plugin {
-  displayName = 'Moderation';
+  static displayName = 'Telegram Moderation';
 
   async beforeLoad() {
     this.addToSidebar({
@@ -27,7 +27,7 @@ export class TelegramModeration extends Plugin {
         <Layout>
           <Routes>
             <Route index element={<HomePage />} />
-            <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/new-users" element={<NewUsers />} />
             <Route path="/filters" element={<FiltersPage />} />
             <Route path="/anti-spam" element={<AntiSpamPage />} />
           </Routes>

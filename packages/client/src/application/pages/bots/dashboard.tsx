@@ -8,7 +8,7 @@ import {
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import PageLayout from '../../layouts/page';
+import { PageLayout } from '@botmate/ui';
 
 function DashboardPage() {
   const params = useParams();

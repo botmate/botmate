@@ -16,11 +16,11 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  PageLayout,
 } from '@botmate/ui';
 import { toast } from 'sonner';
 
 import useCurrentBot from '../../../hooks/use-bot';
-import PageLayout from '../../../layouts/page';
 import { useDeleteBotMutation } from '../../../services';
 
 function GeneralSettingsPage() {
@@ -28,40 +28,32 @@ function GeneralSettingsPage() {
   const [deleteBot] = useDeleteBotMutation();
   const navigate = useNavigate();
   return (
-    <PageLayout
-      page="settings"
-      title="General"
-      subtitle="Configure general settings for the bot"
-    >
-      <div className="space-y-4">
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-lg">About</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                {
-                  title: 'ID',
-                  value: bot.botId,
-                },
-                {
-                  title: 'Name',
-                  value: bot.name,
-                },
-              ].map((item) => {
-                return (
-                  <div key={item.title} className="flex flex-col">
-                    <span className="text-sm text-muted-foreground">
-                      {item.title}
-                    </span>
-                    <span className="text-lg">{item.value}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+    <PageLayout title="General">
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <h1 className="text-md font-medium">Bot information</h1>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              {
+                title: 'ID',
+                value: bot.botId,
+              },
+              {
+                title: 'Name',
+                value: bot.name,
+              },
+            ].map((item) => {
+              return (
+                <div key={item.title} className="flex flex-col">
+                  <span className="text-sm text-muted-foreground">
+                    {item.title}
+                  </span>
+                  <span className="text-lg">{item.value}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive">Delete bot</Button>

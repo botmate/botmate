@@ -4,6 +4,7 @@ import { createLogger, winston } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 import { getPackagesSync } from '@lerna/project';
 import { existsSync } from 'fs';
+import { nanoid } from 'nanoid';
 import { join } from 'path';
 
 import { Application } from '../application';
@@ -102,6 +103,7 @@ export class PluginManager {
       throw new Error(`Plugin ${name} already installed`);
     }
     return await this.model.create({
+      id: nanoid(),
       name,
       botId,
       displayName: plugin.displayName,

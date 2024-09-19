@@ -38,13 +38,18 @@ export abstract class Plugin implements PluginInterface {
     return this._data;
   }
 
-  get config() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  configManager<T = Record<string, string | number | boolean>>() {
     const configManager = this._app.configManager;
     return {
-      get: <T>(key: string, def?: T) =>
-        configManager.getPluginConfig(this.data.id, key, def),
-      set: <T>(key: string, value: T) =>
-        configManager.savePluginConfig(this.data.id, key, value),
+      get: (key: keyof T, def?: T[keyof T]) =>
+        configManager.getPluginConfig(
+          this.data.id,
+          key as string,
+          def,
+        ) as Promise<T[keyof T]>,
+      set: (key: keyof T, value: T[keyof T]) =>
+        configManager.savePluginConfig(this.data.id, key as string, value),
     };
   }
 }

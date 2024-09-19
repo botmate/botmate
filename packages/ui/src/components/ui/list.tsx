@@ -6,18 +6,19 @@ export type ListItemProps = {
   description?: string;
   isActive?: boolean;
 };
-export const ListItem = ({
-  label,
-  icon,
-  description,
-  isActive,
-}: ListItemProps) => {
+export const ListItem = ({ label, description, isActive }: ListItemProps) => {
   return (
     <div
-      className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${isActive ? 'bg-gray-100 dark:bg-neutral-800' : 'hover:bg-gray-100/50 dark:hover:bg-neutral-800'}`}
+      className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${
+        isActive
+          ? 'bg-gray-100 dark:bg-accent'
+          : 'hover:bg-gray-100/50 dark:hover:bg-accent/50'
+      }`}
     >
-      <h2 className="font-medium">{label}</h2>
-      <p className="mt-1 text-muted-foreground text-sm">{description}</p>
+      <h2 className="font-medium line-clamp-1">{label}</h2>
+      <p className="mt-1 text-muted-foreground text-sm line-clamp-1">
+        {description}
+      </p>
     </div>
   );
 };

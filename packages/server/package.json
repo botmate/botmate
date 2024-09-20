@@ -1,6 +1,6 @@
 {
   "name": "@botmate/server",
-  "version": "1.1.0-beta.13",
+  "version": "1.1.0-beta.14",
   "description": "HTTP Server for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -21,10 +21,10 @@
     "templates"
   ],
   "dependencies": {
-    "@botmate/database": "1.1.0-beta.13",
-    "@botmate/logger": "1.1.0-beta.13",
-    "@botmate/platform": "1.1.0-beta.13",
-    "@botmate/ui": "1.1.0-beta.13",
+    "@botmate/database": "1.1.0-beta.14",
+    "@botmate/logger": "1.1.0-beta.14",
+    "@botmate/platform": "1.1.0-beta.14",
+    "@botmate/ui": "1.1.0-beta.14",
     "@lerna/project": "^6.4.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "colors": "^1.4.0",

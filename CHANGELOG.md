@@ -1,3 +1,14 @@
+## 1.1.0-beta.14 (2024-09-20)
+
+
+### 🩹 Fixes
+
+- update settings page in template ([532679c](https://github.com/botmate/botmate/commit/532679c))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.13 (2024-09-20)
 
 

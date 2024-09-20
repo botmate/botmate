@@ -3,6 +3,7 @@ import type { Bot } from 'grammy';
 import OpenAI from 'openai';
 
 import { Config } from '../config.types';
+import TotalMessagess from './widgets/total_message';
 
 export class OpenAIChatbot extends Plugin {
   displayName = 'OpenAI Chatbot';
@@ -13,6 +14,12 @@ export class OpenAIChatbot extends Plugin {
   async load() {
     const cm = this.configManager<Config>();
     const bot = this.bot.instance<Bot>();
+
+    this.addWidget('total_message', {
+      component: TotalMessagess,
+      name: 'Total Messages',
+      props: {},
+    });
 
     bot.on('message', async (ctx) => {
       if (!this.client) {

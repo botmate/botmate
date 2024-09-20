@@ -1,3 +1,6 @@
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+
 import { Router } from 'express';
 
 import { Application } from '../application';
@@ -30,6 +33,33 @@ export function bots({ server, database, botManager }: Application) {
       return;
     }
     res.json(bot);
+  });
+
+  router.get('/:id/widgets', async (req, res) => {
+    const { id } = req.params;
+    // @ts-expect-error - todo: fix this
+    const bot = botManager.bots.get(parseInt(id));
+
+    if (!bot?.plugins) {
+      return [];
+    }
+
+    const widgets = [];
+
+    for (const [name, plugin] of bot.plugins.entries()) {
+      for (const [id, widget] of plugin.widgets.entries()) {
+        widgets.push({
+          plugin: name,
+          name: widget.name,
+          component: renderToString(
+            React.createElement(widget.component, widget.props),
+          ),
+          props: widget.props,
+        });
+      }
+    }
+
+    res.json(widgets);
   });
 
   router.post('/', async (req, res) => {

@@ -5,6 +5,12 @@ import { Application } from './application';
 import { Bot } from './bot';
 import { IPlugin } from './models/plugin';
 
+export type WidgetMeta = {
+  name: string;
+  component: React.ElementType;
+  props: Record<string, unknown>;
+};
+
 export interface PluginInterface {
   beforeLoad?: () => void;
   load: () => void;
@@ -14,6 +20,8 @@ export interface PluginInterface {
 export abstract class Plugin implements PluginInterface {
   abstract displayName: string;
   abstract platformType: PlatformType;
+
+  private _widgets = new Map<string, WidgetMeta>();
 
   logger!: ReturnType<typeof createLogger>;
 
@@ -36,6 +44,14 @@ export abstract class Plugin implements PluginInterface {
 
   get data() {
     return this._data;
+  }
+
+  addWidget(id: string, widget: WidgetMeta) {
+    this._widgets.set(id, widget);
+  }
+
+  get widgets() {
+    return this._widgets;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

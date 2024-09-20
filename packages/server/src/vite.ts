@@ -47,7 +47,7 @@ export async function setupVite({
       alias: isMonorepo
         ? {
             '@botmate/client': join(clientDir, 'src/index.ts'),
-            '@botmate/ui': join(uiDir, 'src/index.ts'),
+            // '@botmate/ui': join(uiDir, 'src/index.ts'),
           }
         : {},
     },

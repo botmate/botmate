@@ -7,6 +7,13 @@ export type CreateBotPayload = {
   credentials: Record<string, string>;
 };
 
+export type WidgetMeta = {
+  plugin: string;
+  name: string;
+  component: React.ReactNode;
+  props: Record<string, unknown>;
+};
+
 export const botsApi = baseApi.injectEndpoints({
   overrideExisting: false,
   endpoints: (builder) => ({
@@ -16,6 +23,9 @@ export const botsApi = baseApi.injectEndpoints({
     }),
     getBotInfo: builder.query<IBot, string>({
       query: (id) => `/bots/${id}`,
+    }),
+    getBotWidgets: builder.query<WidgetMeta[], string>({
+      query: (id) => `/bots/${id}/widgets`,
     }),
     createBot: builder.mutation<IBot, CreateBotPayload>({
       query: (bot) => ({
@@ -39,4 +49,5 @@ export const {
   useGetBotInfoQuery,
   useCreateBotMutation,
   useDeleteBotMutation,
+  useGetBotWidgetsQuery,
 } = botsApi;

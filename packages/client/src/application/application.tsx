@@ -30,6 +30,7 @@ import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { SocketProvider } from './providers/socket';
 import { store } from './store';
+import { WidgetProvider } from './widgets';
 
 type ClientParams = {
   version: string;
@@ -73,6 +74,7 @@ export class Application {
   private _sidebar: MainSidebarItem[] = [];
   private _pluginSettings = new Map<string, React.ReactNode>();
   private _pluginInstances = new Map<string, Plugin>();
+  private _widgetProvider = new WidgetProvider();
 
   constructor(private _options: ClientParams) {
     this.version = _options.version;

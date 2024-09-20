@@ -2,7 +2,7 @@ import fg from 'fast-glob';
 import path from 'path';
 import { defineConfig } from 'tsup';
 
-const entry = fg.globSync(['src/server/**/*.ts'], {
+const entry = fg.globSync(['src/server/**/*.ts', 'src/server/widgets/*.tsx'], {
   cwd: __dirname,
   absolute: true,
 });

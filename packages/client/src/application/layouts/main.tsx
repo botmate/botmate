@@ -6,7 +6,7 @@ import Sidebar from '../components/main-sidebar';
 
 function MainLayout() {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
       <ErrorBoundary FallbackComponent={() => <div>Something went wrong</div>}>
         <Suspense fallback={<div>Loading...</div>}>

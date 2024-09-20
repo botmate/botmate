@@ -1,6 +1,7 @@
 /**
  * @module @botmate/client
  */
+import '@botmate/ui/theme.css';
 
 export * from './application';
 export * from './plugin';

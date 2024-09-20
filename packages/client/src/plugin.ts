@@ -9,9 +9,17 @@ export abstract class Plugin {
 
   loaded = false;
 
-  async beforeLoad() {}
-  async load() {}
-  async afterLoad() {}
+  async beforeLoad() {
+    console.debug(`beforeLoad ${this.constructor.name}`);
+  }
+
+  async load() {
+    console.debug(`load ${this.constructor.name}`);
+  }
+
+  async afterLoad() {
+    console.debug(`afterLoad ${this.constructor.name}`);
+  }
 
   constructor(private app: Application, private pluginData: IPlugin) {}
 
@@ -45,6 +53,13 @@ export abstract class Plugin {
    */
   provideSettings(element: React.ReactNode) {
     this.app.pluginSettings.set(this.pluginData.name, element);
+  }
+
+  /**
+   *
+   */
+  provideWidgets() {
+    //
   }
 
   /**

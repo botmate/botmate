@@ -1,14 +1,14 @@
 import {
   BookIcon,
-  HammerIcon,
   HelpCircle,
   InfoIcon,
   PlugIcon,
+  PlusIcon,
 } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { PageLayout } from '@botmate/ui';
+import { Button, PageLayout } from '@botmate/ui';
 
 function DashboardPage() {
   const params = useParams();
@@ -41,15 +41,24 @@ function DashboardPage() {
     ],
     [params.botId],
   );
+
   return (
     <PageLayout
       title="Dashboard"
       subtitle="Welcome to the dashboard. Here you can see all the important information about the bot."
     >
-      <div>
-        <div className="h-72 flex items-center justify-center gap-4 flex-col border rounded-3xl bg-card text-muted-foreground">
-          <HammerIcon size={60} />
-          <p>The page is under construction. Please check back later.</p>
+      <div className="h-full relative flex-1">
+        <div className="flex flex-col gap-6 items-center justify-center absolute inset-0">
+          <div className="text-center">
+            <h1 className="text-2xl">Configure your dashboard</h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Drag and drop widgets to configure your dashboard.
+            </p>
+          </div>
+          <Button size="sm">
+            <PlusIcon className="mr-2" size={16} />
+            Add Widget
+          </Button>
         </div>
       </div>
       <div>

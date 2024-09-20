@@ -1,6 +1,6 @@
 {
   "name": "@botmate/database",
-  "version": "1.1.0-beta.12",
+  "version": "1.1.0-beta.13",
   "description": "Database package for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +14,7 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/logger": "1.1.0-beta.12",
+    "@botmate/logger": "1.1.0-beta.13",
     "sequelize": "^6.37.3"
   }
 }

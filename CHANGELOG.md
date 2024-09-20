@@ -1,3 +1,14 @@
+## 1.1.0-beta.13 (2024-09-20)
+
+
+### 🩹 Fixes
+
+- plugin template improvements and fixes ([b151b50](https://github.com/botmate/botmate/commit/b151b50))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.12 (2024-09-20)
 
 

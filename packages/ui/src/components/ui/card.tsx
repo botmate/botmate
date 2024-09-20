@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { VariantProps } from 'class-variance-authority';
-
 import { cn } from '../../utils';
 
 const Card = React.forwardRef<

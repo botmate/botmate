@@ -139,7 +139,7 @@ export default function pm(app: Application) {
     const files = await fg(`${templatesFolder}/**/*`, { dot: true });
 
     const pkgName = toKebabCase(pkg);
-    const className = toPascalCase(name);
+    const className = toPascalCase(name).replace(/-/g, '');
 
     const vars = {
       pkg: pkgName,
@@ -147,6 +147,7 @@ export default function pm(app: Application) {
       name,
       description,
       platform: platform.toLowerCase(),
+      platformType: platform,
     };
 
     const content = await Promise.all(

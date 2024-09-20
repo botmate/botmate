@@ -6,7 +6,7 @@ import { Bot } from 'grammy';
 
 export class <%=className%> extends Plugin {
   displayName = '<%=name%>';
-  platformType = PlatformType.<%=platform%>;
+  platformType = PlatformType.<%=platformType%>;
 
   async load() {
     <% if (platform === 'Telegram') { -%>

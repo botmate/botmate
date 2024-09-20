@@ -189,8 +189,8 @@ function PluginSettingsPage() {
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center">
-          <h1 className="text-2xl">Docs</h1>
+        <div className="flex-1 flex items-center justify-center h-48">
+          <h1 className="text-xl opacity-45">No docs yet.</h1>
         </div>
       </div>
     );

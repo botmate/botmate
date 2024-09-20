@@ -1,3 +1,14 @@
+## 1.1.0-beta.12 (2024-09-20)
+
+
+### 🩹 Fixes
+
+- add "no plugins" in settings ([a59ae92](https://github.com/botmate/botmate/commit/a59ae92))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.11 (2024-09-20)
 
 This was a version bump only, there were no code changes.

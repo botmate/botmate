@@ -1,3 +1,21 @@
+## 1.1.0-beta.9 (2024-09-20)
+
+
+### 🚀 Features
+
+- add umzug package for running database migrations ([964e11b](https://github.com/botmate/botmate/commit/964e11b))
+- add `update` command to cli ([eb189ff](https://github.com/botmate/botmate/commit/eb189ff))
+- marketplace ([9246328](https://github.com/botmate/botmate/commit/9246328))
+
+### 🩹 Fixes
+
+- update branch names in workflow files ([b9b6959](https://github.com/botmate/botmate/commit/b9b6959))
+- write .npmrc in new project ([26d53b9](https://github.com/botmate/botmate/commit/26d53b9))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.8 (2024-09-19)
 
 

@@ -1,3 +1,14 @@
+## 1.1.0-beta.15 (2024-09-20)
+
+
+### 🩹 Fixes
+
+- cli not checking `dev` command ([ed20be9](https://github.com/botmate/botmate/commit/ed20be9))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.14 (2024-09-20)
 
 

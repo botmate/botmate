@@ -1,7 +1,7 @@
 {
   "name": "@botmate/plugin-openai-chatbot",
   "displayName": "OpenAI Chatbot",
-  "version": "1.1.0-beta.10",
+  "version": "1.1.0-beta.11",
   "description": "OpenAI Chatbot plugin for BotMate",
   "main": "lib/server/index.js",
   "scripts": {
@@ -14,10 +14,10 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/client": "1.1.0-beta.10",
-    "@botmate/platform-telegram": "1.1.0-beta.10",
-    "@botmate/server": "1.1.0-beta.10",
-    "@botmate/ui": "1.1.0-beta.10",
+    "@botmate/client": "1.1.0-beta.11",
+    "@botmate/platform-telegram": "1.1.0-beta.11",
+    "@botmate/server": "1.1.0-beta.11",
+    "@botmate/ui": "1.1.0-beta.11",
     "grammy": "^1.29.0",
     "openai": "4.59.0"
   },

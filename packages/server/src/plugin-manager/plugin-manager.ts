@@ -373,6 +373,11 @@ export class PluginManager {
           });
         }
       } catch (e) {
+        if (e instanceof Error) {
+          if (e.stack?.includes('ERR_PACKAGE_PATH_NOT_EXPORTED')) {
+            continue;
+          }
+        }
         console.error(e);
         this.logger.error(`Error loading plugin ${dep}`);
       }

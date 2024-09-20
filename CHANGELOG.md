@@ -1,3 +1,15 @@
+## 1.1.0-beta.10 (2024-09-20)
+
+
+### 🩹 Fixes
+
+- check for `ERR_PACKAGE_PATH_NOT_EXPORTED` while loading plugin ([a6117f1](https://github.com/botmate/botmate/commit/a6117f1))
+- improved sidebar layout ([e391091](https://github.com/botmate/botmate/commit/e391091))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.9 (2024-09-20)
 
 

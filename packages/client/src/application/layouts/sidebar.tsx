@@ -1,23 +1,14 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 
-export type SidebarItem =
-  | {
-      title: string;
-      description?: string;
-      path: string;
-      regex?: RegExp;
-    }
-  | string;
+import SidebarItem from '../components/sidebar-item';
+
 type Props = {
-  items: (SidebarItem | string)[];
+  items: React.ReactNode[];
   children?: React.ReactNode;
   title?: string;
   actions?: React.ReactNode;
 };
 export function SidebarLayout({ items, children, title, actions }: Props) {
-  const location = useLocation();
-
   return (
     <div className="flex flex-col flex-1 h-screen overflow-hidden">
       <div className="min-h-20 h-20 w-full border-b flex items-center px-4 justify-between">
@@ -26,51 +17,12 @@ export function SidebarLayout({ items, children, title, actions }: Props) {
       </div>
       <div className="flex flex-1 overflow-auto">
         <div className="w-72 p-4 space-y-6 bg-card border-r overflow-auto">
-          <div className="flex flex-col gap-1">
-            {items.map((item, index) => {
-              if (typeof item === 'string') {
-                return (
-                  <h1
-                    className={`text-gray-600 dark:text-neutral-500 text-sm uppercase ${
-                      index === 0 ? 'mt-1' : 'mt-6'
-                    }`}
-                    key={item}
-                  >
-                    {item}
-                  </h1>
-                );
-              }
-
-              let isActive = false;
-
-              if (item.regex) {
-                const fullPath = `${location.pathname}${window.location.search}`;
-                isActive = item.regex.test(fullPath);
-              } else {
-                isActive = location.pathname === item.path;
-              }
-
-              return (
-                <Link key={item.title} to={item.path}>
-                  <div
-                    className={`p-4 rounded-xl cursor-pointer transition-all duration-150 ${
-                      isActive
-                        ? 'bg-gray-100 dark:bg-accent'
-                        : 'hover:bg-gray-100/50 dark:hover:bg-accent/50'
-                    }`}
-                  >
-                    <h2 className="font-medium">{item.title}</h2>
-                    <p className="mt-1 text-muted-foreground text-sm">
-                      {item.description}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <div className="flex flex-col gap-1">{items}</div>
         </div>
         <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </div>
   );
 }
+
+export { SidebarItem };

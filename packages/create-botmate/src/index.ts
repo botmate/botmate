@@ -92,7 +92,16 @@ async function run() {
     await writeFile(targetPath, content);
   }
 
-  creating.succeed('Project created');
+  await writeFile(
+    join(projectDir, '.npmrc'),
+    [
+      'strict-peer-dependencies=false',
+      'auto-install-peers=true',
+      'ignore-workspace-root-check=true',
+    ].join('\n'),
+  );
+
+  creating.succeed('Project created!');
 
   const formatting = ora('Formatting...').start();
 

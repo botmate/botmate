@@ -3,6 +3,7 @@ import { ModelStatic } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 import { getPackagesSync } from '@lerna/project';
+import execa from 'execa';
 import { existsSync } from 'fs';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
@@ -398,6 +399,90 @@ export class PluginManager {
           this.logger.error(`Error loading plugin ${plugin.displayName}`);
         }
       }
+    }
+  }
+
+  async installFromNpm(pkgName: string, botId: string) {
+    try {
+      this.logger.debug(`Installing ${pkgName} in ${this.app.rootPath}`);
+
+      this.app.setMaintenanceMode(
+        'Installing plugin...',
+        'Please wait while the plugin is being installed',
+      );
+
+      if (this._plugins.has(pkgName)) {
+        this.app.sendClientMessage(
+          `Plugin ${pkgName} already installed`,
+          'error',
+        );
+        this.logger.warn(`Plugin ${pkgName} already installed`);
+        return;
+      }
+
+      const buffer = execa('pnpm', ['add', pkgName], {
+        cwd: this.app.rootPath,
+      });
+
+      if (buffer.stdout)
+        for await (const chunk of buffer.stdout) {
+          this.app.setMaintenanceMode('Installing plugin...', chunk.toString());
+        }
+
+      this.logger.debug(`Installed ${pkgName}`);
+
+      try {
+        this.app.setMaintenanceMode(
+          'Loading plugin...',
+          'Please wait while the plugin is being loaded',
+        );
+
+        this.logger.debug(`Loading ${pkgName}`);
+        const module = require(`${pkgName}/package.json`);
+        if (module.botmate) {
+          const serverPath = require.resolve(`${pkgName}/lib/server/index.js`);
+          const clientPath = require.resolve(`${pkgName}/lib/client/index.js`);
+
+          this.plugins.set(pkgName, {
+            name: pkgName,
+            displayName: module.displayName,
+            description: module.description,
+            serverPath,
+            clientPath,
+            author: module.author,
+            dependencies: module.dependencies,
+            version: module.version,
+            platformType: module.botmate.platformType,
+          });
+          this.logger.debug(`Loaded ${pkgName}`);
+          this.logger.info(`Installing plugin ${pkgName} for bot ${botId}`);
+          await this.install(pkgName, botId);
+          this.logger.info(`Plugin ${pkgName} installed for bot ${botId}`);
+          this.loadBotPlugin(pkgName, botId);
+
+          this.app.endMaintenanceMode();
+          this.app.sendClientMessage(
+            `Plugin ${pkgName} installed successfully`,
+          );
+        } else {
+          this.app.endMaintenanceMode();
+          this.logger.warn(`"${pkgName}" is not a botmate plugin`);
+          this.app.sendClientMessage(
+            `"${pkgName}" is not a botmate plugin`,
+            'error',
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        this.app.endMaintenanceMode();
+        this.logger.error(`Error loading plugin ${pkgName}`);
+        this.app.sendClientMessage(`Error loading plugin ${pkgName}`, 'error');
+      }
+    } catch (error) {
+      this.app.endMaintenanceMode();
+      console.error(error);
+      this.logger.error(`Error installing plugin ${pkgName}`);
+      this.app.sendClientMessage(`Error installing plugin ${pkgName}`, 'error');
     }
   }
 }

@@ -1,9 +1,11 @@
 import { Database } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
+import { fork } from 'child_process';
 import { Command } from 'commander';
 import execa from 'execa';
 import express from 'express';
 import { writeFile } from 'fs/promises';
+import { Server } from 'http';
 import ora from 'ora';
 import { join } from 'path';
 import socket, { Socket } from 'socket.io';
@@ -27,7 +29,13 @@ export type ApplicationOptions = {
   port?: number;
 };
 
+type Maintenance = {
+  title: string;
+  message: string;
+};
+
 export class Application {
+  http?: Server;
   server: express.Application = express();
   logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
@@ -40,6 +48,8 @@ export class Application {
   rootPath = process.cwd();
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   version: string = require('../package.json').version;
+
+  maintenance: Maintenance | null = null;
 
   protected _pluginManager: PluginManager;
   protected _platformManager: PlatformManager;
@@ -128,13 +138,49 @@ export class Application {
     }
   }
 
+  setMaintenanceMode(title: string, message: string) {
+    if (this._socket) {
+      this.maintenance = {
+        title,
+        message,
+      };
+      this._socket.emit('maintenance_start', this.maintenance);
+    }
+  }
+
+  endMaintenanceMode() {
+    if (this._socket) {
+      this.maintenance = null;
+      this._socket.emit('maintenance_end');
+    }
+  }
+
+  sendClientMessage(message: string, type: 'info' | 'error' = 'info') {
+    if (this._socket) {
+      this._socket.emit('server_message', {
+        message,
+        type,
+      });
+    }
+  }
+
   async start() {
     const server = this.server.listen(this.port);
+    this.http = server;
 
     const io = new socket.Server(server);
 
     io.on('connection', (socket) => {
       this._socket = socket;
+
+      if (this.maintenance) {
+        socket.emit('maintenance_start', this.maintenance);
+      }
+
+      socket.on('install_plugin', async (data) => {
+        await this.pluginManager.installFromNpm(data.package_name, data.bot_id);
+        this.endMaintenanceMode();
+      });
     });
 
     this.logger.info(`Application started on port ${this.port}`);
@@ -143,6 +189,12 @@ export class Application {
   async stop() {
     this.logger.warn('Exiting application');
     process.exit(0);
+  }
+
+  async restart() {
+    this.pluginManager.create;
+
+    await this.stop();
   }
 
   async update() {

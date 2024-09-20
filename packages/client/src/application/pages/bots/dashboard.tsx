@@ -46,12 +46,11 @@ function DashboardPage() {
       title="Dashboard"
       subtitle="Welcome to the dashboard. Here you can see all the important information about the bot."
     >
-      <div>
-        <div className="h-72 flex items-center justify-center gap-4 flex-col border rounded-3xl bg-card text-muted-foreground">
-          <HammerIcon size={60} />
-          <p>The page is under construction. Please check back later.</p>
-        </div>
+      <div className="h-72 flex items-center justify-center gap-4 flex-col bg-card text-muted-foreground">
+        <HammerIcon size={60} />
+        <p>The page is under construction. Please check back later.</p>
       </div>
+
       <div>
         <div className="grid grid-cols-1 gap-4">
           {notes.map((note, index) => (

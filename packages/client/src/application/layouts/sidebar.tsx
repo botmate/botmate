@@ -27,11 +27,13 @@ export function SidebarLayout({ items, children, title, actions }: Props) {
       <div className="flex flex-1 overflow-auto">
         <div className="w-72 p-4 space-y-6 bg-card border-r overflow-auto">
           <div className="flex flex-col gap-1">
-            {items.map((item) => {
+            {items.map((item, index) => {
               if (typeof item === 'string') {
                 return (
                   <h1
-                    className="text-gray-600 dark:text-neutral-500 text-sm uppercase mb-1"
+                    className={`text-gray-600 dark:text-neutral-500 text-sm uppercase ${
+                      index === 0 ? 'mt-1' : 'mt-6'
+                    }`}
                     key={item}
                   >
                     {item}

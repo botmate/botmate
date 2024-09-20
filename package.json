@@ -86,8 +86,5 @@
     "**/*.{html,json,css,scss,md,mdx}": [
       "prettier -w"
     ]
-  },
-  "dependencies": {
-    "@botmate/plugin-random-number": "workspace:1.1.0-beta.8"
   }
 }

@@ -12,18 +12,19 @@ const tsx = join(dirname(require.resolve('tsx')), 'cli.mjs');
 function run() {
   let watchMode = false;
 
+  const [, , ...argv] = process.argv;
+
+  const [cmd] = argv;
+
+  if (cmd === 'dev') {
+    watchMode = true;
+  }
+
   if (isTsProject) {
     process.env.IS_MONOREPO = 'true';
     process.env.NODE_ENV = 'development';
 
     const cliPath = join(__dirname, '..', 'src', 'cli.ts');
-    const [, , ...argv] = process.argv;
-
-    const [cmd] = argv;
-
-    if (cmd === 'dev') {
-      watchMode = true;
-    }
 
     spawn(
       tsx,

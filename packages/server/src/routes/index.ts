@@ -6,9 +6,10 @@ import { bots } from './bots';
 import { config } from './config';
 import { platforms } from './platforms';
 import { plugins } from './plugins';
+import { workflows } from './workflows';
 
 export async function setupCoreRoutes(app: Application) {
-  [bots, plugins, platforms, config].forEach((setup) => {
+  [bots, plugins, platforms, config, workflows].forEach((setup) => {
     app.logger.debug(`Setting up core routes: ${setup.name}`);
     setup(app);
   });

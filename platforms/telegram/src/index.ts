@@ -4,6 +4,9 @@ import { writeFile } from 'fs/promises';
 import { Bot } from 'grammy';
 import { join } from 'path';
 
+import { actions } from './workflow.actions';
+import { events } from './workflow.events';
+
 function getUploadPath() {
   let storagePath = process.env.STORAGE_PATH;
   if (storagePath) {
@@ -58,6 +61,14 @@ export class Telegram extends Platform<Bot> {
   }
   async stop() {
     await this.instance.stop();
+  }
+
+  static getWorflowEvents() {
+    return events;
+  }
+
+  static getWorflowActions() {
+    return actions;
   }
 }
 

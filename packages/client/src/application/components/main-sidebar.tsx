@@ -4,6 +4,7 @@ import {
   LucideIcon,
   Settings2Icon,
   ShoppingBagIcon,
+  WorkflowIcon,
 } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -38,6 +39,12 @@ const items: MainSidebarItem[] = [
     path: '/marketplace',
     regex: /^\/marketplace$/,
   },
+  // {
+  //   label: 'Workflows',
+  //   icon: WorkflowIcon,
+  //   path: '/workflows',
+  //   regex: /^\/workflows/,
+  // },
   {
     label: 'Settings',
     icon: Settings2Icon,

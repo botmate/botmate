@@ -1,5 +1,5 @@
 import { Subscribe } from '@react-rxjs/core';
-import * as Sentry from '@sentry/react';
+// import * as Sentry from '@sentry/react';
 import { LucideIcon } from 'lucide-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -22,6 +22,7 @@ import MarketplacePage from './pages/bots/marketplace';
 import GeneralSettingsPage from './pages/bots/settings';
 import PluginSettingsPage from './pages/bots/settings/plugins';
 import AppearanceSettingsPage from './pages/bots/settings/secutiry';
+import WorkflowsPage from './pages/bots/workflow';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import SetupPage from './pages/setup';
@@ -128,6 +129,7 @@ export class Application {
                             path="marketplace"
                             element={<MarketplacePage />}
                           />
+                          <Route path="workflows" element={<WorkflowsPage />} />
                           <Route path="settings" element={<SettingsLayout />}>
                             <Route index element={<GeneralSettingsPage />} />
                             <Route

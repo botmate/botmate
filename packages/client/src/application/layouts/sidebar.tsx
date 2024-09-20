@@ -1,24 +1,28 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-export type SidebarItem = {
-  title: string;
-  description?: string;
-  path: string;
-  regex?: RegExp;
-};
+export type SidebarItem =
+  | {
+      title: string;
+      description?: string;
+      path: string;
+      regex?: RegExp;
+    }
+  | string;
 type Props = {
   items: (SidebarItem | string)[];
   children?: React.ReactNode;
   title?: string;
+  actions?: React.ReactNode;
 };
-export function SidebarLayout({ items, children, title }: Props) {
+export function SidebarLayout({ items, children, title, actions }: Props) {
   const location = useLocation();
 
   return (
     <div className="flex flex-col flex-1 h-screen overflow-hidden">
-      <div className="min-h-20 h-20 w-full border-b flex items-center px-4">
+      <div className="min-h-20 h-20 w-full border-b flex items-center px-4 justify-between">
         <h1 className="text-xl font-medium">{title}</h1>
+        {actions}
       </div>
       <div className="flex flex-1 overflow-auto">
         <div className="w-72 p-4 space-y-6 bg-card border-r overflow-auto">
@@ -27,7 +31,7 @@ export function SidebarLayout({ items, children, title }: Props) {
               if (typeof item === 'string') {
                 return (
                   <h1
-                    className="text-gray-600 dark:text-neutral-500 text-sm uppercase mt-3 mb-1"
+                    className="text-gray-600 dark:text-neutral-500 text-sm uppercase mb-1"
                     key={item}
                   >
                     {item}

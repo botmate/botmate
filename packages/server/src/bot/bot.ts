@@ -36,7 +36,7 @@ export class Bot {
   }
 
   async init() {
-    const platform = await this.importPlatform();
+    const platform = await Bot.importPlatform(this.type);
     const bot = new platform(this.credentials) as Platform;
     this._bot = bot;
   }
@@ -45,15 +45,13 @@ export class Bot {
     return this._data;
   }
 
-  async importPlatform() {
+  static async importPlatform(type: PlatformType) {
     const platformsDir = join(process.cwd(), 'platforms');
     if (existsSync(platformsDir)) {
-      const platform = await import(
-        join(platformsDir, `${this.type}/src/index.ts`)
-      );
+      const platform = await import(join(platformsDir, `${type}/src/index.ts`));
       return platform.default?.default || platform.default;
     } else {
-      const _export = await import(pkgMap[this.type]);
+      const _export = await import(pkgMap[type]);
       const [first] = Object.values(_export);
       return first;
     }
@@ -61,7 +59,7 @@ export class Bot {
 
   async getBotInfo() {
     try {
-      const platform = await this.importPlatform();
+      const platform = await Bot.importPlatform(this.type);
       const bot = new platform(this.credentials) as Platform;
       const info = await bot.getBotInfo();
       return info;

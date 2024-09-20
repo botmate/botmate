@@ -19,6 +19,7 @@ import { Plugin } from './plugin';
 import { PluginManager } from './plugin-manager';
 import { setupCoreRoutes } from './routes';
 import { setupVite } from './vite';
+import { WorkflowManager } from './workflow-manager';
 
 export type ApplicationOptions = {
   dbPath?: string;
@@ -47,6 +48,7 @@ export class Application {
   protected _cli: Command;
   protected _socket?: Socket;
   protected _migrations: Migrations;
+  protected _workflowManager: WorkflowManager;
 
   get pluginManager() {
     return this._pluginManager;
@@ -62,6 +64,10 @@ export class Application {
 
   get configManager() {
     return this._configManager;
+  }
+
+  get workflowManager() {
+    return this._workflowManager;
   }
 
   constructor(private options?: ApplicationOptions) {
@@ -81,6 +87,7 @@ export class Application {
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
     this._configManager = new ConfigManager(this);
+    this._workflowManager = new WorkflowManager(this);
 
     this._cli = this.createCLI();
 

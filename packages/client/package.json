@@ -23,6 +23,7 @@
     "@react-rxjs/utils": "^0.9.7",
     "@reduxjs/toolkit": "^2.2.7",
     "@sentry/react": "^8.28.0",
+    "@xyflow/react": "^12.3.0",
     "framer-motion": "^11.3.31",
     "lucide-react": "^0.436.0",
     "next-themes": "^0.3.0",

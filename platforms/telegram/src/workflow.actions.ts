@@ -1,27 +1,12 @@
-const actions = ['send_message', 'send_photo', 'send_document'] as const;
+import { WorkflowAction } from '@botmate/platform';
 
-export type Action = (typeof actions)[number];
+const _actions = ['send_message', 'send_photo', 'send_document'] as const;
 
-export type WorkflowMethod = {
-  [key in Action]: {
-    title: string;
-    description: string;
-    applyTo?: string[];
-    parameters: {
-      [key: string]: {
-        title: string;
-        description: string;
-        type: 'string' | 'number' | 'boolean' | 'object' | 'array';
-        required?: boolean;
-        caption?: string;
-      };
-    };
-  };
-};
+type Action = (typeof _actions)[number];
 
-export const methods: Readonly<WorkflowMethod> = {
+export const actions: Record<Action, WorkflowAction> = {
   send_message: {
-    title: 'Send Message',
+    name: 'Send Message',
     description: 'Send a message to a chat or user',
     parameters: {
       chat_id: {
@@ -39,7 +24,7 @@ export const methods: Readonly<WorkflowMethod> = {
     },
   },
   send_photo: {
-    title: 'Send Photo',
+    name: 'Send Photo',
     description: 'Send a photo to a chat or user',
     parameters: {
       chat_id: {
@@ -58,7 +43,7 @@ export const methods: Readonly<WorkflowMethod> = {
     },
   },
   send_document: {
-    title: 'Send Document',
+    name: 'Send Document',
     description: 'Send a document to a chat or user',
     parameters: {
       chat_id: {

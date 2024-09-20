@@ -4,7 +4,7 @@ import {
   LucideIcon,
   Settings2Icon,
   ShoppingBagIcon,
-  WorkflowIcon,
+  // WorkflowIcon,
 } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';

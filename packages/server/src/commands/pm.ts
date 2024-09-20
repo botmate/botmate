@@ -148,6 +148,7 @@ export default function pm(app: Application) {
       description,
       platform: platform.toLowerCase(),
       platformType: platform,
+      folder: toKebabCase(name),
     };
 
     const content = await Promise.all(

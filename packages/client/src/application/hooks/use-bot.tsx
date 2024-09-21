@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
 
-import { useGetBotInfoQuery } from '../services';
+import { trpc } from '../trpc';
 
 function useCurrentBot() {
-  const params = useParams();
-  const { data } = useGetBotInfoQuery(params.botId as string);
+  const params = useParams() as { botId: string };
+  const { data } = trpc.getBot.useQuery(params.botId);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return data!;
 }
 

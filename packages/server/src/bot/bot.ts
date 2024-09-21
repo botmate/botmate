@@ -3,7 +3,8 @@ import { Platform, PlatformType } from '@botmate/platform';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-import { IBot } from '../models/bot';
+import { Application } from '../application';
+import { IBot } from '../models/bots.model';
 import { Plugin } from '../plugin';
 
 export enum BotStatus {
@@ -28,16 +29,17 @@ export class Bot {
   constructor(
     private type: PlatformType,
     private credentials: Record<string, string>,
-    private _data: IBot,
+    private _data?: IBot,
   ) {}
 
   instance<T>() {
     return this._bot?.instance as T;
   }
 
-  async init() {
+  async init(app: Application) {
     const platform = await Bot.importPlatform(this.type);
     const bot = new platform(this.credentials) as Platform;
+    await bot.init?.(app);
     this._bot = bot;
   }
 
@@ -77,7 +79,7 @@ export class Bot {
       }
     } catch (error) {
       console.error(error);
-      this.logger.error(`Error stopping bot: ${this.data.id}`);
+      this.logger.error(`Error stopping bot: ${this.data?.id}`);
     }
   }
 
@@ -89,7 +91,7 @@ export class Bot {
       }
     } catch (error) {
       console.error(error);
-      this.logger.error(`Error stopping bot: ${this.data.id}`);
+      this.logger.error(`Error stopping bot: ${this.data?.id}`);
     }
   }
 
@@ -104,7 +106,7 @@ export class Bot {
       }
     } catch (error) {
       console.error(error);
-      this.logger.error(`Error restarting bot: ${this.data.id}`);
+      this.logger.error(`Error restarting bot: ${this.data?.id}`);
     }
   }
 }

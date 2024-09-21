@@ -1,6 +1,5 @@
-import { Database } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
-import { fork } from 'child_process';
+import * as trpcExpress from '@trpc/server/adapters/express';
 import { Command } from 'commander';
 import execa from 'execa';
 import express from 'express';
@@ -13,20 +12,20 @@ import socket, { Socket } from 'socket.io';
 import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
 import { ConfigManager } from './config';
-import { Migrations } from './migrations';
-import { initBotsModel } from './models/bot';
-import { initPluginModel } from './models/plugin';
-import { PlatformManager } from './platform-manager';
+import { connectToDatabase } from './database';
+import { PlatformManager, PlatformMeta } from './platform-manager';
 import { Plugin } from './plugin';
 import { PluginManager } from './plugin-manager';
-import { setupCoreRoutes } from './routes';
+import { initTrpc } from './services/_trpc';
 import { setupVite } from './vite';
+// import { setupCoreRoutes } from './routes';
+// import { setupVite } from './vite';
 import { WorkflowManager } from './workflow-manager';
 
 export type ApplicationOptions = {
-  dbPath?: string;
   mode?: 'development' | 'production';
   port?: number;
+  dbString: string;
 };
 
 type Maintenance = {
@@ -39,7 +38,6 @@ export class Application {
   server: express.Application = express();
   logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
-  database: Database;
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
@@ -48,6 +46,7 @@ export class Application {
   rootPath = process.cwd();
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   version: string = require('../package.json').version;
+  platforms: PlatformMeta[] = [];
 
   maintenance: Maintenance | null = null;
 
@@ -57,7 +56,7 @@ export class Application {
   protected _configManager: ConfigManager;
   protected _cli: Command;
   protected _socket?: Socket;
-  protected _migrations: Migrations;
+  // protected _migrations: Migrations;
   protected _workflowManager: WorkflowManager;
 
   get pluginManager() {
@@ -80,7 +79,7 @@ export class Application {
     return this._workflowManager;
   }
 
-  constructor(private options?: ApplicationOptions) {
+  constructor(private options: ApplicationOptions) {
     if (process.env.NODE_ENV === 'development') {
       this.mode = 'development';
     }
@@ -88,11 +87,6 @@ export class Application {
     this.port = options?.port || this.port;
     this.mode = options?.mode || this.mode;
 
-    this.database = new Database({
-      dbPath: options?.dbPath,
-    });
-
-    this._migrations = new Migrations(this.database);
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
@@ -104,24 +98,52 @@ export class Application {
     registerCLI(this);
   }
 
+  async getSchemas() {
+    const serverSchemas = join(__dirname, 'schemas');
+    const platformSchemas = this.platforms.map((platform) =>
+      join(platform.path, 'schemas'),
+    );
+    return [serverSchemas, ...platformSchemas];
+  }
+
   async init() {
     this.logger.info('Initializing application...');
+    this.platforms = await this.platformManager.listPlatforms();
 
-    await this._migrations.runMigrations();
+    this.logger.debug('Connecting to database...');
 
-    initPluginModel(this.database.sequelize);
-    initBotsModel(this.database.sequelize);
+    await connectToDatabase(this.options.dbString);
+
+    this.logger.debug('Database connected');
 
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
+    this.server.use(express.static(join(this.rootPath, 'storage')));
 
-    await setupCoreRoutes(this);
+    const router = initTrpc(this);
+
+    const createContext = ({
+      req,
+      res,
+    }: trpcExpress.CreateExpressContextOptions) => ({}); // no context
+
+    this.server.use(
+      '/api/trpc',
+      trpcExpress.createExpressMiddleware({
+        router,
+        createContext,
+      }),
+    );
+
+    // await setupCoreRoutes(this);
     await setupVite(this);
 
-    await this.database.sequelize.sync();
-
-    await this.botManager.init();
+    // await this.botManager.init();
     await this.pluginManager.init();
+
+    // await this.platformManager.loadModels();
+
+    // await this.database.sequelize.sync();
 
     process.on('SIGINT', () => this.stop());
   }
@@ -258,3 +280,7 @@ export class Application {
     return this._cli.addCommand;
   }
 }
+
+export type { AppRouter } from './services/_trpc';
+export type { IBot } from './models/bots.model';
+export type { IPlugin } from './models/plugins.model';

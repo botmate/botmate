@@ -1,34 +1,35 @@
-import { ModelStatic } from '@botmate/database';
+import { PlatformType } from '@botmate/platform';
 
 import { Application } from '../application';
 import { Bot } from '../bot/bot';
-import { BotModel, initBotsModel } from '../models/bot';
+import { BotModel } from '../models/bots.model';
 
 export class BotManager {
-  private _model: ModelStatic<BotModel>;
   private _bots: Map<string, Bot> = new Map();
 
-  constructor(private app: Application) {
-    this._model = initBotsModel(this.app.database.sequelize);
-  }
+  constructor(private app: Application) {}
 
   /**
    * `init` method initializes the bot manager loads all the added bots in the `_bots` map.
    */
   async init() {
-    const allBots = await this._model.findAll();
+    const allBots = await BotModel.find();
     for (const bot of allBots) {
       const botInstance = new Bot(
-        bot.platformType,
+        bot.platformType as PlatformType,
         bot.credentials as Record<string, string>,
         bot,
       );
       this._bots.set(bot.id, botInstance);
+
+      await botInstance.init(this.app);
     }
   }
 
-  async get(id: string) {
-    return this._model.findByPk(id);
+  async findById(id: string) {
+    return BotModel.findOne({
+      id,
+    });
   }
 
   get bots() {

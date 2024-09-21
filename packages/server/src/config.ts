@@ -1,26 +1,22 @@
-import { ModelStatic } from '@botmate/database';
+import { createLogger, winston } from '@botmate/logger';
 
 import { Application } from './application';
-import { PluginModel, initPluginModel } from './models/plugin';
+import { PluginModel } from './models/plugins.model';
 
 export class ConfigManager {
-  private _pluginModel: ModelStatic<PluginModel>;
+  logger: winston.Logger = createLogger({ name: ConfigManager.name });
 
   constructor(private app: Application) {
-    this._pluginModel = initPluginModel(this.app.database.sequelize);
+    // this._pluginModel = initPluginModel(this.app.database.sequelize);
   }
 
   async savePluginConfig<T = unknown>(pluginId: string, key: string, value: T) {
-    this.app.logger.debug(`Saving config key: ${key}`);
+    this.logger.debug(`Saving config key: ${key}`);
 
-    const plugin = await this._pluginModel.findOne({
-      where: {
-        id: pluginId,
-      },
-    });
+    const plugin = await PluginModel.findById(pluginId);
 
     if (!plugin) {
-      this.app.logger.error(`Plugin not found: ${pluginId}`);
+      this.logger.error(`Plugin not found: ${pluginId}`);
       return;
     }
 
@@ -28,14 +24,12 @@ export class ConfigManager {
 
     config[key] = value;
 
-    await this._pluginModel.update(
+    await PluginModel.findOneAndUpdate(
       {
-        config,
+        _id: pluginId,
       },
       {
-        where: {
-          id: pluginId,
-        },
+        config,
       },
     );
   }
@@ -45,21 +39,17 @@ export class ConfigManager {
     key: string,
     def?: T,
   ): Promise<T | null> {
-    const plugin = await this._pluginModel.findOne({
-      where: {
-        id: pluginId,
-      },
-    });
+    const plugin = await PluginModel.findById(pluginId);
 
     if (!plugin) {
-      this.app.logger.error(`Plugin not found: ${pluginId}`);
+      this.logger.error(`Plugin not found: ${pluginId}`);
       return null;
     }
 
     if (!plugin.config?.[key]) {
-      this.app.logger.warn(`Config key not found: ${key}`);
+      this.logger.warn(`Config key not found: ${key}`);
       if (def !== undefined) {
-        this.app.logger.warn(`Returning default value: ${def}`);
+        this.logger.warn(`Returning default value: ${def}`);
         return def;
       }
     }

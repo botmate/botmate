@@ -1,9 +1,8 @@
 import { createLogger } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 
-import { Application } from './application';
+import { Application, IPlugin } from './application';
 import { Bot } from './bot';
-import { IPlugin } from './models/plugin';
 
 export interface PluginInterface {
   beforeLoad?: () => void;

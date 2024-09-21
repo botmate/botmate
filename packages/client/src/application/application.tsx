@@ -1,4 +1,3 @@
-import { Subscribe } from '@react-rxjs/core';
 // import * as Sentry from '@sentry/react';
 import { LucideIcon } from 'lucide-react';
 import React from 'react';
@@ -6,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
-import type { IBot, IPlugin } from '@botmate/server';
+import type { IBot } from '@botmate/server';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 import { Toaster } from 'sonner';
@@ -22,7 +21,7 @@ import MarketplacePage from './pages/bots/marketplace';
 import GeneralSettingsPage from './pages/bots/settings';
 import PluginSettingsPage from './pages/bots/settings/plugins';
 import AppearanceSettingsPage from './pages/bots/settings/secutiry';
-import WorkflowsPage from './pages/bots/workflow';
+// import WorkflowsPage from './pages/bots/workflow';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import SetupPage from './pages/setup';
@@ -30,6 +29,7 @@ import { AppProvider } from './providers/app';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { SocketProvider } from './providers/socket';
+import TRPCProvider from './providers/trpc';
 import { store } from './store';
 
 type ClientParams = {
@@ -65,7 +65,7 @@ export type MainSidebarItem = {
 export class Application {
   api = new Api();
 
-  private _routes: (RouteObject & { _plugin: IPlugin })[] = [];
+  private _routes: (RouteObject & { _plugin: Plugin })[] = [];
 
   bot: IBot | null = null;
   emitter = new EventEmitter();
@@ -106,8 +106,8 @@ export class Application {
   getRootComponent() {
     // todo: setup dynamic routes
     return () => (
-      <SocketProvider>
-        <Subscribe>
+      <TRPCProvider>
+        <SocketProvider>
           <Toaster />
           <ThemeProvider attribute="class">
             <BrowserRouter>
@@ -129,7 +129,7 @@ export class Application {
                             path="marketplace"
                             element={<MarketplacePage />}
                           />
-                          <Route path="workflows" element={<WorkflowsPage />} />
+                          {/* <Route path="workflows" element={<WorkflowsPage />} /> */}
                           <Route path="settings" element={<SettingsLayout />}>
                             <Route index element={<GeneralSettingsPage />} />
                             <Route
@@ -150,8 +150,8 @@ export class Application {
               </ReduxProvider>
             </BrowserRouter>
           </ThemeProvider>
-        </Subscribe>
-      </SocketProvider>
+        </SocketProvider>
+      </TRPCProvider>
     );
   }
 

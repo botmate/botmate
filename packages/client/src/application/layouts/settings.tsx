@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 import SidebarItem from '../components/sidebar-item';
 import useCurrentBot from '../hooks/use-bot';
-import { useGetPluginsQuery } from '../services/plugins';
+import { trpc } from '../trpc';
 import { SidebarLayout } from './sidebar';
 
 const items = [
@@ -33,8 +33,7 @@ function SettingsLayout() {
   const params = useParams();
   const bot = useCurrentBot();
   const { pathname } = useLocation();
-
-  const { data: plugins } = useGetPluginsQuery(bot.platformType);
+  const { data: plugins } = trpc.getLocalPlugins.useQuery(bot.platformType);
   const basePath = `/bots/${params.botId}/settings`;
 
   const settingsItems = items.map((item) => (

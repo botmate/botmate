@@ -36,7 +36,7 @@ function GeneralSettingsPage() {
             {[
               {
                 title: 'ID',
-                value: bot.botId,
+                value: bot.id,
               },
               {
                 title: 'Name',

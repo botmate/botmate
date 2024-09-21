@@ -4,19 +4,20 @@ import { Outlet } from 'react-router-dom';
 import { Plugin } from '../../plugin';
 import { useApp } from '../hooks/use-app';
 import useCurrentBot from '../hooks/use-bot';
-import { useGetBotPluginsQuery, useGetPluginsQuery } from '../services/plugins';
+import { trpc } from '../trpc';
 
 function PluginsProvider() {
   const app = useApp();
   const bot = useCurrentBot();
-
   const [isLoading, setLoading] = useState('Loading...');
-  const { data: plugins } = useGetPluginsQuery(bot.platformType);
-  const { data: botPlugins } = useGetBotPluginsQuery(bot.id);
+  const { data: plugins } = trpc.getLocalPlugins.useQuery(bot.platformType);
+  const { data: botPlugins } = trpc.getBotPlugins.useQuery(bot.id);
 
   useEffect(() => {
     app.sidebar.length = 0;
+
     async function loadPlugins() {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       for (const plugin of botPlugins!) {
         try {
           const pluginData = plugins?.find((p) => p.name === plugin.name);
@@ -41,6 +42,7 @@ function PluginsProvider() {
           console.error('Error loading plugin', plugin.name, error);
         }
       }
+
       setLoading('');
     }
 
@@ -52,6 +54,27 @@ function PluginsProvider() {
       }
     }
   }, [plugins, botPlugins]);
+
+  // const app = useApp();
+  // const bot = useCurrentBot();
+
+  // const { data: botPlugins } = useGetBotPluginsQuery(bot.id);
+
+  // useEffect(() => {
+  //   app.sidebar.length = 0;
+  //   async function loadPlugins() {
+
+  //     setLoading('');
+  //   }
+
+  //   if (plugins && botPlugins) {
+  //     if (botPlugins.length > 0) {
+  //       loadPlugins();
+  //     } else {
+  //       setLoading('');
+  //     }
+  //   }
+  // }, [plugins, botPlugins]);
 
   if (isLoading) {
     return (

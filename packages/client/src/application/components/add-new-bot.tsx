@@ -40,6 +40,7 @@ function AddNewBotButton({ children }: Props) {
   const [selectedPlatform, setSelectedPlatform] = React.useState<string | null>(
     null,
   );
+  const utils = trpc.useUtils();
 
   const fields = useMemo(() => {
     if (!platforms) return [];
@@ -75,6 +76,11 @@ function AddNewBotButton({ children }: Props) {
       })
       .then(() => {
         toast.success('Bot added successfully');
+        const event = new KeyboardEvent('keydown', {
+          key: 'Escape',
+        });
+        document.dispatchEvent(event);
+        utils.listBots.invalidate();
       })
       .catch((error) => {
         toast.error(error.message);
@@ -141,7 +147,9 @@ function AddNewBotButton({ children }: Props) {
               </DialogHeader>
               {Form}
               <DialogFooter>
-                <Button type="submit">Submit</Button>
+                <Button type="submit" isLoading={createBot.isLoading}>
+                  Submit
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -159,12 +167,16 @@ function AddNewBotButton({ children }: Props) {
               </DrawerHeader>
               {Form}
               <DrawerFooter className="pt-2 flex-row justify-evenly">
-                <Button className="w-full" type="submit">
-                  Submit
-                </Button>
                 <DrawerClose asChild>
                   <Button className="w-full" variant="outline">
                     Cancel
+                  </Button>
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    isLoading={createBot.isLoading}
+                  >
+                    Submit
                   </Button>
                 </DrawerClose>
               </DrawerFooter>

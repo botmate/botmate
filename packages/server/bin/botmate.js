@@ -1,4 +1,5 @@
-require('dotenv/config');
+#!/usr/bin/env node
+
 const { spawn } = require('child_process');
 const { existsSync } = require('fs');
 const { dirname, join } = require('path');

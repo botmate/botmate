@@ -1,7 +1,7 @@
 {
   "name": "@botmate/plugin-telegram-post",
   "displayName": "Telegram Post",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Create channel/group posts via the GUI with buttons and markdown.",
   "main": "lib/server/index.js",
   "scripts": {
@@ -14,10 +14,10 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/client": "1.1.0",
-    "@botmate/platform-telegram": "1.1.0",
-    "@botmate/server": "1.1.0",
-    "@botmate/ui": "1.1.0",
+    "@botmate/client": "1.1.1",
+    "@botmate/platform-telegram": "1.1.1",
+    "@botmate/server": "1.1.1",
+    "@botmate/ui": "1.1.1",
     "grammy": "^1.29.0",
     "lucide-react": "^0.436.0"
   },

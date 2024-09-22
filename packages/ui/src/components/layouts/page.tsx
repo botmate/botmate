@@ -8,6 +8,8 @@ type Props = {
   children?: React.ReactNode;
   actions?: React.ReactNode;
   className?: string;
+
+  rightPane?: React.ReactNode;
 };
 export function PageLayout({
   children,
@@ -15,9 +17,14 @@ export function PageLayout({
   actions,
   className,
   subtitle,
+  rightPane,
 }: Props) {
   const elements = React.Children.toArray(children);
   const [first, second] = elements;
+
+  if (second) {
+    rightPane = second;
+  }
 
   return (
     <div className={cn(`flex-1 flex flex-col`, className)}>
@@ -31,7 +38,11 @@ export function PageLayout({
 
       <div className="flex-1 flex items-start gap-4 p-4 overflow-auto">
         <div className="flex-1">{first}</div>
-        <div className="hidden xl:block 2xl:w-[30rem] w-[20rem]">{second}</div>
+        {rightPane && (
+          <div className="hidden xl:block 2xl:w-[30rem] w-[20rem]">
+            {second}
+          </div>
+        )}
       </div>
     </div>
   );

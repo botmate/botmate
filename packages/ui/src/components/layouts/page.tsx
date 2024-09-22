@@ -9,14 +9,23 @@ type Props = {
   actions?: React.ReactNode;
   className?: string;
 };
-export function PageLayout({ children, title, actions, className }: Props) {
+export function PageLayout({
+  children,
+  title,
+  actions,
+  className,
+  subtitle,
+}: Props) {
   const elements = React.Children.toArray(children);
   const [first, second] = elements;
 
   return (
     <div className={cn(`flex-1 flex flex-col`, className)}>
       <div className="min-h-20 flex items-center justify-between px-4 border-b">
-        <h1 className="text-xl font-medium">{title}</h1>
+        <div>
+          <h1 className="text-xl font-medium">{title}</h1>
+          <p className="text-sm text-gray-500">{subtitle}</p>
+        </div>
         <div>{actions}</div>
       </div>
 

@@ -3,22 +3,19 @@ import React, { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
 import { Application } from '../application';
-import { useGetBotInfoQuery } from '../services';
+import { trpc } from '../trpc';
 
 type Props = {
   app: Application;
 };
 function BotProvider({ app }: Props) {
-  const params = useParams();
+  const params = useParams() as { botId: string };
 
   const {
     isLoading,
     data: botInfo,
     error,
-  } = useGetBotInfoQuery(params.botId as string, {
-    skip: !params.botId,
-    refetchOnMountOrArgChange: true,
-  });
+  } = trpc.getBot.useQuery(params.botId);
 
   useEffect(() => {
     if (botInfo) {

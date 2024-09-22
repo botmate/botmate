@@ -19,16 +19,11 @@ import {
   DrawerTrigger,
 } from '@botmate/ui';
 
-import { useApp } from '../../../hooks/use-app';
-import useCurrentBot from '../../../hooks/use-bot';
-import { useBotPlugins, usePlugins } from '../../../hooks/use-plugins';
+import { useApp } from '../../../hooks/app';
+import useCurrentBot from '../../../hooks/bots';
+import { useBotPlugins, usePlugins } from '../../../hooks/plugins';
 import { setCurrentPlugin } from '../../../reducers/plugins';
-import {
-  useDisablePluginMutation,
-  useEnablePluginMutation,
-  useInstallPluginMutation,
-  useUninstallPluginMutation,
-} from '../../../services/plugins';
+import { trpc } from '../../../trpc';
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = React.useState(
@@ -54,10 +49,11 @@ function PluginSettingsPage() {
   const bot = useCurrentBot();
   const dispatch = useDispatch();
 
-  const [installPluginMutation] = useInstallPluginMutation();
-  const [uninstallPluginMutation] = useUninstallPluginMutation();
-  const [enablePluginMutation] = useEnablePluginMutation();
-  const [disablePluginMutation] = useDisablePluginMutation();
+  const utils = trpc.useUtils();
+  const installPlugin = trpc.installPlugin.useMutation();
+  const enablePlugin = trpc.enablePlugin.useMutation();
+  const disablePlugin = trpc.disablePlugin.useMutation();
+  const uninstallPlugin = trpc.uninstallPlugin.useMutation();
 
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
@@ -99,21 +95,23 @@ function PluginSettingsPage() {
               onClick={async () => {
                 if (data) {
                   if (data.enabled) {
-                    await disablePluginMutation({
+                    await disablePlugin.mutateAsync({
                       botId: bot.id,
                       name: plugin.name,
-                    }).unwrap();
+                    });
                   } else {
-                    await enablePluginMutation({
+                    await enablePlugin.mutateAsync({
                       botId: bot.id,
                       name: plugin.name,
-                    }).unwrap();
+                    });
                   }
+
+                  utils.getBotPlugins.invalidate();
                 } else {
-                  await installPluginMutation({
+                  await installPlugin.mutateAsync({
                     botId: bot.id,
                     name: plugin.name,
-                  }).unwrap();
+                  });
                   window.location.reload();
                 }
               }}
@@ -121,20 +119,6 @@ function PluginSettingsPage() {
               click to{' '}
               {data ? (data?.enabled ? 'disable' : 'enable') : 'install'}
             </Badge>{' '}
-            {/* {!!data && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Badge className="cursor-pointer">configure</Badge>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Settings</DialogTitle>
-                    <DialogDescription></DialogDescription>
-                  </DialogHeader>
-                  <div>{Settings || 'No settings'}</div>
-                </DialogContent>
-              </Dialog>
-            )} */}
             {!!data &&
               (isDesktop ? (
                 <Dialog>
@@ -146,7 +130,6 @@ function PluginSettingsPage() {
                       <DialogTitle>Settings</DialogTitle>
                       <DialogDescription></DialogDescription>
                     </DialogHeader>
-
                     <div>{Settings || 'No settings'}</div>
                   </DialogContent>
                 </Dialog>
@@ -175,10 +158,10 @@ function PluginSettingsPage() {
                   variant="danger"
                   className="bg-red-500 text-white cursor-pointer hover:bg-red-400"
                   onClick={async () => {
-                    await uninstallPluginMutation({
+                    await uninstallPlugin.mutateAsync({
                       botId: bot.id,
                       name: plugin.name,
-                    }).unwrap();
+                    });
                     window.location.reload();
                   }}
                 >

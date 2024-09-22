@@ -17,8 +17,8 @@ import {
 } from '@botmate/ui';
 
 import { MainSidebarItem } from '../application';
-import { useApp } from '../hooks/use-app';
-import useCurrentBot from '../hooks/use-bot';
+import { useApp } from '../hooks/app';
+import useCurrentBot from '../hooks/bots';
 
 const items: MainSidebarItem[] = [
   {
@@ -125,7 +125,7 @@ function Sidebar() {
             }
 
             const Icon = item.icon;
-            const relativePath = location.pathname.replace(/^\/bots\/\d+/, '');
+            const relativePath = location.pathname.replace(/^\/bots\/\w+/, '');
             const isActive = item.regex
               ? item.regex.test(relativePath || '/')
               : item.path === relativePath;

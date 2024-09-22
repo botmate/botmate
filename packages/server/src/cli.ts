@@ -1,3 +1,5 @@
 import { Application } from './application';
 
-new Application().cli.parseAsync(process.argv);
+new Application({
+  dbString: process.env.DATABASE_URL as string,
+}).cli.parseAsync(process.argv);

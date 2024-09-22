@@ -12,15 +12,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   PageLayout,
 } from '@botmate/ui';
 import { toast } from 'sonner';
 
-import useCurrentBot from '../../../hooks/use-bot';
+import useCurrentBot from '../../../hooks/bots';
 import { useDeleteBotMutation } from '../../../services';
 
 function GeneralSettingsPage() {
@@ -36,7 +32,7 @@ function GeneralSettingsPage() {
             {[
               {
                 title: 'ID',
-                value: bot.botId,
+                value: bot.id,
               },
               {
                 title: 'Name',

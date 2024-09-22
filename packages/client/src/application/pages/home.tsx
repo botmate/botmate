@@ -1,19 +1,19 @@
 import { MoonIcon, PlusIcon, SunIcon } from 'lucide-react';
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Button } from '@botmate/ui';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 
-import { useApp } from '../hooks/use-app';
-import { useGetBotsQuery } from '../services';
+import AddNewBotButton from '../components/add-new-bot';
+import { useApp } from '../hooks/app';
+import { trpc } from '../trpc';
 
 function HomePage() {
   const app = useApp();
-  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
-  const { data, isLoading } = useGetBotsQuery();
+  const { data, isLoading } = trpc.listBots.useQuery();
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -56,13 +56,9 @@ function HomePage() {
     );
   }
 
-  if (data?.length === 0) {
-    navigate('/setup');
-  }
-
   return (
-    <div className="flex items-center h-screen">
-      <motion.div className="w-[1200px] h-[600px] 2xl:h-[800px] mx-auto bg-card rounded-3xl p-12 border flex flex-col">
+    <div className="flex lg:items-center h-screen">
+      <motion.div className="xl:w-[1200px] lg:min-h-[600px] lg:mx-auto w-full flex flex-col p-6 lg:p-0">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-semibold">Home</h1>
@@ -85,8 +81,8 @@ function HomePage() {
         <div className="flex flex-wrap gap-6 mt-6">
           {data?.map((bot, index) => (
             <Link
-              key={bot.id}
-              to={`/bots/${bot.id}`}
+              key={bot._id}
+              to={`/bots/${bot._id}`}
               className="max-w-24 text-ellipsis hover:scale-95 transition-all duration-150"
               draggable="false"
               data-item
@@ -108,23 +104,23 @@ function HomePage() {
                     {bot.name}
                   </h2>
                   <p className="text-sm text-muted-foreground line-clamp-1">
-                    {bot.botId}
+                    {bot.id}
                   </p>
                 </div>
               </motion.div>
             </Link>
           ))}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.07 * (data?.length || 0) }}
-          >
-            <Link to="/setup" draggable="false">
+          <AddNewBotButton>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.07 * (data?.length || 0) }}
+            >
               <div className="h-24 w-24 p-4 flex items-center justify-center border bg-background border-gray rounded-3xl hover:-translate-y-1 transition-all duration-150 cursor-pointer">
                 <PlusIcon />
               </div>
-            </Link>
-          </motion.div>
+            </motion.div>
+          </AddNewBotButton>
         </div>
         <div className="flex-1" />
         <div>

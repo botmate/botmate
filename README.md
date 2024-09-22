@@ -14,7 +14,7 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 <p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://docs.botmate.dev">Documentation</a> · <a href="https://t.me/chatbotmate">Telegram Chat</a></p>
 
 <p align="center">
-<img src="https://skillicons.dev/icons?i=ts,tailwind,docker,github"/>
+<img src="https://skillicons.dev/icons?i=ts,nodejs,mongo,tailwind"/>
 </p>
 
 <br/>
@@ -67,6 +67,7 @@ Get started with BotMate in just a few steps. Run the following commands in your
 - Node.js (v20 or higher)
 - pnpm (v8 or higher)
 - Linux, macOS, Android, or Windows
+- MongoDB
 
 ### CLI
 
@@ -81,6 +82,12 @@ After the project is created, navigate to the project directory and install the 
 ```bash
 cd botmate
 pnpm install
+```
+
+Create a `.env` file in the root directory and add the following environment variables:
+
+```env
+DATABASE_URL=mongodb://localhost:27017/botmate
 ```
 
 Finally, start the development server:

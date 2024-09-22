@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useEffect, useMemo, useState } from 'react';
 
-import { useSavePluginConfigMutation } from '../services';
-import { useCurrentPlugin } from './use-plugins';
+import { trpc } from '../trpc';
+import { useCurrentPlugin } from './plugins';
 
 export function usePluginConfig<
   T = Record<string, string | number | boolean>,
 >() {
   const plugin = useCurrentPlugin();
-  const [saveMutation, { isLoading }] = useSavePluginConfigMutation();
+  const saveConfig = trpc.saveConfig.useMutation();
 
   const [config, setConfig] = useState<T>((plugin?.config || {}) as T);
 
@@ -19,22 +19,22 @@ export function usePluginConfig<
   return useMemo(
     () => ({
       save: (key: keyof T, value: T[keyof T]) =>
-        saveMutation({
-          pluginId: plugin!.id,
-          key: key as string,
-          value,
-        })
-          .unwrap()
+        saveConfig
+          .mutateAsync({
+            pluginId: plugin!._id,
+            key: key as string,
+            value,
+          })
           .then(() => {
             const newConfig = { ...config, [key]: value } as T;
             setConfig(newConfig);
           }),
-      isSaving: isLoading,
+      isSaving: saveConfig.isLoading,
       get: function (key: keyof T, def?: T[keyof T]) {
         const value = config?.[key] ?? def;
         return value as T[keyof T];
       },
     }),
-    [config, plugin, saveMutation, isLoading],
+    [config, plugin, saveConfig],
   );
 }

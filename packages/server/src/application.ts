@@ -142,15 +142,9 @@ export class Application {
       }),
     );
 
-    // await setupCoreRoutes(this);
     await setupVite(this);
 
-    // await this.botManager.init();
     await this.pluginManager.init();
-
-    // await this.platformManager.loadModels();
-
-    // await this.database.sequelize.sync();
 
     process.on('SIGINT', () => this.stop());
   }

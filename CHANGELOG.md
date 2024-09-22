@@ -1,3 +1,43 @@
+## 1.1.0 (2024-09-22)
+
+
+### 🚀 Features
+
+- setup trpc ([508303e](https://github.com/botmate/botmate/commit/508303e))
+- hook maanger and rpc introduction ([61dc227](https://github.com/botmate/botmate/commit/61dc227))
+- store telegram chats in the db ([4e87e16](https://github.com/botmate/botmate/commit/4e87e16))
+- update marketplace ui ([e5ce550](https://github.com/botmate/botmate/commit/e5ce550))
+- **plugin:** telegram post ([fde6491](https://github.com/botmate/botmate/commit/fde6491))
+
+### 🩹 Fixes
+
+- bot id ([72a30a3](https://github.com/botmate/botmate/commit/72a30a3))
+- use trpc ([f0c8cf6](https://github.com/botmate/botmate/commit/f0c8cf6))
+- use trpc ([b29cefe](https://github.com/botmate/botmate/commit/b29cefe))
+- use trpc ([8b5b1d7](https://github.com/botmate/botmate/commit/8b5b1d7))
+- bot id ([42bc4b7](https://github.com/botmate/botmate/commit/42bc4b7))
+- use trpc ([afcc62d](https://github.com/botmate/botmate/commit/afcc62d))
+- use trpc ([7dd9d0c](https://github.com/botmate/botmate/commit/7dd9d0c))
+- use trpc ([c8209cc](https://github.com/botmate/botmate/commit/c8209cc))
+- types ([6826a5c](https://github.com/botmate/botmate/commit/6826a5c))
+- switch to mongoose ([1fd411f](https://github.com/botmate/botmate/commit/1fd411f))
+- editor improvements and button fixes ([fce3db2](https://github.com/botmate/botmate/commit/fce3db2))
+- rename files and introduced two new hooks ([6557078](https://github.com/botmate/botmate/commit/6557078))
+- use new path for hooks and `IPlugin` type ([00a04f3](https://github.com/botmate/botmate/commit/00a04f3))
+- add env variable check ([eb52151](https://github.com/botmate/botmate/commit/eb52151))
+- use version in plugin create, add lucide icon as dependency ([12e49b9](https://github.com/botmate/botmate/commit/12e49b9))
+- do not return the response ([71767c3](https://github.com/botmate/botmate/commit/71767c3))
+- export platform from default ([afbd290](https://github.com/botmate/botmate/commit/afbd290))
+- invalidate on bot add ([89cc469](https://github.com/botmate/botmate/commit/89cc469))
+- page layout ([b87387d](https://github.com/botmate/botmate/commit/b87387d))
+- match with plugins ([b64da11](https://github.com/botmate/botmate/commit/b64da11))
+- add loadable import to reduce bundle size ([9cd0dcc](https://github.com/botmate/botmate/commit/9cd0dcc))
+- cache lint ([372e813](https://github.com/botmate/botmate/commit/372e813))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0-beta.15 (2024-09-20)
 
 

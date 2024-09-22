@@ -1,6 +1,6 @@
 {
   "name": "@botmate/logger",
-  "version": "1.1.0-beta.15",
+  "version": "1.1.0",
   "description": "Logger for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

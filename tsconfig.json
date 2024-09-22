@@ -14,10 +14,10 @@
       "@botmate/database": ["./packages/database/src/index.ts"],
       "@botmate/logger": ["./packages/logger/src/index.ts"],
       "@botmate/platform": ["./packages/platform/src/index.ts"],
+      "@botmate/platform-telegram": ["./platforms/telegram/src/index.ts"],
       "@botmate/server": ["./packages/server/src/index.ts"],
       "@botmate/ui": ["./packages/ui/src/index.ts"],
-      "@botmate/utils": ["./packages/utils/src/index.ts"],
-      "@botmate/platform-telegram": ["./platforms/telegram/src/index.ts"]
+      "@botmate/utils": ["./packages/utils/src/index.ts"]
     }
   }
 }

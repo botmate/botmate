@@ -14,7 +14,7 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 <p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://docs.botmate.dev">Documentation</a> · <a href="https://t.me/chatbotmate">Telegram Chat</a></p>
 
 <p align="center">
-<img src="https://skillicons.dev/icons?i=ts,tailwind,docker,github"/>
+<img src="https://skillicons.dev/icons?i=ts,nodejs,mongo,tailwind"/>
 </p>
 
 <br/>

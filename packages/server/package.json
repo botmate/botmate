@@ -33,6 +33,7 @@
     "console-table-printer": "^2.12.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
+    "envalid": "^8.0.0",
     "execa": "5.1.1",
     "express": "^4.19.2",
     "inquirer": "^8.0.0",

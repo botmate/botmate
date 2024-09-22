@@ -13,6 +13,7 @@ import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
 import { ConfigManager } from './config';
 import { connectToDatabase } from './database';
+import { env } from './env';
 import { HookManager } from './hook-manager';
 import { PlatformManager, PlatformMeta } from './platform-manager';
 import { Plugin } from './plugin';
@@ -46,6 +47,7 @@ export class Application {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   version: string = require('../package.json').version;
   platforms: PlatformMeta[] = [];
+  env = env;
 
   maintenance: Maintenance | null = null;
 

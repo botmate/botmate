@@ -24,20 +24,3 @@ export const pluginSchema = new Schema<IPlugin>({
 });
 
 export const PluginModel = model<IPlugin>('plugins', pluginSchema);
-
-// import { json, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
-
-// export const plugins = pgTable('plugins', {
-//   id: serial('id').primaryKey(),
-//   name: varchar('name', { length: 128 }),
-//   display_name: varchar('display_name', { length: 128 }),
-//   version: varchar('version', { length: 16 }),
-//   description: varchar('description', { length: 256 }),
-//   dependencies: json('dependencies'),
-//   bot_id: varchar('bot_id', { length: 128 }),
-//   config: json('config'),
-//   created_at: timestamp('created_at').notNull().defaultNow(),
-//   updated_at: timestamp('updated_at').$onUpdate(() => new Date()),
-// });
-
-// export type PluginSchema = typeof plugins.$inferSelect;

@@ -12,10 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@botmate/platform": "1.1.0-beta.15",
     "@botmate/logger": "1.1.0-beta.15",
+    "@botmate/platform": "1.1.0-beta.15",
     "axios": "^1.7.7",
-    "grammy": "^1.29.0"
+    "grammy": "^1.29.0",
+    "mongoose": "^8.6.3"
   },
   "credentials": {
     "token": {

@@ -4,8 +4,8 @@ import {
   useEditor,
 } from '@tiptap/react';
 import { BoldIcon, CodeIcon } from 'lucide-react';
-import React from 'react';
 
+import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 
 import { Toggle } from './toggle';
@@ -29,8 +29,8 @@ function Toolbar({ editor }: ToolbarProps) {
 
       <Toggle
         size="sm"
-        pressed={editor.isActive('blockquote')}
-        onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
+        pressed={editor.isActive('codeBlock')}
+        onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
       >
         <CodeIcon className="h-4 w-4" />
       </Toggle>
@@ -39,22 +39,33 @@ function Toolbar({ editor }: ToolbarProps) {
 }
 
 export type EditorProps = {
-  placeholder: string;
+  placeholder?: string;
+  defaultValue?: string;
   onChange: (value: string) => void;
 };
 
-export function Editor({ placeholder, onChange }: EditorProps) {
+export function Editor({ defaultValue, placeholder, onChange }: EditorProps) {
   const editor = useEditor({
-    extensions: [StarterKit.configure()],
-    content: placeholder,
+    extensions: [
+      StarterKit.configure(),
+      Placeholder.configure({
+        placeholder: placeholder ?? 'Write your message here',
+      }),
+    ],
+    content: defaultValue,
     editorProps: {
       attributes: {
         class:
-          'flex min-h-[150px] w-full resize-none rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'min-h-[150px] w-full resize-none rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
       },
     },
     onUpdate(props) {
-      onChange(props.editor.getHTML());
+      let html = props.editor.getHTML();
+
+      html = html.replace(/<p>/g, '');
+      html = html.replace(/<\/p>/g, '\n');
+
+      onChange(html);
     },
   });
   return (

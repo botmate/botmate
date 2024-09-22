@@ -165,20 +165,22 @@ function AddNewBotButton({ children }: Props) {
                   Please select your bot platform and enter the credentials.
                 </DrawerDescription>
               </DrawerHeader>
+
               {Form}
+
               <DrawerFooter className="pt-2 flex-row justify-evenly">
                 <DrawerClose asChild>
                   <Button className="w-full" variant="outline">
                     Cancel
                   </Button>
-                  <Button
-                    className="w-full"
-                    type="submit"
-                    isLoading={createBot.isLoading}
-                  >
-                    Submit
-                  </Button>
                 </DrawerClose>
+                <Button
+                  className="w-full"
+                  type="submit"
+                  isLoading={createBot.isLoading}
+                >
+                  Submit
+                </Button>
               </DrawerFooter>
             </form>
           </DrawerContent>

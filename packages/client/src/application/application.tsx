@@ -6,6 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import type { IBot, IPlugin } from '@botmate/server';
+import loadable from '@loadable/component';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'sonner';
 
@@ -14,22 +15,28 @@ import { Api } from './api';
 import PluginRoutes from './components/plugin-routes';
 import MainLayout from './layouts/main';
 import SettingsLayout from './layouts/settings';
-import AnalyticsPage from './pages/bots/analytics';
-import DashboardPage from './pages/bots/dashboard';
-import MarketplacePage from './pages/bots/marketplace';
-import GeneralSettingsPage from './pages/bots/settings';
-import PluginSettingsPage from './pages/bots/settings/plugins';
-import AppearanceSettingsPage from './pages/bots/settings/secutiry';
-// import WorkflowsPage from './pages/bots/workflow';
-import HomePage from './pages/home';
-import LoginPage from './pages/login';
-import SetupPage from './pages/setup';
 import { AppProvider } from './providers/app';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { SocketProvider } from './providers/socket';
 import TRPCProvider from './providers/trpc';
 import { store } from './store';
+
+const AnalyticsPage = loadable(() => import('./pages/bots/analytics'));
+const DashboardPage = loadable(() => import('./pages/bots/dashboard'));
+const MarketplacePage = loadable(() => import('./pages/bots/marketplace'));
+const GeneralSettingsPage = loadable(
+  () => import('./pages/bots/settings/index'),
+);
+const PluginSettingsPage = loadable(
+  () => import('./pages/bots/settings/plugins'),
+);
+const AppearanceSettingsPage = loadable(
+  () => import('./pages/bots/settings/secutiry'),
+);
+const HomePage = loadable(() => import('./pages/home'));
+const LoginPage = loadable(() => import('./pages/login'));
+const SetupPage = loadable(() => import('./pages/setup'));
 
 type ClientParams = {
   version: string;

@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { trpc } from '../trpc';
-import { useCurrentPlugin } from './use-plugins';
+import { useCurrentPlugin } from './plugins';
 
 export function usePluginConfig<
   T = Record<string, string | number | boolean>,

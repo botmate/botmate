@@ -13,13 +13,12 @@ import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
 import { ConfigManager } from './config';
 import { connectToDatabase } from './database';
+import { HookManager } from './hook-manager';
 import { PlatformManager, PlatformMeta } from './platform-manager';
 import { Plugin } from './plugin';
 import { PluginManager } from './plugin-manager';
 import { initTrpc } from './services/_trpc';
 import { setupVite } from './vite';
-// import { setupCoreRoutes } from './routes';
-// import { setupVite } from './vite';
 import { WorkflowManager } from './workflow-manager';
 
 export type ApplicationOptions = {
@@ -58,6 +57,11 @@ export class Application {
   protected _socket?: Socket;
   // protected _migrations: Migrations;
   protected _workflowManager: WorkflowManager;
+  protected _hookManager: HookManager;
+
+  get hooks() {
+    return this._hookManager;
+  }
 
   get pluginManager() {
     return this._pluginManager;
@@ -92,6 +96,7 @@ export class Application {
     this._botManager = new BotManager(this);
     this._configManager = new ConfigManager(this);
     this._workflowManager = new WorkflowManager(this);
+    this._hookManager = new HookManager();
 
     this._cli = this.createCLI();
 

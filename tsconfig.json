@@ -16,7 +16,8 @@
       "@botmate/platform": ["./packages/platform/src/index.ts"],
       "@botmate/server": ["./packages/server/src/index.ts"],
       "@botmate/ui": ["./packages/ui/src/index.ts"],
-      "@botmate/utils": ["./packages/utils/src/index.ts"]
+      "@botmate/utils": ["./packages/utils/src/index.ts"],
+      "@botmate/platform-telegram": ["./platforms/telegram/src/index.ts"]
     }
   }
 }

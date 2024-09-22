@@ -54,6 +54,9 @@ export class Bot {
       return platform.default?.default || platform.default;
     } else {
       const _export = await import(pkgMap[type]);
+      if (_export?.default) {
+        return _export.default?.default ?? _export.default;
+      }
       const [first] = Object.values(_export);
       return first;
     }

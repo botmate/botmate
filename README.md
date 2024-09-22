@@ -67,6 +67,7 @@ Get started with BotMate in just a few steps. Run the following commands in your
 - Node.js (v20 or higher)
 - pnpm (v8 or higher)
 - Linux, macOS, Android, or Windows
+- MongoDB
 
 ### CLI
 
@@ -81,6 +82,12 @@ After the project is created, navigate to the project directory and install the 
 ```bash
 cd botmate
 pnpm install
+```
+
+Create a `.env` file in the root directory and add the following environment variables:
+
+```env
+DATABASE_URL=mongodb://localhost:27017/botmate
 ```
 
 Finally, start the development server:

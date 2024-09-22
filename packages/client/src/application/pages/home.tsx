@@ -1,5 +1,5 @@
 import { MoonIcon, PlusIcon, SunIcon } from 'lucide-react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button } from '@botmate/ui';
@@ -58,7 +58,7 @@ function HomePage() {
 
   return (
     <div className="flex lg:items-center h-screen">
-      <motion.div className="xl:w-[1200px] lg:min-h-[600px] lg:mx-auto w-full flex flex-col p-6 lg:p-0">
+      <motion.div className="xl:w-[1200px] lg:min-h-[600px] lg:mx-auto flex flex-col p-6 lg:p-0">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-semibold">Home</h1>

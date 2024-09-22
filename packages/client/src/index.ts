@@ -8,10 +8,10 @@ export * from './plugin';
 export * from './application/layouts/page';
 export * from './application/layouts/sidebar';
 
-export * from './application/hooks/use-app';
-export * from './application/hooks/use-bot';
-export * from './application/hooks/use-plugins';
-export * from './application/hooks/use-config';
+export * from './application/hooks/app';
+export * from './application/hooks/bots';
+export * from './application/hooks/plugins';
+export * from './application/hooks/config';
 
 export { toast } from 'sonner';
 

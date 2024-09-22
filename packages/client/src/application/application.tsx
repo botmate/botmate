@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
-import type { IBot } from '@botmate/server';
+import type { IBot, IPlugin } from '@botmate/server';
 import { ThemeProvider } from 'next-themes';
 import { Subject } from 'rxjs';
 import { Toaster } from 'sonner';
@@ -65,7 +65,7 @@ export type MainSidebarItem = {
 export class Application {
   api = new Api();
 
-  private _routes: (RouteObject & { _plugin: Plugin })[] = [];
+  private _routes: (RouteObject & { _plugin: IPlugin })[] = [];
 
   bot: IBot | null = null;
   emitter = new EventEmitter();

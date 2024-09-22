@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 import SidebarItem from '../components/sidebar-item';
-import useCurrentBot from '../hooks/use-bot';
+import useCurrentBot from '../hooks/bots';
 import { trpc } from '../trpc';
 import { SidebarLayout } from './sidebar';
 

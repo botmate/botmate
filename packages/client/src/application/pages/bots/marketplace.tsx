@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, PageLayout } from '@botmate/ui';
 
+import useCurrentBot from '../../hooks/bots';
 import { useSocketIO } from '../../hooks/socket';
-import useCurrentBot from '../../hooks/use-bot';
 
 function useLocalStorage<T = unknown>(key: string, initialValue: T) {
   const [value, setValue] = useState(() => {

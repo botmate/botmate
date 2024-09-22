@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Plugin } from '../../plugin';
-import { useApp } from '../hooks/use-app';
-import useCurrentBot from '../hooks/use-bot';
+import { useApp } from '../hooks/app';
+import useCurrentBot from '../hooks/bots';
 import { trpc } from '../trpc';
 
 function PluginsProvider() {

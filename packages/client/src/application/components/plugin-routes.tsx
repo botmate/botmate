@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
-import { useApp } from '../hooks/use-app';
-import { useCurrentPlugin } from '../hooks/use-plugins';
+import { useApp } from '../hooks/app';
+import { useCurrentPlugin } from '../hooks/plugins';
 import { setCurrentPlugin } from '../reducers/plugins';
 import PageNotFound from './404';
 

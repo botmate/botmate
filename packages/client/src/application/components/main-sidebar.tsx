@@ -17,8 +17,8 @@ import {
 } from '@botmate/ui';
 
 import { MainSidebarItem } from '../application';
-import { useApp } from '../hooks/use-app';
-import useCurrentBot from '../hooks/use-bot';
+import { useApp } from '../hooks/app';
+import useCurrentBot from '../hooks/bots';
 
 const items: MainSidebarItem[] = [
   {

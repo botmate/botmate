@@ -19,9 +19,9 @@ import {
   DrawerTrigger,
 } from '@botmate/ui';
 
-import { useApp } from '../../../hooks/use-app';
-import useCurrentBot from '../../../hooks/use-bot';
-import { useBotPlugins, usePlugins } from '../../../hooks/use-plugins';
+import { useApp } from '../../../hooks/app';
+import useCurrentBot from '../../../hooks/bots';
+import { useBotPlugins, usePlugins } from '../../../hooks/plugins';
 import { setCurrentPlugin } from '../../../reducers/plugins';
 import { trpc } from '../../../trpc';
 

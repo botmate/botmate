@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 
 import AddNewBotButton from '../components/add-new-bot';
-import { useApp } from '../hooks/use-app';
+import { useApp } from '../hooks/app';
 import { trpc } from '../trpc';
 
 function HomePage() {

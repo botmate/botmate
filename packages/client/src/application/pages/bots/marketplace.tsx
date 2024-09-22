@@ -14,7 +14,7 @@ import {
 import { toast } from 'sonner';
 
 import useCurrentBot from '../../hooks/bots';
-import { useBotPlugins } from '../../hooks/plugins';
+import { usePlugins } from '../../hooks/plugins';
 import { useSocketIO } from '../../hooks/socket';
 
 function useLocalStorage<T = unknown>(key: string, initialValue: T) {
@@ -62,7 +62,7 @@ type Publisher = {
 function MarketplacePage() {
   const bot = useCurrentBot();
   const socket = useSocketIO();
-  const botPlugins = useBotPlugins();
+  const botPlugins = usePlugins();
 
   const [query, setQuery] = useState('');
 

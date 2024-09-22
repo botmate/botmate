@@ -130,7 +130,7 @@ export class PluginManager {
       }
     }
 
-    return await exist.deleteOne();
+    await exist.deleteOne();
   }
 
   /**

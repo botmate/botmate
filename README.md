@@ -52,11 +52,11 @@ BotMate comes with a built-in plugin system that allows developers to extend the
 
 ### 💎 Easy to use
 
-With minimal setup, you can get your bots up and running in no time. BotMate is designed to be user-friendly for both developers and non-technical users. It uses SQLite as the default database, so you don't need to worry about setting up a database server.
+With minimal setup, you can get your bots up and running in no time. BotMate is designed to be user-friendly for both developers and non-technical users alike. You can easily manage your bots from a single dashboard, making it easy to keep track of all your bots in one place.
 
 ### 🌎 Multi-platform
 
-Ever wanted to manage all your bots in one place? BotMate supports multiple platforms, including Discord, Slack, and Telegram. You can easily manage all your bots from a single dashboard. More platforms will be added in the future.
+Ever wanted to manage all your bots in one place? BotMate supports multiple platforms, including Discord, Slack, and Telegram. You can easily manage all your bots from a single dashboard.
 
 ## Installation
 

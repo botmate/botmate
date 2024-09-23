@@ -67,7 +67,7 @@ Get started with BotMate in just a few steps. Run the following commands in your
 - Node.js (v20 or higher)
 - pnpm (v8 or higher)
 - Linux, macOS, Android, or Windows
-- MongoDB ([MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register))
+- MongoDB ([Get a free MongoDB](https://www.mongodb.com/cloud/atlas/register))
 
 ### CLI
 

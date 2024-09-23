@@ -1,5 +1,3 @@
-import React from 'react';
-
 export type SidebarItem = {
   active?: boolean;
   title: string;

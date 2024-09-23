@@ -3,10 +3,8 @@ import {
   LayoutDashboard,
   LucideIcon,
   Settings2Icon,
-  ShoppingBagIcon,
-  // WorkflowIcon,
+  ShoppingBagIcon, // WorkflowIcon,
 } from 'lucide-react';
-import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 import {
@@ -16,11 +14,11 @@ import {
   TooltipTrigger,
 } from '@botmate/ui';
 
-import { MainSidebarItem } from '../application';
+import { MainSidebarItem as MainSidebarItemType } from '../application';
 import { useApp } from '../hooks/app';
 import useCurrentBot from '../hooks/bots';
 
-const items: MainSidebarItem[] = [
+const items: MainSidebarItemType[] = [
   {
     label: 'Dashboard',
     icon: LayoutDashboard,

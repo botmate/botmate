@@ -4,10 +4,9 @@ import {
   Link,
   SidebarItem,
   SidebarLayout,
+  createPluginRPC,
   toast,
   useCurrentBot,
-  usePluginRPC,
-  usePluginRPCMutation,
   useSearchParams,
 } from '@botmate/client';
 import { Button, Editor, PageLayout } from '@botmate/ui';
@@ -16,12 +15,14 @@ import { InlineKeyboardButton } from 'grammy/types';
 import type { RPC } from '../server';
 import KeyboardBuilder from './keyboard-builder';
 
+const rpc = createPluginRPC<RPC>();
+
 function Page() {
   const bot = useCurrentBot();
   const [searchParams] = useSearchParams();
 
-  const telegramChats = usePluginRPC<RPC>('getTelegramChats', 1);
-  const postMessage = usePluginRPCMutation<RPC>('postMessage');
+  const postMessage = rpc.postMessage.useMutation();
+  const telegramChats = rpc.getTelegramChats.useQuery(1);
 
   const chatId = searchParams.get('chat');
 

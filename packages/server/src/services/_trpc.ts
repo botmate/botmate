@@ -4,6 +4,7 @@ import { Application } from '../application';
 import { BotsService } from './bots.service';
 import { PluginsService } from './plugins.service';
 import { RPCService } from './rpc.service';
+import { WorkflowService } from './workflow.service';
 
 const t = initTRPC.create();
 
@@ -14,6 +15,7 @@ export function initTrpc(app: Application) {
     ...new BotsService(app).getRoutes(),
     ...new PluginsService(app).getRoutes(),
     ...new RPCService(app).getRoutes(),
+    ...new WorkflowService(app).getRoutes(),
   });
 
   return appRouter;

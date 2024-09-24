@@ -15,6 +15,7 @@ import { Api } from './api';
 import PluginRoutes from './components/plugin-routes';
 import MainLayout from './layouts/main';
 import SettingsLayout from './layouts/settings';
+import WorkflowsPage from './pages/bots/workflow';
 import { AppProvider } from './providers/app';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
@@ -116,7 +117,7 @@ export class Application {
                             path="marketplace"
                             element={<MarketplacePage />}
                           />
-                          {/* <Route path="workflows" element={<WorkflowsPage />} /> */}
+                          <Route path="workflows" element={<WorkflowsPage />} />
                           <Route path="settings" element={<SettingsLayout />}>
                             <Route index element={<GeneralSettingsPage />} />
                             <Route

@@ -1,20 +1,34 @@
 import { WorkflowEvent } from '@botmate/platform';
 
-const _events = ['message', 'photo', 'document'] as const;
+const _events = [
+  'message',
+  'photo',
+  'document',
+  'new_user',
+  'command',
+] as const;
 
 export type Event = (typeof _events)[number];
 
 export const events: Record<Event, WorkflowEvent> = {
   message: {
     name: 'Message',
-    description: 'A message was sent to the bot',
+    description: 'A message is receieved by the bot',
   },
   photo: {
     name: 'Photo',
-    description: 'A photo was sent to the bot',
+    description: 'An image in receieved by the bot',
   },
   document: {
     name: 'Document',
-    description: 'A document was sent to the bot',
+    description: 'File is receieved by the bot',
+  },
+  new_user: {
+    name: 'New User',
+    description: 'When someone joins the chat',
+  },
+  command: {
+    name: 'Command',
+    description: 'When a command is sent to the bot',
   },
 };

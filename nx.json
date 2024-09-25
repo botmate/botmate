@@ -45,5 +45,12 @@
   ],
   "namedInputs": {
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/pr.yml"]
+  },
+  "release": {
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    }
   }
 }

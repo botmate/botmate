@@ -1,7 +1,7 @@
 {
   "name": "@botmate/plugin-random-number",
   "displayName": "Random Number",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A plugin that generates a random number.",
   "main": "lib/server/index.js",
   "scripts": {
@@ -14,10 +14,10 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/ui": "1.1.1",
-    "@botmate/client": "1.1.1",
-    "@botmate/platform-telegram": "1.1.1",
-    "@botmate/server": "1.1.1",
+    "@botmate/ui": "1.1.2",
+    "@botmate/client": "1.1.2",
+    "@botmate/platform-telegram": "1.1.2",
+    "@botmate/server": "1.1.2",
     "grammy": "^1.29.0"
   },
   "botmate": {

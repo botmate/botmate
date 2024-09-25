@@ -31,6 +31,15 @@ BotMate is a web platform for managing multiple bots across different platforms,
 
 🌟 Please consider giving this project a star if you find it useful. It helps us to keep improving the project and adding new features. 😊
 
+## Screenshots
+
+<p align="center">
+  <a href="https://botmate.dev">
+    <img src="https://github.com/user-attachments/assets/1fed248f-20a9-47c9-9d10-a997d90afa48"/>
+  </a>
+</p>
+
+
 ## Table of contents
 
 - [Table of contents](#table-of-contents)

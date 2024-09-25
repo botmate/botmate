@@ -7,7 +7,7 @@ interface LoggerOptions {
 }
 
 function createLogger(opts: LoggerOptions) {
-  const { name, isDev = true } = opts;
+  const { isDev = true } = opts;
 
   const transports: winston.transport[] = [];
 
@@ -27,11 +27,14 @@ function createLogger(opts: LoggerOptions) {
             format: 'MMM DD, YYYY HH:mm:ss:SSS',
           }),
           format.colorize({
-            message: true,
+            message: false,
             level: true,
           }),
           format.printf(
-            (info) => `${info['timestamp']} [${name}] ${info.message}`,
+            (info) =>
+              `${info.level}${addSpaces(
+                info.level,
+              )}${info.message.toLowerCase()}`,
           ),
           format.errors({ stack: true }),
         ),

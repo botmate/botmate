@@ -2,6 +2,7 @@
 import { createLogger, winston } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 import { getPackagesSync } from '@lerna/project';
+import colors from 'colors';
 import execa from 'execa';
 import { existsSync } from 'fs';
 import { nanoid } from 'nanoid';
@@ -56,6 +57,8 @@ export class PluginManager {
 
     const botsPlugins = await PluginModel.find();
 
+    this.logger.debug('Initializing plugins...');
+
     for (const botPlugin of botsPlugins) {
       const plugin = this._plugins.get(botPlugin.name);
 
@@ -82,7 +85,13 @@ export class PluginManager {
       }
     }
 
-    await this.app.botManager.startAll();
+    const totalBots = await this.app.botManager.startAll();
+
+    this.app.logger.debug(
+      `found:\n\t${colors.bold(localPlugins.length + '').yellow} plugins\n\t${
+        colors.bold(totalBots + '').yellow
+      } bots`,
+    );
   }
 
   async install(name: string, botId: string) {

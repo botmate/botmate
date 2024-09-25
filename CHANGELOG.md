@@ -1,3 +1,22 @@
+## 1.1.2 (2024-09-25)
+
+
+### 🚀 Features
+
+- add `createPluginRPC` function for RPC calls from frontend ([b04785e](https://github.com/botmate/botmate/commit/b04785e))
+- **log:** change log style ([86a23eb](https://github.com/botmate/botmate/commit/86a23eb))
+
+### 🩹 Fixes
+
+- update tailwind.config.js ([7fe0ac2](https://github.com/botmate/botmate/commit/7fe0ac2))
+- cloud link in readme ([3ee4b40](https://github.com/botmate/botmate/commit/3ee4b40))
+- remove unused dependency ([455d756](https://github.com/botmate/botmate/commit/455d756))
+
+### ❤️  Thank You
+
+- Monawwar Abdullah @mxvsh
+- mxvsh @mxvsh
+
 ## 1.1.1 (2024-09-22)
 
 

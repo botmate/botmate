@@ -144,6 +144,7 @@ export class Application {
 
     await setupVite(this);
 
+    await this.botManager.init();
     await this.pluginManager.init();
 
     process.on('SIGINT', () => this.stop());

@@ -24,7 +24,7 @@ export const events: Record<Event, WorkflowEvent> = {
     description: 'File is receieved by the bot',
   },
   new_user: {
-    name: 'New User',
+    name: 'New Member',
     description: 'When someone joins the chat',
   },
   command: {

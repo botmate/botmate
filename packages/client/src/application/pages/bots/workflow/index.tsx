@@ -1,9 +1,11 @@
 import { Edit, Share2, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { Button } from '@botmate/ui';
 
-import WorkflowArea from '../../../components/workflows/area';
+import WorkflowLayout from '../../../components/workflows/layout';
 import { SidebarLayout } from '../../../layouts/sidebar';
 
 function WorkflowsPage() {
@@ -20,10 +22,6 @@ function WorkflowsPage() {
     <SidebarLayout
       actions={
         <div className="flex">
-          {/* <Button variant="outline">
-          <PlusIcon size={18} />
-          New Workflow
-        </Button> */}
           <Button variant="ghost" tooltip="Delete">
             <Trash2 size={18} />
           </Button>
@@ -38,7 +36,9 @@ function WorkflowsPage() {
       items={items}
       title="Workflows"
     >
-      <WorkflowArea />
+      <DndProvider backend={HTML5Backend}>
+        <WorkflowLayout />
+      </DndProvider>
     </SidebarLayout>
   );
 }

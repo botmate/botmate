@@ -1,32 +1,12 @@
 import React from 'react';
 
-import { usePluginConfig } from '@botmate/client';
-
-import type { Config } from '../config.types';
-
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@botmate/ui';
-
 function SettingsPage() {
-  const config = usePluginConfig<Config>();
-
   return (
-    <div className="max-w-2xl">
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <%=name%> Settings
-          </CardTitle>
-          <CardDescription>
-            Get started by editing `src/client/settings.tsx`!
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    </div>
+    <>
+      <p className='text-muted-foreground'>
+        Get started by editing <code>packages/<%=folder%>/src/client/settings.tsx</code>!
+      </p>
+    </>
   );
 }
 

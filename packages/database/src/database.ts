@@ -16,8 +16,8 @@ export class Database {
     const sequelize = new Sequelize({
       dialect: 'sqlite',
       storage: dbPath,
-      logging(sql, timing) {
-        logger.debug(sql, { timing });
+      logging(sql) {
+        logger.debug(sql);
       },
     });
 

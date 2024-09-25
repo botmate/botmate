@@ -11,10 +11,10 @@
 The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible and customizable.
 </p>
 
-<p align="center"><a href="https://cloud.botmate.dev">Cloud (coming soon)</a> · <a href="https://demo.botmate.dev">Try live demo (soon)</a> · <a href="https://docs.botmate.dev">Docs</a></p>
+<p align="center"><a href="https://botmate.cloud">Cloud (coming soon)</a> · <a href="https://docs.botmate.dev">Documentation</a> · <a href="https://t.me/chatbotmate">Telegram Chat</a></p>
 
 <p align="center">
-<img src="https://skillicons.dev/icons?i=ts,tailwind,docker,github"/>
+<img src="https://skillicons.dev/icons?i=ts,nodejs,mongo,tailwind"/>
 </p>
 
 <br/>
@@ -25,17 +25,58 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
 </p>
 
 > [!IMPORTANT]  
-> This project is still in beta, expect breaking changes and bugs.
+> This project is still development, expect some changes and bugs.
 
-BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Here's what BotMate offers:
+BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Quickly get your bots up and running with minimal setup. All you need is a single command to run in the terminal and you're good to go.
 
-- 🤖 **Manage Multiple Bots**: Control bots from platforms like Telegram and Discord, all from one central dashboard.
-- ⚙️ **Customizable with Plugins**: Easily extend bot functionality by installing or removing plugins with a single click.
-- 🖥️ **Interactive Dashboard**: Add widgets and adjust settings to personalize your bot management experience.
-- 🚀 **Blazing Fast and Robust**: Built on top of Node.js and TypeScript, BotMate delivers reliable and solid performance.
-- 💎 **Simple for Everyone**: Designed for developers and regular users alike—no coding skills required to manage bots!
+🌟 Please consider giving this project a star if you find it useful. It helps us to keep improving the project and adding new features. 😊
+
+## Screenshots
+
+<p align="center">
+  <a href="https://botmate.dev">
+    <img src="https://github.com/user-attachments/assets/1fed248f-20a9-47c9-9d10-a997d90afa48"/>
+  </a>
+</p>
+
+
+## Table of contents
+
+- [Table of contents](#table-of-contents)
+- [Features](#features)
+  - [📦 Plugin system](#-plugin-system)
+  - [💎 Easy to use](#-easy-to-use)
+  - [🌎 Multi-platform](#-multi-platform)
+- [Installation](#installation)
+  - [Requirements](#requirements)
+  - [CLI](#cli)
+  - [Docker (coming soon)](#docker-coming-soon)
+- [Insights](#insights)
+
+## Features
+
+### 📦 Plugin system
+
+BotMate comes with a built-in plugin system that allows developers to extend the platform with custom features. Other users can install these plugins with a single command. To learn more about creating plugins, check out the [documentation](https://docs.botmate.dev).
+
+### 💎 Easy to use
+
+With minimal setup, you can get your bots up and running in no time. BotMate is designed to be user-friendly for both developers and non-technical users alike. You can easily manage your bots from a single dashboard, making it easy to keep track of all your bots in one place.
+
+### 🌎 Multi-platform
+
+Ever wanted to manage all your bots in one place? BotMate supports multiple platforms, including Discord, Slack, and Telegram. You can easily manage all your bots from a single dashboard.
 
 ## Installation
+
+Get started with BotMate in just a few steps. Run the following commands in your terminal to create a new BotMate project.
+
+### Requirements
+
+- Node.js (v20 or higher)
+- pnpm (v8 or higher)
+- Linux, macOS, Android, or Windows
+- MongoDB ([Get a free MongoDB](https://www.mongodb.com/cloud/atlas/register))
 
 ### CLI
 
@@ -50,6 +91,12 @@ After the project is created, navigate to the project directory and install the 
 ```bash
 cd botmate
 pnpm install
+```
+
+Create a `.env` file in the root directory and add the following environment variables:
+
+```env
+DATABASE_URL=mongodb://localhost:27017/botmate
 ```
 
 Finally, start the development server:

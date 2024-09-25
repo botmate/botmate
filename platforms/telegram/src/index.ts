@@ -1,8 +1,14 @@
 import { BotInfo, Platform } from '@botmate/platform';
+import { Application } from '@botmate/server';
 import axios from 'axios';
 import { writeFile } from 'fs/promises';
 import { Bot } from 'grammy';
 import { join } from 'path';
+
+import { TelegramChatModel } from './chats.model';
+import { TelegramRepository } from './repository';
+import { actions } from './workflow.actions';
+import { events } from './workflow.events';
 
 function getUploadPath() {
   let storagePath = process.env.STORAGE_PATH;
@@ -53,12 +59,53 @@ export class Telegram extends Platform<Bot> {
     };
   }
 
+  async init(app: Application) {
+    this.instance.use(async (ctx, next) => {
+      next();
+      if (
+        ctx.chat?.type === 'group' ||
+        ctx.chat?.type === 'supergroup' ||
+        ctx.chat?.type === 'channel'
+      ) {
+        const exist = await TelegramChatModel.exists({ id: ctx.chat.id });
+        if (!exist) {
+          const admins = await ctx.getChatAdministrators();
+          const totalMembers = await ctx.getChatMemberCount();
+          await TelegramChatModel.create({
+            id: ctx.chat.id,
+            title: ctx.chat.title,
+            totalMembers,
+            admins,
+            type: ctx.chat.type,
+          });
+        }
+      }
+    });
+
+    const chats = await TelegramChatModel.find();
+
+    app.hooks.registerHook('core/telegram/chats', () => {
+      return chats;
+    });
+  }
+
   async start() {
     this.instance.start();
   }
   async stop() {
     await this.instance.stop();
   }
+
+  static getWorflowEvents() {
+    return events;
+  }
+
+  static getWorflowActions() {
+    return actions;
+  }
 }
 
 export default Telegram;
+
+export { ITelegramChat } from './chats.model';
+export const repository = new TelegramRepository();

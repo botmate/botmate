@@ -92,7 +92,7 @@ async function run() {
     await writeFile(targetPath, content);
   }
 
-  creating.succeed('Project created');
+  creating.succeed('Project created!');
 
   const formatting = ora('Formatting...').start();
 

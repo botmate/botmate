@@ -3,7 +3,8 @@ import { Platform, PlatformType } from '@botmate/platform';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-import { IBot } from '../models/bot';
+import { Application } from '../application';
+import { IBot } from '../models/bots.model';
 import { Plugin } from '../plugin';
 
 export enum BotStatus {
@@ -28,16 +29,17 @@ export class Bot {
   constructor(
     private type: PlatformType,
     private credentials: Record<string, string>,
-    private _data: IBot,
+    private _data?: IBot,
   ) {}
 
   instance<T>() {
     return this._bot?.instance as T;
   }
 
-  async init() {
-    const platform = await this.importPlatform();
+  async init(app: Application) {
+    const platform = await Bot.importPlatform(this.type);
     const bot = new platform(this.credentials) as Platform;
+    await bot.init?.(app);
     this._bot = bot;
   }
 
@@ -45,15 +47,16 @@ export class Bot {
     return this._data;
   }
 
-  async importPlatform() {
+  static async importPlatform(type: PlatformType) {
     const platformsDir = join(process.cwd(), 'platforms');
     if (existsSync(platformsDir)) {
-      const platform = await import(
-        join(platformsDir, `${this.type}/src/index.ts`)
-      );
+      const platform = await import(join(platformsDir, `${type}/src/index.ts`));
       return platform.default?.default || platform.default;
     } else {
-      const _export = await import(pkgMap[this.type]);
+      const _export = await import(pkgMap[type]);
+      if (_export?.default) {
+        return _export.default?.default ?? _export.default;
+      }
       const [first] = Object.values(_export);
       return first;
     }
@@ -61,7 +64,7 @@ export class Bot {
 
   async getBotInfo() {
     try {
-      const platform = await this.importPlatform();
+      const platform = await Bot.importPlatform(this.type);
       const bot = new platform(this.credentials) as Platform;
       const info = await bot.getBotInfo();
       return info;
@@ -79,7 +82,7 @@ export class Bot {
       }
     } catch (error) {
       console.error(error);
-      this.logger.error(`Error stopping bot: ${this.data.id}`);
+      this.logger.error(`Error stopping bot: ${this.data?.id}`);
     }
   }
 
@@ -91,7 +94,7 @@ export class Bot {
       }
     } catch (error) {
       console.error(error);
-      this.logger.error(`Error stopping bot: ${this.data.id}`);
+      this.logger.error(`Error stopping bot: ${this.data?.id}`);
     }
   }
 
@@ -106,7 +109,7 @@ export class Bot {
       }
     } catch (error) {
       console.error(error);
-      this.logger.error(`Error restarting bot: ${this.data.id}`);
+      this.logger.error(`Error restarting bot: ${this.data?.id}`);
     }
   }
 }

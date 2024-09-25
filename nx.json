@@ -7,6 +7,11 @@
       "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/dist", "{projectRoot}/lib"],
       "cache": true
+    },
+    "lint": {
+      "options": {
+        "cache": true
+      }
     }
   },
   "pluginsConfig": {
@@ -40,5 +45,12 @@
   ],
   "namedInputs": {
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/pr.yml"]
+  },
+  "release": {
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    }
   }
 }

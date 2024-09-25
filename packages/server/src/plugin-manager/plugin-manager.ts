@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { ModelStatic } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
 import { PlatformType } from '@botmate/platform';
 import { getPackagesSync } from '@lerna/project';
+import colors from 'colors';
+import execa from 'execa';
 import { existsSync } from 'fs';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
 
 import { Application } from '../application';
 import { Bot } from '../bot';
-import { PluginModel, initPluginModel } from '../models/plugin';
+import { PluginModel } from '../models/plugins.model';
 
 export type PluginMeta = {
   name: string;
@@ -25,7 +26,6 @@ export type PluginMeta = {
 
 // todo: refactor
 export class PluginManager {
-  private model: ModelStatic<PluginModel>;
   private logger: winston.Logger = createLogger({ name: PluginManager.name });
 
   /**
@@ -35,7 +35,7 @@ export class PluginManager {
   private _plugins = new Map<string, PluginMeta>();
 
   constructor(private app: Application) {
-    this.model = initPluginModel(this.app.database.sequelize);
+    // PluginModel = initPluginModel(this.app.database.sequelize);
   }
 
   /**
@@ -55,7 +55,9 @@ export class PluginManager {
 
     this._plugins = plugins;
 
-    const botsPlugins = await this.model.findAll();
+    const botsPlugins = await PluginModel.find();
+
+    this.logger.debug('Initializing plugins...');
 
     for (const botPlugin of botsPlugins) {
       const plugin = this._plugins.get(botPlugin.name);
@@ -67,7 +69,7 @@ export class PluginManager {
 
       if (botPlugin.enabled) {
         try {
-          const botData = await this.app.botManager.get(botPlugin.botId);
+          const botData = await this.app.botManager.findById(botPlugin.botId);
           if (!botData) {
             this.logger.warn(
               `Bot ${botPlugin.botId} not found for plugin ${botPlugin.name}`,
@@ -83,7 +85,13 @@ export class PluginManager {
       }
     }
 
-    await this.app.botManager.startAll();
+    const totalBots = await this.app.botManager.startAll();
+
+    this.app.logger.debug(
+      `found:\n\t${colors.bold(localPlugins.length + '').yellow} plugins\n\t${
+        colors.bold(totalBots + '').yellow
+      } bots`,
+    );
   }
 
   async install(name: string, botId: string) {
@@ -92,17 +100,14 @@ export class PluginManager {
     if (!plugin) {
       throw new Error(`Plugin ${name} not found`);
     }
-
-    const exist = await this.model.findOne({
-      where: {
-        name,
-        botId,
-      },
+    const exist = await PluginModel.countDocuments({
+      name,
+      botId,
     });
-    if (exist) {
+    if (exist > 0) {
       throw new Error(`Plugin ${name} already installed`);
     }
-    return await this.model.create({
+    return await PluginModel.create({
       id: nanoid(),
       name,
       botId,
@@ -116,11 +121,9 @@ export class PluginManager {
   }
 
   async uninstall(name: string, botId: string) {
-    const exist = await this.model.findOne({
-      where: {
-        name,
-        botId,
-      },
+    const exist = await PluginModel.findOne({
+      name,
+      botId,
     });
     if (!exist) {
       throw new Error(`Plugin ${name} not found`);
@@ -136,7 +139,7 @@ export class PluginManager {
       }
     }
 
-    return await exist.destroy();
+    await exist.deleteOne();
   }
 
   /**
@@ -151,7 +154,7 @@ export class PluginManager {
       throw new Error(`Plugin ${pluginName} not found`);
     }
 
-    const botData = await this.app.botManager.get(botId);
+    const botData = await this.app.botManager.findById(botId);
     if (!botData) {
       throw new Error(`Bot ${botId} not found`);
     }
@@ -166,7 +169,7 @@ export class PluginManager {
           botData.credentials as Record<string, string>,
           botData,
         );
-        await bot.init();
+        await bot.init(this.app);
         this.app.botManager.bots.set(botData.id, bot);
       } catch (e) {
         console.error(e);
@@ -181,11 +184,9 @@ export class PluginManager {
       const [exportKey] = Object.keys(server);
       const _class = server[exportKey];
 
-      const pluginData = await this.model.findOne({
-        where: {
-          name: pluginName,
-          botId,
-        },
+      const pluginData = await PluginModel.findOne({
+        name: pluginName,
+        botId,
       });
       const _plugin = new _class(this.app, bot, pluginData);
 
@@ -215,8 +216,8 @@ export class PluginManager {
   }
 
   async loadAllBotPlugins(botId: string) {
-    const plugins = await this.model.findAll({
-      where: { botId },
+    const plugins = await PluginModel.find({
+      botId,
     });
     for (const plugin of plugins) {
       await this.loadBotPlugin(plugin.name, botId);
@@ -224,11 +225,9 @@ export class PluginManager {
   }
 
   async enable(name: string, botId: string) {
-    const plugin = await this.model.findOne({
-      where: {
-        name,
-        botId,
-      },
+    const plugin = await PluginModel.findOne({
+      name,
+      botId,
     });
     if (!plugin) {
       throw new Error(`Plugin ${name} not found`);
@@ -243,18 +242,15 @@ export class PluginManager {
   }
 
   async disable(name: string, botId: string) {
-    const plugin = await this.model.findOne({
-      where: {
-        name,
-        botId,
-      },
+    const plugin = await PluginModel.findOne({
+      name,
+      botId,
     });
     if (!plugin) {
       throw new Error(`Plugin ${name} not found`);
     }
 
-    const bot = await this.app.botManager.get(botId);
-
+    const bot = await this.app.botManager.findById(botId);
     if (!bot) {
       throw new Error(`Bot ${botId} not found`);
     }
@@ -293,8 +289,8 @@ export class PluginManager {
   }
 
   async getBotPligins(botId: string) {
-    return this.model.findAll({
-      where: { botId },
+    return PluginModel.find({
+      botId,
     });
   }
 
@@ -372,6 +368,11 @@ export class PluginManager {
           });
         }
       } catch (e) {
+        if (e instanceof Error) {
+          if (e.stack?.includes('ERR_PACKAGE_PATH_NOT_EXPORTED')) {
+            continue;
+          }
+        }
         console.error(e);
         this.logger.error(`Error loading plugin ${dep}`);
       }
@@ -398,6 +399,90 @@ export class PluginManager {
           this.logger.error(`Error loading plugin ${plugin.displayName}`);
         }
       }
+    }
+  }
+
+  async installFromNpm(pkgName: string, botId: string) {
+    try {
+      this.logger.debug(`Installing ${pkgName} in ${this.app.rootPath}`);
+
+      this.app.setMaintenanceMode(
+        'Installing plugin...',
+        'Please wait while the plugin is being installed',
+      );
+
+      if (this._plugins.has(pkgName)) {
+        this.app.sendClientMessage(
+          `Plugin ${pkgName} already installed`,
+          'error',
+        );
+        this.logger.warn(`Plugin ${pkgName} already installed`);
+        return;
+      }
+
+      const buffer = execa('pnpm', ['add', pkgName], {
+        cwd: this.app.rootPath,
+      });
+
+      if (buffer.stdout)
+        for await (const chunk of buffer.stdout) {
+          this.app.setMaintenanceMode('Installing plugin...', chunk.toString());
+        }
+
+      this.logger.debug(`Installed ${pkgName}`);
+
+      try {
+        this.app.setMaintenanceMode(
+          'Loading plugin...',
+          'Please wait while the plugin is being loaded',
+        );
+
+        this.logger.debug(`Loading ${pkgName}`);
+        const module = require(`${pkgName}/package.json`);
+        if (module.botmate) {
+          const serverPath = require.resolve(`${pkgName}/lib/server/index.js`);
+          const clientPath = require.resolve(`${pkgName}/lib/client/index.js`);
+
+          this.plugins.set(pkgName, {
+            name: pkgName,
+            displayName: module.displayName,
+            description: module.description,
+            serverPath,
+            clientPath,
+            author: module.author,
+            dependencies: module.dependencies,
+            version: module.version,
+            platformType: module.botmate.platformType,
+          });
+          this.logger.debug(`Loaded ${pkgName}`);
+          this.logger.info(`Installing plugin ${pkgName} for bot ${botId}`);
+          await this.install(pkgName, botId);
+          this.logger.info(`Plugin ${pkgName} installed for bot ${botId}`);
+          this.loadBotPlugin(pkgName, botId);
+
+          this.app.endMaintenanceMode();
+          this.app.sendClientMessage(
+            `Plugin ${pkgName} installed successfully`,
+          );
+        } else {
+          this.app.endMaintenanceMode();
+          this.logger.warn(`"${pkgName}" is not a botmate plugin`);
+          this.app.sendClientMessage(
+            `"${pkgName}" is not a botmate plugin`,
+            'error',
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        this.app.endMaintenanceMode();
+        this.logger.error(`Error loading plugin ${pkgName}`);
+        this.app.sendClientMessage(`Error loading plugin ${pkgName}`, 'error');
+      }
+    } catch (error) {
+      this.app.endMaintenanceMode();
+      console.error(error);
+      this.logger.error(`Error installing plugin ${pkgName}`);
+      this.app.sendClientMessage(`Error installing plugin ${pkgName}`, 'error');
     }
   }
 }

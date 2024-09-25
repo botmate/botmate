@@ -3,9 +3,8 @@ import {
   LayoutDashboard,
   LucideIcon,
   Settings2Icon,
-  ShoppingBagIcon,
+  ShoppingBagIcon, // WorkflowIcon,
 } from 'lucide-react';
-import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 import {
@@ -15,11 +14,11 @@ import {
   TooltipTrigger,
 } from '@botmate/ui';
 
-import { MainSidebarItem } from '../application';
-import { useApp } from '../hooks/use-app';
-import useCurrentBot from '../hooks/use-bot';
+import { MainSidebarItem as MainSidebarItemType } from '../application';
+import { useApp } from '../hooks/app';
+import useCurrentBot from '../hooks/bots';
 
-const items: MainSidebarItem[] = [
+const items: MainSidebarItemType[] = [
   {
     label: 'Dashboard',
     icon: LayoutDashboard,
@@ -38,6 +37,12 @@ const items: MainSidebarItem[] = [
     path: '/marketplace',
     regex: /^\/marketplace$/,
   },
+  // {
+  //   label: 'Workflows',
+  //   icon: WorkflowIcon,
+  //   path: '/workflows',
+  //   regex: /^\/workflows/,
+  // },
   {
     label: 'Settings',
     icon: Settings2Icon,
@@ -118,7 +123,7 @@ function Sidebar() {
             }
 
             const Icon = item.icon;
-            const relativePath = location.pathname.replace(/^\/bots\/\d+/, '');
+            const relativePath = location.pathname.replace(/^\/bots\/\w+/, '');
             const isActive = item.regex
               ? item.regex.test(relativePath || '/')
               : item.path === relativePath;

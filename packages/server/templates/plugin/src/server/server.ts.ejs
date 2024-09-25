@@ -1,15 +1,16 @@
 import { PlatformType, Plugin } from '@botmate/server';
 
-<% if (platform === 'Telegram') { -%>
+<% if (platform === 'telegram') { -%>
 import { Bot } from 'grammy';
 <% } -%>
 
 export class <%=className%> extends Plugin {
+  rpc = getRPC(this);
   displayName = '<%=name%>';
-  platformType = PlatformType.<%=platform%>;
+  platformType = PlatformType.<%=platformType%>;
 
   async load() {
-    <% if (platform === 'Telegram') { -%>
+    <% if (platform === 'telegram') { -%>
     const bot = this.bot.instance<Bot>();
     bot.command('start', async (ctx) => {
       await ctx.reply('Hello, world!');
@@ -17,3 +18,9 @@ export class <%=className%> extends Plugin {
     <% } -%>
   }
 }
+
+const getRPC = (plugin: <%=className%>) => ({
+  // Add your RPC methods here
+});
+
+export type RPC = ReturnType<typeof getRPC>;

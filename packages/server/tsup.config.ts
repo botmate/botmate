@@ -2,7 +2,7 @@ import fg from 'fast-glob';
 import path from 'path';
 import { defineConfig } from 'tsup';
 
-const entry = fg.globSync(['src/**/*.ts'], {
+const entry = fg.globSync(['src/**/*.ts', 'src/migrations/*.{js,ts}'], {
   cwd: __dirname,
   absolute: true,
 });

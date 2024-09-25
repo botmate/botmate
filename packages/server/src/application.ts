@@ -1,31 +1,43 @@
-import { Database } from '@botmate/database';
 import { createLogger, winston } from '@botmate/logger';
+import * as trpcExpress from '@trpc/server/adapters/express';
 import { Command } from 'commander';
+import execa from 'execa';
 import express from 'express';
+import { writeFile } from 'fs/promises';
+import { Server } from 'http';
+import ora from 'ora';
+import { join } from 'path';
 import socket, { Socket } from 'socket.io';
 
 import { BotManager } from './bot-manager';
 import { registerCLI } from './commands';
 import { ConfigManager } from './config';
-import { initBotsModel } from './models/bot';
-import { initPluginModel } from './models/plugin';
-import { PlatformManager } from './platform-manager';
+import { connectToDatabase } from './database';
+import { env } from './env';
+import { HookManager } from './hook-manager';
+import { PlatformManager, PlatformMeta } from './platform-manager';
 import { Plugin } from './plugin';
 import { PluginManager } from './plugin-manager';
-import { setupCoreRoutes } from './routes';
+import { initTrpc } from './services/_trpc';
 import { setupVite } from './vite';
+import { WorkflowManager } from './workflow-manager';
 
 export type ApplicationOptions = {
-  dbPath?: string;
   mode?: 'development' | 'production';
   port?: number;
+  dbString: string;
+};
+
+type Maintenance = {
+  title: string;
+  message: string;
 };
 
 export class Application {
+  http?: Server;
   server: express.Application = express();
   logger: winston.Logger = createLogger({ name: Application.name });
   plugins = new Map<string, Plugin>();
-  database: Database;
 
   mode: 'development' | 'production' = 'development';
   isDev = () => this.mode === 'development';
@@ -34,6 +46,10 @@ export class Application {
   rootPath = process.cwd();
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   version: string = require('../package.json').version;
+  platforms: PlatformMeta[] = [];
+  env = env;
+
+  maintenance: Maintenance | null = null;
 
   protected _pluginManager: PluginManager;
   protected _platformManager: PlatformManager;
@@ -41,6 +57,13 @@ export class Application {
   protected _configManager: ConfigManager;
   protected _cli: Command;
   protected _socket?: Socket;
+  // protected _migrations: Migrations;
+  protected _workflowManager: WorkflowManager;
+  protected _hookManager: HookManager;
+
+  get hooks() {
+    return this._hookManager;
+  }
 
   get pluginManager() {
     return this._pluginManager;
@@ -58,7 +81,11 @@ export class Application {
     return this._configManager;
   }
 
-  constructor(private options?: ApplicationOptions) {
+  get workflowManager() {
+    return this._workflowManager;
+  }
+
+  constructor(private options: ApplicationOptions) {
     if (process.env.NODE_ENV === 'development') {
       this.mode = 'development';
     }
@@ -66,33 +93,56 @@ export class Application {
     this.port = options?.port || this.port;
     this.mode = options?.mode || this.mode;
 
-    this.database = new Database({
-      dbPath: options?.dbPath,
-    });
-
     this._pluginManager = new PluginManager(this);
     this._platformManager = new PlatformManager(this);
     this._botManager = new BotManager(this);
     this._configManager = new ConfigManager(this);
+    this._workflowManager = new WorkflowManager(this);
+    this._hookManager = new HookManager();
 
     this._cli = this.createCLI();
 
     registerCLI(this);
   }
 
+  async getSchemas() {
+    const serverSchemas = join(__dirname, 'schemas');
+    const platformSchemas = this.platforms.map((platform) =>
+      join(platform.path, 'schemas'),
+    );
+    return [serverSchemas, ...platformSchemas];
+  }
+
   async init() {
     this.logger.info('Initializing application...');
+    this.platforms = await this.platformManager.listPlatforms();
 
-    initPluginModel(this.database.sequelize);
-    initBotsModel(this.database.sequelize);
+    this.logger.debug('Connecting to database...');
+
+    await connectToDatabase(this.options.dbString);
+
+    this.logger.debug('Database connected');
 
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
+    this.server.use(express.static(join(this.rootPath, 'storage')));
 
-    await setupCoreRoutes(this);
+    const router = initTrpc(this);
+
+    const createContext = ({
+      req,
+      res,
+    }: trpcExpress.CreateExpressContextOptions) => ({}); // no context
+
+    this.server.use(
+      '/api/trpc',
+      trpcExpress.createExpressMiddleware({
+        router,
+        createContext,
+      }),
+    );
+
     await setupVite(this);
-
-    await this.database.sequelize.sync();
 
     await this.botManager.init();
     await this.pluginManager.init();
@@ -112,13 +162,49 @@ export class Application {
     }
   }
 
+  setMaintenanceMode(title: string, message: string) {
+    if (this._socket) {
+      this.maintenance = {
+        title,
+        message,
+      };
+      this._socket.emit('maintenance_start', this.maintenance);
+    }
+  }
+
+  endMaintenanceMode() {
+    if (this._socket) {
+      this.maintenance = null;
+      this._socket.emit('maintenance_end');
+    }
+  }
+
+  sendClientMessage(message: string, type: 'info' | 'error' = 'info') {
+    if (this._socket) {
+      this._socket.emit('server_message', {
+        message,
+        type,
+      });
+    }
+  }
+
   async start() {
     const server = this.server.listen(this.port);
+    this.http = server;
 
     const io = new socket.Server(server);
 
     io.on('connection', (socket) => {
       this._socket = socket;
+
+      if (this.maintenance) {
+        socket.emit('maintenance_start', this.maintenance);
+      }
+
+      socket.on('install_plugin', async (data) => {
+        await this.pluginManager.installFromNpm(data.package_name, data.bot_id);
+        this.endMaintenanceMode();
+      });
     });
 
     this.logger.info(`Application started on port ${this.port}`);
@@ -127,6 +213,56 @@ export class Application {
   async stop() {
     this.logger.warn('Exiting application');
     process.exit(0);
+  }
+
+  async restart() {
+    this.pluginManager.create;
+
+    await this.stop();
+  }
+
+  async update() {
+    console.log();
+
+    const spinner = ora(`Checking for updates...`).start();
+    const latestVersion = await this.getLatestVersion();
+
+    if (latestVersion !== this.version) {
+      spinner.succeed(`Found new version ${latestVersion}`);
+
+      const updateSpinner = ora('Updating...').start();
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const pkgJson = require(join(this.rootPath, 'package.json'));
+
+      let pkgFound = false;
+      for (const [pkg, version] of Object.entries(pkgJson.dependencies || {})) {
+        if (pkg.startsWith('@botmate/')) {
+          if (version !== latestVersion) {
+            pkgFound = true;
+            pkgJson.dependencies[pkg] = latestVersion;
+          }
+        }
+      }
+
+      if (!pkgFound) {
+        updateSpinner.succeed('No updates found');
+        return;
+      }
+
+      await writeFile(
+        join(this.rootPath, 'package.json'),
+        JSON.stringify(pkgJson, null, 2),
+      );
+
+      updateSpinner.text = 'Installing dependencies...';
+
+      await execa('pnpm', ['install']);
+
+      updateSpinner.succeed('Dependencies installed');
+    } else {
+      spinner.succeed(`No update needed. Already on latest version.`);
+    }
   }
 
   protected createCLI() {
@@ -146,3 +282,7 @@ export class Application {
     return this._cli.addCommand;
   }
 }
+
+export type { AppRouter } from './services/_trpc';
+export type { IBot } from './models/bots.model';
+export type { IPlugin } from './models/plugins.model';

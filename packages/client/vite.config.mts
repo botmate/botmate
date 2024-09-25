@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [
     dts({
       insertTypesEntry: true,
-      entryRoot: 'src',
+      entryRoot: 'src/index.ts',
     }),
   ],
   build: {
@@ -17,7 +17,13 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@botmate/ui',
+        'lucide-react',
+      ],
     },
   },
 });

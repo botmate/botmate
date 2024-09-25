@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 
 import { toast, usePluginConfig } from '@botmate/client';
 import { Button, Input } from '@botmate/ui';
@@ -8,16 +8,11 @@ import { Config } from '../config.types';
 function SettingsPage() {
   const config = usePluginConfig<Config>();
 
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(100);
+  const minRef = useRef<HTMLInputElement>(null);
+  const maxRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const min = config.get('min', 0);
-    const max = config.get('max', 100);
-
-    setMin(min);
-    setMax(max);
-  }, [config]);
+  const minDefault = config.get('min', 0);
+  const maxDefault = config.get('max', 100);
 
   return (
     <div className="space-y-4">
@@ -28,14 +23,8 @@ function SettingsPage() {
             id="min"
             type="number"
             placeholder="0"
-            value={min}
-            onChange={(e) => {
-              if (e.target.value === '') {
-                setMin(0);
-                return;
-              }
-              setMin(parseFloat(e.target.value));
-            }}
+            defaultValue={minDefault}
+            ref={minRef}
           />
         </div>
         <div className="flex-1 space-y-1">
@@ -44,28 +33,27 @@ function SettingsPage() {
             id="max"
             type="number"
             placeholder="100"
-            value={max}
-            onChange={(e) => {
-              if (e.target.value === '') {
-                return;
-              }
-              setMax(parseFloat(e.target.value));
-            }}
+            defaultValue={maxDefault}
+            ref={maxRef}
           />
         </div>
       </div>
 
       <Button
         onClick={async () => {
+          const min = minRef.current?.value;
+          const max = maxRef.current?.value;
+
           if (min && max) {
-            await config.save('min', min);
-            await config.save('max', max);
+            await config.save('min', parseFloat(min));
+            await config.save('max', parseFloat(max));
 
             toast.success('Range saved');
           } else {
             toast.error('Please enter a valid number');
           }
         }}
+        isLoading={config.isSaving}
       >
         Save
       </Button>

@@ -7,6 +7,8 @@ import { BotModel } from '../models/bots.model';
 export class BotManager {
   private _bots: Map<string, Bot> = new Map();
 
+  totalBots = 0;
+
   constructor(private app: Application) {}
 
   /**
@@ -14,6 +16,7 @@ export class BotManager {
    */
   async init() {
     const allBots = await BotModel.find();
+    this.totalBots = allBots.length;
     for (const bot of allBots) {
       const botInstance = new Bot(
         bot.platformType as PlatformType,
@@ -37,11 +40,14 @@ export class BotManager {
   }
 
   async startAll() {
+    let c = 0;
     for (const bot of this._bots.values()) {
       // todo: check for enabled
       // if (bot.enabled)
       bot.start();
+      c++;
     }
+    return c;
   }
 
   async stop(id: string) {

@@ -245,7 +245,11 @@ export class Application {
   }
 
   async start() {
-    const localIp = ip.address();
+    let localIp = 'localhost';
+
+    try {
+      localIp = ip.address();
+    } catch {}
 
     this.http = this.server.listen(this.port);
 

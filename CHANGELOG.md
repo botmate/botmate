@@ -1,3 +1,22 @@
+## 1.1.3 (2024-09-26)
+
+
+### 🚀 Features
+
+- add dashboard authentication ([090ee68](https://github.com/botmate/botmate/commit/090ee68))
+- **cli:** add `users` command ([601a496](https://github.com/botmate/botmate/commit/601a496))
+
+### 🩹 Fixes
+
+- improvied logger ([bc280b4](https://github.com/botmate/botmate/commit/bc280b4))
+- server code fixes ([077d063](https://github.com/botmate/botmate/commit/077d063))
+- **ci:** change order and remove `--frozen-lockfile` flag ([974b598](https://github.com/botmate/botmate/commit/974b598))
+- **ci:** use npm to instlal pnpm ([202cd07](https://github.com/botmate/botmate/commit/202cd07))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.2 (2024-09-25)
 
 

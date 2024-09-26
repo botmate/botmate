@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { Application } from '../application';
 import { Bot } from '../bot';
 import { BotModel, SafeBot } from '../models/bots.model';
-import { publicProcedure } from './_trpc';
+import { authedProcedure, publicProcedure } from './_trpc';
 
 export class BotsService {
   constructor(private app: Application) {}
@@ -53,7 +53,7 @@ export class BotsService {
 
   getRoutes() {
     return {
-      listBots: publicProcedure.query(() => {
+      listBots: authedProcedure.query(() => {
         return this.listBots();
       }),
       getBot: publicProcedure.input(z.string()).query(({ input }) => {
@@ -69,9 +69,7 @@ export class BotsService {
         .mutation(({ input }) => {
           return this.createBot(input.platform, input.credentials);
         }),
-      deleteBot: publicProcedure.input(z.string()).mutation((input) => {
-        console.log('input', input);
-      }),
+      deleteBot: publicProcedure.input(z.string()).mutation((input) => {}),
       getPlatformList: publicProcedure.query(() => {
         return this.getPlatformList();
       }),

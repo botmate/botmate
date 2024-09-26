@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
 import { Application } from '../application';

@@ -7,7 +7,7 @@ import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import type { IBot, IPlugin } from '@botmate/server';
 import loadable from '@loadable/component';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider, useTheme } from 'next-themes';
 import { Toaster } from 'sonner';
 
 import { Plugin } from '../plugin';
@@ -16,6 +16,7 @@ import PluginRoutes from './components/plugin-routes';
 import MainLayout from './layouts/main';
 import SettingsLayout from './layouts/settings';
 import { AppProvider } from './providers/app';
+import AuthProvider from './providers/auth';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { SocketProvider } from './providers/socket';
@@ -48,6 +49,12 @@ export type MainSidebarItem = {
   path: string;
   icon: LucideIcon;
   regex?: RegExp;
+};
+
+const ToastProvider = () => {
+  const theme = useTheme();
+  // todo: toast theme
+  return <Toaster theme={theme.theme === 'dark' ? 'dark' : 'light'} />;
 };
 
 export class Application {
@@ -93,42 +100,47 @@ export class Application {
   getRootComponent() {
     // todo: setup dynamic routes
     return () => (
-      <TRPCProvider>
-        <SocketProvider>
-          <Toaster />
-          <ThemeProvider attribute="class">
+      <ThemeProvider attribute="class">
+        <TRPCProvider>
+          <SocketProvider>
+            <ToastProvider />
             <BrowserRouter>
               <ReduxProvider store={store}>
                 <Routes>
                   <Route element={<AppProvider app={this} />}>
-                    <Route index path="/" element={<HomePage />} />
                     <Route path="/setup" element={<SetupPage />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route
-                      element={<BotProvider app={this} />}
-                      path="/bots/:botId"
-                    >
-                      <Route element={<PluginsProvider />}>
-                        <Route element={<MainLayout />}>
-                          <Route index element={<DashboardPage />} />
-                          <Route path="analytics" element={<AnalyticsPage />} />
-                          <Route
-                            path="marketplace"
-                            element={<MarketplacePage />}
-                          />
-                          {/* <Route path="workflows" element={<WorkflowsPage />} /> */}
-                          <Route path="settings" element={<SettingsLayout />}>
-                            <Route index element={<GeneralSettingsPage />} />
+                    <Route path="/" element={<AuthProvider />}>
+                      <Route index element={<HomePage />} />
+                      <Route
+                        element={<BotProvider app={this} />}
+                        path="/bots/:botId"
+                      >
+                        <Route element={<PluginsProvider />}>
+                          <Route element={<MainLayout />}>
+                            <Route index element={<DashboardPage />} />
                             <Route
-                              path="advanced"
-                              element={<AppearanceSettingsPage />}
+                              path="analytics"
+                              element={<AnalyticsPage />}
                             />
                             <Route
-                              path="plugins/:name"
-                              element={<PluginSettingsPage />}
+                              path="marketplace"
+                              element={<MarketplacePage />}
                             />
+                            {/* <Route path="workflows" element={<WorkflowsPage />} /> */}
+                            <Route path="settings" element={<SettingsLayout />}>
+                              <Route index element={<GeneralSettingsPage />} />
+                              <Route
+                                path="advanced"
+                                element={<AppearanceSettingsPage />}
+                              />
+                              <Route
+                                path="plugins/:name"
+                                element={<PluginSettingsPage />}
+                              />
+                            </Route>
+                            <Route path="*" element={<PluginRoutes />} />
                           </Route>
-                          <Route path="*" element={<PluginRoutes />} />
                         </Route>
                       </Route>
                     </Route>
@@ -136,9 +148,9 @@ export class Application {
                 </Routes>
               </ReduxProvider>
             </BrowserRouter>
-          </ThemeProvider>
-        </SocketProvider>
-      </TRPCProvider>
+          </SocketProvider>
+        </TRPCProvider>
+      </ThemeProvider>
     );
   }
 

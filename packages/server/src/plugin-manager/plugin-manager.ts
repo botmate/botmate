@@ -88,9 +88,9 @@ export class PluginManager {
     const totalBots = await this.app.botManager.startAll();
 
     this.app.logger.debug(
-      `found:\n\t${colors.bold(localPlugins.length + '').yellow} plugins\n\t${
-        colors.bold(totalBots + '').yellow
-      } bots`,
+      `loaded: ${colors.bold(localPlugins.length + '')} plugin(s), ${colors.bold(
+        totalBots + '',
+      )} bot(s)`,
     );
   }
 

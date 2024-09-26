@@ -31,7 +31,9 @@ BotMate is a web platform for managing multiple bots across different platforms,
 
 🌟 Please consider giving this project a star if you find it useful. It helps us to keep improving the project and adding new features. 😊
 
-If you have any queries related to BotMate please join our [Discord server](https://discord.gg/afyqDQYAbp) or [Telegram chat](https://t.me/chatbotmate).
+For any feature request or project roadmap, [click here](https://botmate.canny.io/) 📋✨.
+
+If you have any queries related to BotMate please join our [Discord server](https://discord.gg/afyqDQYAbp) or [Telegram chat](https://t.me/chatbotmate) 💬.
 
 ## Screenshots
 

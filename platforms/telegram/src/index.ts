@@ -81,12 +81,6 @@ export class Telegram extends Platform<Bot> {
         }
       }
     });
-
-    const chats = await TelegramChatModel.find();
-
-    app.hooks.registerHook('core/telegram/chats', () => {
-      return chats;
-    });
   }
 
   async start() {

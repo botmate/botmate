@@ -27,15 +27,10 @@ function createLogger(opts: LoggerOptions) {
             format: 'MMM DD, YYYY HH:mm:ss:SSS',
           }),
           format.colorize({
-            message: false,
-            level: true,
+            message: true,
+            // level: true,
           }),
-          format.printf(
-            (info) =>
-              `${info.level}${addSpaces(
-                info.level,
-              )}${info.message.toLowerCase()}`,
-          ),
+          format.printf((info) => `‣ ${info.message.toLowerCase()}`),
           format.errors({ stack: true }),
         ),
       }),

@@ -1,3 +1,14 @@
+## 1.1.4 (2024-09-26)
+
+
+### 🩹 Fixes
+
+- add try-catch when reading ip address ([95e4c61](https://github.com/botmate/botmate/commit/95e4c61))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.3 (2024-09-26)
 
 

@@ -1,5 +1,4 @@
 import { BotInfo, Platform } from '@botmate/platform';
-import { Application } from '@botmate/server';
 import axios from 'axios';
 import { writeFile } from 'fs/promises';
 import { Bot } from 'grammy';
@@ -59,7 +58,7 @@ export class Telegram extends Platform<Bot> {
     };
   }
 
-  async init(app: Application) {
+  async init() {
     this.instance.use(async (ctx, next) => {
       next();
       if (

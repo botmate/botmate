@@ -31,8 +31,8 @@ export class AuthService {
     return null;
   }
 
-  deleteUserSessions(userId: string) {
-    return this._sessionModel.deleteMany({ userId });
+  async deleteUserSessions(userId: string) {
+    await this._sessionModel.deleteMany({ userId });
   }
 
   validateToken(token: string) {

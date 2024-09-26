@@ -37,10 +37,7 @@ export class Bot {
   }
 
   async init(app: Application) {
-    const platform = await Bot.importPlatform(this.type);
-    const bot = new platform(this.credentials) as Platform;
-    await bot.init?.(app);
-    this._bot = bot;
+    //
   }
 
   get data() {

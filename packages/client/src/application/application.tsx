@@ -129,7 +129,10 @@ export class Application {
                               path="marketplace"
                               element={<MarketplacePage />}
                             />
-                            {/* <Route path="workflows" element={<WorkflowsPage />} /> */}
+                            <Route
+                              path="workflows"
+                              element={<WorkflowsPage />}
+                            />
                             <Route path="settings" element={<SettingsLayout />}>
                               <Route index element={<GeneralSettingsPage />} />
                               <Route

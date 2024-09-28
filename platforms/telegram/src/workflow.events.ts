@@ -8,27 +8,32 @@ const _events = [
   'command',
 ] as const;
 
-export type Event = (typeof _events)[number];
+export type Event = typeof _events[number];
 
-export const events: Record<Event, WorkflowEvent> = {
-  message: {
-    name: 'Message',
+export const events: WorkflowEvent<Event>[] = [
+  {
+    id: 'message',
+    label: 'Message',
     description: 'A message is receieved by the bot',
   },
-  photo: {
-    name: 'Photo',
+  {
+    id: 'photo',
+    label: 'Photo',
     description: 'An image in receieved by the bot',
   },
-  document: {
-    name: 'Document',
+  {
+    id: 'document',
+    label: 'Document',
     description: 'File is receieved by the bot',
   },
-  new_user: {
-    name: 'New Member',
+  {
+    id: 'new_user',
+    label: 'New Member',
     description: 'When someone joins the chat',
   },
-  command: {
-    name: 'Command',
+  {
+    id: 'command',
+    label: 'Command',
     description: 'When a command is sent to the bot',
   },
-};
+];

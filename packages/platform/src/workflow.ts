@@ -13,15 +13,16 @@ type WorkflowSelectInput = WorkflowInputBase & {
 
 type WorkflowInput = WorkflowInputBase | WorkflowSelectInput;
 
-export type WorkflowAction = {
-  id: string;
+export type WorkflowAction<ID = string> = {
+  id: ID;
   label: string;
   description: string;
   applyTo?: string[];
   parameters: WorkflowInput[];
 };
 
-export type WorkflowEvent = {
+export type WorkflowEvent<ID = string> = {
+  id: ID;
   label: string;
   description: string;
   applyTo?: string[];

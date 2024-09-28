@@ -86,5 +86,9 @@
     "**/*.{html,json,css,scss,md,mdx}": [
       "prettier -w"
     ]
+  },
+  "dependencies": {
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1"
   }
 }

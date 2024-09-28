@@ -43,6 +43,7 @@ type ActionCardProps = {
 function ActionCard({ action }: ActionCardProps) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'ACTION',
+    item: { action },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -50,8 +51,8 @@ function ActionCard({ action }: ActionCardProps) {
 
   return (
     <div
-      className="p-4 bg-muted/50 rounded-xl"
       ref={drag}
+      className="p-4 bg-muted/50 rounded-xl"
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <h3 className="font-medium text-sm">{action.label}</h3>

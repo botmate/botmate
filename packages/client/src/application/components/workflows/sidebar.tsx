@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { WorkflowAction, WorkflowEvent } from '@botmate/platform';
 
 import WorkflowActions from './actionts';
-import WorkflowEventEditor from './events';
 
 const tabs = ['Actions', 'Help'] as const;
 
@@ -12,7 +11,7 @@ type Props = {
   action?: WorkflowAction | null;
 };
 function WorkflowSidebar({ event, action }: Props) {
-  const [tab, setTab] = useState<(typeof tabs)[number]>(tabs[0]);
+  const [tab, setTab] = useState<typeof tabs[number]>(tabs[0]);
 
   return (
     <div>

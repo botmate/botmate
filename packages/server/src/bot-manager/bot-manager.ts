@@ -24,8 +24,6 @@ export class BotManager {
         bot,
       );
       this._bots.set(bot.id, botInstance);
-
-      await botInstance.init(this.app);
     }
   }
 

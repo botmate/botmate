@@ -27,6 +27,7 @@
     "@trpc/client": "10.45.2",
     "@trpc/react-query": "10.45.2",
     "@xyflow/react": "^12.3.0",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.3.31",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.436.0",

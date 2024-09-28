@@ -4,6 +4,8 @@ import { Bot } from 'grammy';
 import { Config } from '../config.types';
 
 export class RandomNumberGenerator extends Plugin {
+  rpc: unknown;
+
   displayName = 'Random Number Generator';
   platformType = PlatformType.Telegram;
 

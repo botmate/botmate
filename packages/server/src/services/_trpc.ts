@@ -2,6 +2,7 @@ import { initTRPC } from '@trpc/server';
 
 import { Application } from '../application';
 import { IUser } from '../models/users.model';
+import { PlatformAnalyticsService } from './analytics.service';
 
 type Context = {
   token?: string;
@@ -25,6 +26,7 @@ export function initTrpc(app: Application) {
     ...app.rpcService.getRoutes(),
     ...app.authService.getRoutes(),
     ...app.usersService.getRoutes(),
+    ...new PlatformAnalyticsService(app).getRoutes(),
   });
 
   return appRouter;

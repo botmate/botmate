@@ -7,6 +7,7 @@ import express from 'express';
 import { writeFile } from 'fs/promises';
 import { Server } from 'http';
 import ip from 'ip';
+import mongoose from 'mongoose';
 import ora from 'ora';
 import { join } from 'path';
 import socket, { Socket } from 'socket.io';
@@ -155,7 +156,7 @@ export class Application {
   async connectToDatabase() {
     const mongoose = await connectToDatabase(this.options.dbString);
     return async () => {
-      await mongoose.disconnect();
+      // await mongoose.disconnect();
     };
   }
 

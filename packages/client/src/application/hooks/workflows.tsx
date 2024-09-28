@@ -5,7 +5,7 @@ import useCurrentBot from './bots';
 
 export function useBotWorkflows() {
   const bot = useCurrentBot();
-  const { data: workflows, isLoading } = trpc.listWorkflows.useQuery(bot.id);
+  const { data: workflows, isLoading } = trpc.listWorkflows.useQuery(bot._id);
   return {
     data: workflows ?? [],
     isLoading,

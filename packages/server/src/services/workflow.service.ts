@@ -23,6 +23,7 @@ export class WorkflowService {
       createWorkflow: publicProcedure
         .input(
           z.object({
+            _id: z.string().optional(),
             event: z.string(),
             name: z.string(),
             botId: z.string(),
@@ -41,6 +42,34 @@ export class WorkflowService {
         .query(async ({ input }) => {
           const workflows = await this.listWorkflows(input);
           return workflows;
+        }),
+
+      updateWorkflow: publicProcedure
+        .input(
+          z.object({
+            _id: z.string(),
+            event: z.string(),
+            name: z.string(),
+            botId: z.string(),
+            steps: z.array(z.string()),
+            values: z.array(z.record(z.any())),
+            enabled: z.boolean(),
+          }),
+        )
+        .mutation(async ({ input }) => {
+          const workflow = await WorkflowModel.findByIdAndUpdate(
+            input._id,
+            input,
+            { new: true },
+          );
+          return workflow;
+        }),
+
+      deleteWorkflow: publicProcedure
+        .input(z.string())
+        .mutation(async ({ input }) => {
+          await WorkflowModel.findByIdAndDelete(input);
+          return null;
         }),
 
       getWorkflowEvents: publicProcedure

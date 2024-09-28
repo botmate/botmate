@@ -1,9 +1,9 @@
 import { Edit, SaveIcon, Share2, Trash2 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useForm } from 'react-hook-form';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { WorkflowEvent } from '@botmate/platform';
 import {
@@ -29,95 +29,165 @@ function WorkflowsPage() {
   const form = useForm();
   const bot = useCurrentBot();
   const workflows = useBotWorkflows();
-  const [searchParam] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const createWorkflow = trpc.createWorkflow.useMutation();
+  const updateWorkflow = trpc.updateWorkflow.useMutation();
+  const deleteWorkflow = trpc.deleteWorkflow.useMutation();
+
   const [selectedEvent, setSelectedEvent] = useState<WorkflowEvent | null>(
     null,
   );
   const events = useWorkflowEvents();
-  const wfId = searchParam.get('id');
+  const wfId = searchParams.get('id');
+  const [isEditing, setIsEditing] = useState(false);
 
+  // Memoized list of workflow items
   const items = useMemo(() => {
-    const _items = [
-      <h1 className={`text-gray-600 dark:text-neutral-500 text-sm uppercase`}>
+    return [
+      <h1
+        key="title"
+        className="text-gray-600 dark:text-neutral-500 text-sm uppercase"
+      >
         Your Workflows
       </h1>,
-
-      ...(workflows.data.map((workflow) => (
+      ...(workflows.data?.map((workflow) => (
         <Link
           key={workflow._id}
           to={`/bots/${bot._id}/workflows?id=${workflow._id}`}
         >
           <SidebarItem
             title={workflow.name}
-            description={`Last run 4 days ago`}
+            description="Last run 4 days ago"
             active={wfId === workflow._id}
           />
         </Link>
       )) || []),
     ];
+  }, [workflows.data, bot._id, wfId]);
 
-    return _items;
-  }, [workflows, bot.id, wfId]);
-
+  // Reset form and event selection based on the workflow ID
   useEffect(() => {
     if (wfId) {
-      const workflow = workflows.data.find((wf) => wf._id === wfId);
+      const workflow = workflows.data?.find((wf) => wf._id === wfId);
       if (workflow) {
-        form.setValue('name', workflow.name);
-        form.setValue('event', workflow.event);
-        form.setValue('steps', workflow.steps);
-        form.setValue('values', workflow.values);
-
+        form.reset({
+          name: workflow.name,
+          event: workflow.event,
+          steps: workflow.steps,
+          values: workflow.values,
+        });
         const event = events.find((event) => event.id === workflow.event);
         setSelectedEvent(event || null);
       }
+    } else {
+      form.reset();
+      setSelectedEvent(null);
     }
-  }, [workflows, wfId]);
+    setIsEditing(false);
+  }, [wfId, workflows.data, events, form]);
 
-  function handleSubmit(data: Record<string, any>) {
-    createWorkflow
-      .mutateAsync({
-        name: `${Math.random().toString(36).substring(7).toUpperCase()}`,
-        botId: bot.id,
+  // Handle submit for creating or updating workflows
+  const handleSubmit = useCallback(
+    async (data: Record<string, any>) => {
+      if (!selectedEvent) return;
+
+      const mutation = wfId ? updateWorkflow : createWorkflow;
+      const mutationData = {
+        _id: wfId || undefined,
+        name: data.name,
+        botId: bot._id,
         steps: data.steps,
         values: data.values,
         enabled: true,
-        event: data.event,
-      })
-      .then(() => {
-        toast.success('Workflow created');
-      });
-  }
+        event: selectedEvent?.id,
+      };
+
+      try {
+        // @ts-expect-error
+        await mutation.mutateAsync(mutationData);
+        toast.success(`Workflow ${wfId ? 'updated' : 'created'}`);
+        setIsEditing(false);
+      } catch (error) {
+        toast.error(`Failed to ${wfId ? 'update' : 'create'} workflow`);
+      }
+    },
+    [bot._id, wfId, selectedEvent, updateWorkflow, createWorkflow, navigate],
+  );
+
+  // Handle workflow deletion
+  const handleDelete = useCallback(async () => {
+    if (wfId) {
+      try {
+        await deleteWorkflow.mutateAsync(wfId);
+        toast.success('Workflow deleted');
+        navigate(`/bots/${bot._id}/workflows`);
+      } catch (error) {
+        toast.error('Failed to delete workflow');
+      }
+    }
+  }, [deleteWorkflow, wfId, bot._id, navigate]);
 
   return (
-    <form onSubmit={form.handleSubmit(handleSubmit)} className="flex-1">
+    <div className="flex-1">
       <SidebarLayout
         actions={
           <div className="flex">
-            <Button variant="ghost" tooltip="Save" type="submit">
-              <SaveIcon size={18} />
-            </Button>
-            <Button variant="ghost" tooltip="Delete">
-              <Trash2 size={18} />
-            </Button>
-            <Button variant="ghost" tooltip="Edit">
-              <Edit size={18} />
-            </Button>
-            <Button variant="ghost" tooltip="Share">
-              <Share2 size={18} />
-            </Button>
+            {isEditing ? (
+              <>
+                <Button
+                  variant="ghost"
+                  tooltip="Save"
+                  onClick={form.handleSubmit(handleSubmit)}
+                >
+                  <SaveIcon size={18} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  tooltip="Cancel"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  tooltip="Edit"
+                  onClick={() => setIsEditing(true)}
+                  type="button"
+                >
+                  <Edit size={18} />
+                </Button>
+                <Button variant="ghost" tooltip="Delete" onClick={handleDelete}>
+                  <Trash2 size={18} />
+                </Button>
+                <Button variant="ghost" tooltip="Share">
+                  <Share2 size={18} />
+                </Button>
+              </>
+            )}
           </div>
         }
         items={items}
-        title={'Workflows'}
+        title="Workflows"
       >
         <DndProvider backend={HTML5Backend}>
           <div className="flex h-full">
             <div className="flex-1 flex flex-col overflow-auto">
               <div className="flex items-center justify-between px-4 border-b">
                 <h1 className="h-16 font-medium flex items-center">
-                  My workflow
+                  {isEditing ? (
+                    <input
+                      {...form.register('name')}
+                      className="border-none bg-transparent font-medium"
+                      placeholder="Workflow name"
+                    />
+                  ) : (
+                    form.watch('name') || 'My workflow'
+                  )}
                 </h1>
                 <div className="h-16 flex items-center">
                   <Select
@@ -127,6 +197,7 @@ function WorkflowsPage() {
                       setSelectedEvent(event || null);
                       form.setValue('event', id);
                     }}
+                    disabled={!isEditing}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select an event" />
@@ -154,7 +225,7 @@ function WorkflowsPage() {
           </div>
         </DndProvider>
       </SidebarLayout>
-    </form>
+    </div>
   );
 }
 

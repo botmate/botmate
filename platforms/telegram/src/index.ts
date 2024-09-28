@@ -118,9 +118,7 @@ export class Telegram extends Platform<Bot> {
       title: 'Total Messages',
       startTime: from,
       endTime: to,
-      value: analyticsData
-        .filter((d) => d.type === 'message')
-        .length.toString(),
+      value: analyticsData.filter((d) => d.type === 'text').length.toString(),
       description: 'Total messages sent to your bot',
     });
 

@@ -1,7 +1,7 @@
 {
   "name": "@botmate/plugin-telegram-moderation",
   "displayName": "Telegram Moderation",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Moderation plugin for Telegram",
   "main": "lib/server/index.js",
   "scripts": {
@@ -14,10 +14,10 @@
     "lib"
   ],
   "dependencies": {
-    "@botmate/ui": "1.1.2",
-    "@botmate/server": "1.1.2",
-    "@botmate/client": "1.1.2",
-    "@botmate/platform-telegram": "1.1.2",
+    "@botmate/ui": "1.1.4",
+    "@botmate/server": "1.1.4",
+    "@botmate/client": "1.1.4",
+    "@botmate/platform-telegram": "1.1.4",
     "grammy": "^1.29.0"
   },
   "botmate": {

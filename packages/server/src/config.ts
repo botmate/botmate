@@ -11,8 +11,6 @@ export class ConfigManager {
   }
 
   async savePluginConfig<T = unknown>(pluginId: string, key: string, value: T) {
-    this.logger.debug(`Saving config key: ${key}`);
-
     const plugin = await PluginModel.findById(pluginId);
 
     if (!plugin) {
@@ -47,9 +45,7 @@ export class ConfigManager {
     }
 
     if (!plugin.config?.[key]) {
-      this.logger.warn(`Config key not found: ${key}`);
       if (def !== undefined) {
-        this.logger.warn(`Returning default value: ${def}`);
         return def;
       }
     }

@@ -1,5 +1,4 @@
-import React from 'react';
-
+ 
 import {
   Card,
   CardContent,
@@ -16,6 +15,9 @@ import {
   SelectValue,
 } from '@botmate/ui';
 import { Bar, BarChart, XAxis } from 'recharts';
+import { trpc } from '../../trpc';
+import { useMemo } from 'react';
+import dayjs from 'dayjs';
 
 const chartData = [
   { week: 'Friday', count: 189 },
@@ -35,24 +37,37 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function AnalyticsPage() {
+  const analytics = trpc.getAnalytics.useQuery({
+    platform: 'telegram'
+  });
+  
+  const cards = useMemo(() => {
+    return analytics?.data?.filter((d) => d.type === 'card');
+  }, [analytics.data])
+
   return (
     <PageLayout title="Analytics">
       <div className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>98.4k</CardTitle>
-              <CardDescription className="text-sm">Total Users</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>876</CardTitle>
-              <CardDescription className="text-sm">
-                Total Groups
-              </CardDescription>
-            </CardHeader>
-          </Card>
+          {
+            cards?.map((card) => (
+              <Card key={card.title}>
+                <CardHeader>
+                  <CardTitle className="text-md">{card.title}</CardTitle>
+                  <CardDescription className="text-sm">
+                   {card.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl">{card.value}</div>
+                  <div className="text-sm text-muted-foreground/70 mt-2">
+                    {dayjs(card.startTime).format('MMM D, YYYY')} - {' '}
+                    {dayjs(card.endTime).format('MMM D, YYYY')}
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          }
         </div>
 
         <Card>

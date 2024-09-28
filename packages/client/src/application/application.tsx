@@ -7,7 +7,7 @@ import { BrowserRouter, Route, RouteObject, Routes } from 'react-router-dom';
 
 import type { IBot, IPlugin } from '@botmate/server';
 import loadable from '@loadable/component';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider, useTheme } from 'next-themes';
 import { Toaster } from 'sonner';
 
 import { Plugin } from '../plugin';
@@ -17,6 +17,7 @@ import MainLayout from './layouts/main';
 import SettingsLayout from './layouts/settings';
 import WorkflowsPage from './pages/bots/workflow';
 import { AppProvider } from './providers/app';
+import AuthProvider from './providers/auth';
 import BotProvider from './providers/bot';
 import PluginsProvider from './providers/plugins';
 import { SocketProvider } from './providers/socket';
@@ -42,6 +43,7 @@ const SetupPage = loadable(() => import('./pages/setup'));
 type ClientParams = {
   version: string;
   latestVersion: string;
+  mode: 'development' | 'production';
 };
 
 export type MainSidebarItem = {
@@ -49,6 +51,12 @@ export type MainSidebarItem = {
   path: string;
   icon: LucideIcon;
   regex?: RegExp;
+};
+
+const ToastProvider = () => {
+  const theme = useTheme();
+  // todo: toast theme
+  return <Toaster theme={theme.theme === 'dark' ? 'dark' : 'light'} />;
 };
 
 export class Application {
@@ -94,42 +102,47 @@ export class Application {
   getRootComponent() {
     // todo: setup dynamic routes
     return () => (
-      <TRPCProvider>
-        <SocketProvider>
-          <Toaster />
-          <ThemeProvider attribute="class">
+      <ThemeProvider attribute="class">
+        <TRPCProvider>
+          <SocketProvider>
+            <ToastProvider />
             <BrowserRouter>
               <ReduxProvider store={store}>
                 <Routes>
                   <Route element={<AppProvider app={this} />}>
-                    <Route index path="/" element={<HomePage />} />
                     <Route path="/setup" element={<SetupPage />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route
-                      element={<BotProvider app={this} />}
-                      path="/bots/:botId"
-                    >
-                      <Route element={<PluginsProvider />}>
-                        <Route element={<MainLayout />}>
-                          <Route index element={<DashboardPage />} />
-                          <Route path="analytics" element={<AnalyticsPage />} />
-                          <Route
-                            path="marketplace"
-                            element={<MarketplacePage />}
-                          />
-                          <Route path="workflows" element={<WorkflowsPage />} />
-                          <Route path="settings" element={<SettingsLayout />}>
-                            <Route index element={<GeneralSettingsPage />} />
+                    <Route path="/" element={<AuthProvider />}>
+                      <Route index element={<HomePage />} />
+                      <Route
+                        element={<BotProvider app={this} />}
+                        path="/bots/:botId"
+                      >
+                        <Route element={<PluginsProvider />}>
+                          <Route element={<MainLayout />}>
+                            <Route index element={<DashboardPage />} />
                             <Route
-                              path="advanced"
-                              element={<AppearanceSettingsPage />}
+                              path="analytics"
+                              element={<AnalyticsPage />}
                             />
                             <Route
-                              path="plugins/:name"
-                              element={<PluginSettingsPage />}
+                              path="marketplace"
+                              element={<MarketplacePage />}
                             />
+                            {/* <Route path="workflows" element={<WorkflowsPage />} /> */}
+                            <Route path="settings" element={<SettingsLayout />}>
+                              <Route index element={<GeneralSettingsPage />} />
+                              <Route
+                                path="advanced"
+                                element={<AppearanceSettingsPage />}
+                              />
+                              <Route
+                                path="plugins/:name"
+                                element={<PluginSettingsPage />}
+                              />
+                            </Route>
+                            <Route path="*" element={<PluginRoutes />} />
                           </Route>
-                          <Route path="*" element={<PluginRoutes />} />
                         </Route>
                       </Route>
                     </Route>
@@ -137,9 +150,9 @@ export class Application {
                 </Routes>
               </ReduxProvider>
             </BrowserRouter>
-          </ThemeProvider>
-        </SocketProvider>
-      </TRPCProvider>
+          </SocketProvider>
+        </TRPCProvider>
+      </ThemeProvider>
     );
   }
 
@@ -151,20 +164,20 @@ export class Application {
 
       root.render(<App />);
 
-      Sentry.init({
-        dsn: 'https://5177382ad836b2ffc883c3938f310dfe@o4507889496096768.ingest.us.sentry.io/4507889504550912',
-        integrations: [
-          Sentry.browserTracingIntegration(),
-          Sentry.replayIntegration(),
-        ],
-        // Tracing
-        tracesSampleRate: 1.0, //  Capture 100% of the transactions
-        // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-        tracePropagationTargets: ['localhost'],
-        // Session Replay
-        replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-        replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-      });
+      this.options.mode === 'production'
+        ? Sentry.init({
+            dsn: 'https://5177382ad836b2ffc883c3938f310dfe@o4507889496096768.ingest.us.sentry.io/4507889504550912',
+            integrations: [
+              Sentry.browserTracingIntegration(),
+              Sentry.replayIntegration(),
+            ],
+            // Tracing
+            tracesSampleRate: 1.0,
+            // Session Replay
+            replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+            replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+          })
+        : null;
 
       return root;
     }

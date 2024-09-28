@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { Application } from '../application';
-import { IBot } from '../models/bots.model';
+import { BotModel, IBot } from '../models/bots.model';
 import { Plugin } from '../plugin';
 
 export enum BotStatus {
@@ -38,9 +38,8 @@ export class Bot {
 
   async init(app: Application) {
     const platform = await Bot.importPlatform(this.type);
-    const bot = new platform(this.credentials) as Platform;
-    await bot.init?.(app);
-    this._bot = bot;
+    this._bot = new platform(this.credentials) as Platform;
+    await this._bot.init();
   }
 
   get data() {
@@ -58,7 +57,7 @@ export class Bot {
         return _export.default?.default ?? _export.default;
       }
       const [first] = Object.values(_export);
-      return first;
+      return first as Platform;
     }
   }
 

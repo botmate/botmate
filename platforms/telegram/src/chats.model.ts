@@ -1,5 +1,5 @@
+import { Schema, model } from '@botmate/server';
 import { ChatMemberAdministrator } from 'grammy/types';
-import { Schema, model } from 'mongoose';
 
 export type ITelegramChat = {
   id: string;

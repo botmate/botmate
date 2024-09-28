@@ -1,21 +1,32 @@
 import { initTRPC } from '@trpc/server';
 
 import { Application } from '../application';
-import { BotsService } from './bots.service';
-import { PluginsService } from './plugins.service';
-import { RPCService } from './rpc.service';
-import { WorkflowService } from './workflow.service';
+import { IUser } from '../models/users.model';
+import { PlatformAnalyticsService } from './analytics.service';
 
-const t = initTRPC.create();
+type Context = {
+  token?: string;
+  user: IUser | null;
+};
+
+const t = initTRPC.context<Context>().create();
 
 export const publicProcedure = t.procedure;
+export const authedProcedure = t.procedure.use(async (opts) => {
+  if (!opts.ctx.user) {
+    throw new Error('Unauthorized');
+  }
+  return opts.next(opts);
+});
 
 export function initTrpc(app: Application) {
   const appRouter = t.router({
-    ...new BotsService(app).getRoutes(),
-    ...new PluginsService(app).getRoutes(),
-    ...new RPCService(app).getRoutes(),
-    ...new WorkflowService(app).getRoutes(),
+    ...app.botsService.getRoutes(),
+    ...app.pluginsService.getRoutes(),
+    ...app.rpcService.getRoutes(),
+    ...app.authService.getRoutes(),
+    ...app.usersService.getRoutes(),
+    ...new PlatformAnalyticsService(app).getRoutes(),
   });
 
   return appRouter;

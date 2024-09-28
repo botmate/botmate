@@ -24,12 +24,13 @@ The ultimate platform for bot management, 100% JavaScript/TypeScript, flexible a
   <img src="https://img.shields.io/npm/v/%40botmate%2Fserver" alt="wakatime"/>
 </p>
 
-> [!IMPORTANT]  
-> This project is still development, expect some changes and bugs.
-
 BotMate is a web platform for managing multiple bots across different platforms, designed to be user-friendly for both developers and non-technical users. Quickly get your bots up and running with minimal setup. All you need is a single command to run in the terminal and you're good to go.
 
 🌟 Please consider giving this project a star if you find it useful. It helps us to keep improving the project and adding new features. 😊
+
+For any feature request or project roadmap, [click here](https://botmate.canny.io/) 📋✨.
+
+If you have any queries related to BotMate please join our [Discord server](https://discord.gg/afyqDQYAbp) or [Telegram chat](https://t.me/chatbotmate) 💬.
 
 ## Screenshots
 

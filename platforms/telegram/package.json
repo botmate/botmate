@@ -1,7 +1,7 @@
 {
   "name": "@botmate/platform-telegram",
   "displayName": "Telegram",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Telegram platform support for BotMate",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,11 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@botmate/logger": "1.1.2",
-    "@botmate/platform": "1.1.2",
+    "@botmate/logger": "1.1.4",
+    "@botmate/platform": "1.1.4",
     "axios": "^1.7.7",
-    "grammy": "^1.29.0",
-    "mongoose": "^8.6.3"
+    "dayjs": "^1.11.13",
+    "grammy": "^1.29.0"
   },
   "credentials": {
     "token": {

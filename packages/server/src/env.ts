@@ -6,4 +6,7 @@ export const env = cleanEnv(process.env, {
     desc: 'The URL of MongoDB database',
   }),
   PORT: num({ default: 8233 }),
+  SECRET: str({
+    desc: 'The secret key for JWT',
+  }),
 });

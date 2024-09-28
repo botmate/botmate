@@ -1,9 +1,13 @@
-import { BotInfo, Platform } from '@botmate/platform';
+import { BotInfo, Platform, PlatformAnalytics } from '@botmate/platform';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { writeFile } from 'fs/promises';
 import { Bot } from 'grammy';
+import mongoose from 'mongoose';
 import { join } from 'path';
 
+import { setupAnalytics } from './analytics';
+import { TelegramAnalyticsModel } from './analytics.model';
 import { TelegramChatModel } from './chats.model';
 import { TelegramRepository } from './repository';
 import { actions } from './workflow.actions';
@@ -59,6 +63,8 @@ export class Telegram extends Platform<Bot> {
   }
 
   async init() {
+    await setupAnalytics(this.instance);
+
     this.instance.use(async (ctx, next) => {
       next();
       if (
@@ -83,7 +89,9 @@ export class Telegram extends Platform<Bot> {
   }
 
   async start() {
-    this.instance.start();
+    this.instance.start({
+      drop_pending_updates: true,
+    });
   }
   async stop() {
     await this.instance.stop();
@@ -95,6 +103,28 @@ export class Telegram extends Platform<Bot> {
 
   static getWorflowActions() {
     return actions;
+  }
+
+  static async getAnalytics(
+    from = dayjs().subtract(1, 'week').toDate(),
+    to = new Date(),
+  ): Promise<PlatformAnalytics[]> {
+    const data: PlatformAnalytics[] = [];
+
+    const analyticsData = await TelegramAnalyticsModel.find();
+
+    data.push({
+      type: 'card',
+      title: 'Total Messages',
+      startTime: from,
+      endTime: to,
+      value: analyticsData
+        .filter((d) => d.type === 'message')
+        .length.toString(),
+      description: 'Total messages sent to your bot',
+    });
+
+    return data;
   }
 }
 

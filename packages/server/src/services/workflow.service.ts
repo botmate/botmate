@@ -1,5 +1,3 @@
-import { WorkflowEvent } from '@botmate/platform';
-import { WorkflowAction } from '@botmate/platform';
 import { z } from 'zod';
 
 import { Application } from '../application';
@@ -14,7 +12,7 @@ export class WorkflowService {
   }
 
   async listWorkflows(botId: string) {
-    const data = await WorkflowModel.find({ botId });
+    const data = await WorkflowModel.find({ botId }).sort({ createdAt: -1 });
     return data.map((d) => d.toJSON());
   }
 
@@ -34,7 +32,14 @@ export class WorkflowService {
         )
         .mutation(async ({ input }) => {
           const workflow = await this.createWorkflow(input);
-          return workflow;
+          const bot = this.app.botManager.bots.get(input.botId);
+          bot?.workflows?.set(workflow._id, {
+            botId: input.botId,
+            event: input.event,
+            steps: input.steps,
+            values: input.values,
+          });
+          return workflow.toJSON();
         }),
 
       listWorkflows: publicProcedure
@@ -62,13 +67,23 @@ export class WorkflowService {
             input,
             { new: true },
           );
-          return workflow;
+          const bot = this.app.botManager.bots.get(input.botId);
+          bot?.workflows?.set(input._id, {
+            botId: input.botId,
+            event: input.event,
+            steps: input.steps,
+            values: input.values,
+          });
+          return workflow?.toObject();
         }),
 
       deleteWorkflow: publicProcedure
         .input(z.string())
         .mutation(async ({ input }) => {
-          await WorkflowModel.findByIdAndDelete(input);
+          const wf = await WorkflowModel.findByIdAndDelete(input);
+          if (!wf) return null;
+          const bot = this.app.botManager.bots.get(wf.botId);
+          bot?.workflows?.delete(input);
           return null;
         }),
 

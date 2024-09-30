@@ -40,7 +40,6 @@ If you have any queries related to BotMate please join our [Discord server](http
   </a>
 </p>
 
-
 ## Table of contents
 
 - [Table of contents](#table-of-contents)
@@ -67,6 +66,10 @@ With minimal setup, you can get your bots up and running in no time. BotMate is 
 ### 🌎 Multi-platform
 
 Ever wanted to manage all your bots in one place? BotMate supports multiple platforms, including Discord, Slack, and Telegram. You can easily manage all your bots from a single dashboard.
+
+### ⚙️ Workflows
+
+BotMate comes with a built-in workflow system that allows you to automate tasks. You can create custom workflows that trigger based on certain events, such as a new message or a new user joining a channel. To learn more about creating workflows, check out the [documentation](https://docs.botmate.dev).
 
 ## Installation
 

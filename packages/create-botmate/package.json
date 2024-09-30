@@ -1,6 +1,6 @@
 {
   "name": "create-botmate",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "Create a new BotMate project",
   "bin": "./lib/index.js",
   "scripts": {

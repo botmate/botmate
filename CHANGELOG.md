@@ -1,3 +1,22 @@
+## 1.2.0 (2024-09-30)
+
+
+### 🚀 Features
+
+- add platform analytics support ([335c645](https://github.com/botmate/botmate/commit/335c645))
+- add workflow ([b489cbd](https://github.com/botmate/botmate/commit/b489cbd))
+- **telegram:** add actions and workflows ([a228e2a](https://github.com/botmate/botmate/commit/a228e2a))
+
+### 🩹 Fixes
+
+- analytics type ([f48652c](https://github.com/botmate/botmate/commit/f48652c))
+- workflow "flow" ([f0a8c5b](https://github.com/botmate/botmate/commit/f0a8c5b))
+- **bot:** use mongoose Id for bot id ([c75c03c](https://github.com/botmate/botmate/commit/c75c03c))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.4 (2024-09-26)
 
 

@@ -47,6 +47,7 @@ If you have any queries related to BotMate please join our [Discord server](http
   - [📦 Plugin system](#-plugin-system)
   - [💎 Easy to use](#-easy-to-use)
   - [🌎 Multi-platform](#-multi-platform)
+  - [⚙️ Workflows](#️-workflows)
 - [Installation](#installation)
   - [Requirements](#requirements)
   - [CLI](#cli)

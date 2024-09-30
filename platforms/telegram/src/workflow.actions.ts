@@ -2,7 +2,7 @@ import { WorkflowAction } from '@botmate/platform';
 
 const _actions = ['send_message', 'send_photo'] as const;
 
-type Action = typeof _actions[number];
+export type Action = typeof _actions[number];
 
 export const actions: WorkflowAction<Action>[] = [
   {

@@ -3,15 +3,14 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { writeFile } from 'fs/promises';
 import { Bot } from 'grammy';
-import mongoose from 'mongoose';
 import { join } from 'path';
 
 import { setupAnalytics } from './analytics';
 import { TelegramAnalyticsModel } from './analytics.model';
 import { TelegramChatModel } from './chats.model';
 import { TelegramRepository } from './repository';
-import { actions } from './workflow.actions';
-import { events } from './workflow.events';
+import { Action, actions } from './workflow.actions';
+import { Event, events } from './workflow.events';
 
 function getUploadPath() {
   let storagePath = process.env.STORAGE_PATH;
@@ -27,6 +26,15 @@ function getUploadPath() {
 export class Telegram extends Platform<Bot> {
   name = 'Telegram';
   instance: Bot;
+  workflows: Map<
+    string,
+    {
+      botId: string;
+      event: string;
+      steps: string[];
+      values: Array<Record<string, string>>;
+    }
+  > = new Map();
 
   constructor(private _credentials: Record<string, string>) {
     super();
@@ -67,6 +75,8 @@ export class Telegram extends Platform<Bot> {
 
     this.instance.use(async (ctx, next) => {
       next();
+
+      // analytics
       if (
         ctx.chat?.type === 'group' ||
         ctx.chat?.type === 'supergroup' ||
@@ -83,6 +93,38 @@ export class Telegram extends Platform<Bot> {
             admins,
             type: ctx.chat.type,
           });
+        }
+      }
+
+      if (!ctx.message) return;
+
+      // todo: make values strictly typed
+      async function runAction(action: Action, values: Record<string, string>) {
+        switch (action) {
+          case 'send_message': {
+            await ctx.reply(values.text, {
+              reply_parameters: {
+                message_id: ctx.message!.message_id,
+              },
+            });
+          }
+        }
+      }
+
+      // workflows
+      for (const [, value] of this.workflows) {
+        const event = value.event as Event;
+        switch (event) {
+          case 'message': {
+            if (ctx.message.text) {
+              const steps = value.steps as Action[];
+              let c = 0;
+              for (const step of steps) {
+                await runAction(step, value.values[c]);
+                c++;
+              }
+            }
+          }
         }
       }
     });

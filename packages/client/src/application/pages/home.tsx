@@ -104,7 +104,7 @@ function HomePage() {
                     {bot.name}
                   </h2>
                   <p className="text-sm text-muted-foreground line-clamp-1">
-                    {bot.id}
+                    {bot._id}
                   </p>
                 </div>
               </motion.div>

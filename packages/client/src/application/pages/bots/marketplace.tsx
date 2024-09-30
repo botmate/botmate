@@ -248,7 +248,7 @@ function MarketplacePage() {
                         onClick={() => {
                           socket.emit('install_plugin', {
                             package_name: plugin.package_name,
-                            bot_id: bot.id,
+                            bot_id: bot._id,
                           });
                         }}
                         disabled={isInstalled}

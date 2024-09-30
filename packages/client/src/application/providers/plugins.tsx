@@ -11,7 +11,7 @@ function PluginsProvider() {
   const bot = useCurrentBot();
   const [isLoading, setLoading] = useState('Loading...');
   const { data: plugins } = trpc.getLocalPlugins.useQuery(bot.platformType);
-  const { data: botPlugins } = trpc.getBotPlugins.useQuery(bot.id);
+  const { data: botPlugins } = trpc.getBotPlugins.useQuery(bot._id);
 
   useEffect(() => {
     app.sidebar.length = 0;
@@ -58,7 +58,7 @@ function PluginsProvider() {
   // const app = useApp();
   // const bot = useCurrentBot();
 
-  // const { data: botPlugins } = useGetBotPluginsQuery(bot.id);
+  // const { data: botPlugins } = useGetBotPluginsQuery(bot._id);
 
   // useEffect(() => {
   //   app.sidebar.length = 0;

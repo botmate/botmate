@@ -8,6 +8,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { WorkflowEvent } from '@botmate/platform';
 import {
   Button,
+  Input,
   Select,
   SelectContent,
   SelectGroup,
@@ -25,12 +26,16 @@ import { useBotWorkflows, useWorkflowEvents } from '../../../hooks/workflows';
 import { SidebarItem, SidebarLayout } from '../../../layouts/sidebar';
 import { trpc } from '../../../trpc';
 
+// TODO: REFACTOR COMPLETE WORKFLOW PAGE :)
+
 function WorkflowsPage() {
   const form = useForm();
   const bot = useCurrentBot();
   const workflows = useBotWorkflows();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const utils = trpc.useUtils();
 
   const createWorkflow = trpc.createWorkflow.useMutation();
   const updateWorkflow = trpc.updateWorkflow.useMutation();
@@ -93,24 +98,48 @@ function WorkflowsPage() {
     async (data: Record<string, any>) => {
       if (!selectedEvent) return;
 
-      const mutation = wfId ? updateWorkflow : createWorkflow;
-      const mutationData = {
-        _id: wfId || undefined,
-        name: data.name,
-        botId: bot._id,
-        steps: data.steps,
-        values: data.values,
-        enabled: true,
-        event: selectedEvent?.id,
-      };
+      if (wfId) {
+        // Update existing workflow
+        const mutationData = {
+          _id: wfId,
+          name: data.name,
+          botId: bot._id,
+          steps: data.steps,
+          values: data.values,
+          enabled: true,
+          event: selectedEvent?.id,
+        };
 
-      try {
-        // @ts-expect-error
-        await mutation.mutateAsync(mutationData);
-        toast.success(`Workflow ${wfId ? 'updated' : 'created'}`);
-        setIsEditing(false);
-      } catch (error) {
-        toast.error(`Failed to ${wfId ? 'update' : 'create'} workflow`);
+        utils.listWorkflows.invalidate(bot._id);
+
+        try {
+          await updateWorkflow.mutateAsync(mutationData);
+          toast.success('Workflow updated');
+          setIsEditing(false);
+        } catch (error) {
+          toast.error('Failed to update workflow');
+        }
+      } else {
+        // Create new workflow
+        const mutationData = {
+          name: data.name,
+          botId: bot._id,
+          steps: data.steps,
+          values: data.values,
+          enabled: true,
+          event: selectedEvent?.id,
+        };
+
+        await utils.listWorkflows.invalidate(bot._id);
+
+        try {
+          const response = await createWorkflow.mutateAsync(mutationData);
+          toast.success('Workflow created');
+          navigate(`/bots/${bot._id}/workflows?id=${response._id}`);
+          setIsEditing(false);
+        } catch (error) {
+          toast.error('Failed to create workflow');
+        }
       }
     },
     [bot._id, wfId, selectedEvent, updateWorkflow, createWorkflow, navigate],
@@ -118,6 +147,7 @@ function WorkflowsPage() {
 
   // Handle workflow deletion
   const handleDelete = useCallback(async () => {
+    await utils.listWorkflows.invalidate(bot._id);
     if (wfId) {
       try {
         await deleteWorkflow.mutateAsync(wfId);
@@ -151,8 +181,19 @@ function WorkflowsPage() {
                   Cancel
                 </Button>
               </>
-            ) : (
+            ) : wfId ? (
               <>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    form.reset();
+                    navigate(`/bots/${bot._id}/workflows`);
+                    setIsEditing(true);
+                  }}
+                >
+                  Create Workflow
+                </Button>
+                <div className="w-4"></div>
                 <Button
                   variant="ghost"
                   tooltip="Edit"
@@ -168,6 +209,12 @@ function WorkflowsPage() {
                   <Share2 size={18} />
                 </Button>
               </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => setIsEditing(true)}>
+                  Create Workflow
+                </Button>
+              </>
             )}
           </div>
         }
@@ -180,9 +227,8 @@ function WorkflowsPage() {
               <div className="flex items-center justify-between px-4 border-b">
                 <h1 className="h-16 font-medium flex items-center">
                   {isEditing ? (
-                    <input
+                    <Input
                       {...form.register('name')}
-                      className="border-none bg-transparent font-medium"
                       placeholder="Workflow name"
                     />
                   ) : (
@@ -216,7 +262,7 @@ function WorkflowsPage() {
                 </div>
               </div>
               <div className="flex-1">
-                <WorkflowArea form={form} />
+                <WorkflowArea form={form} editMode={isEditing} />
               </div>
             </div>
             <div className="w-[26rem] border-l overflow-auto">

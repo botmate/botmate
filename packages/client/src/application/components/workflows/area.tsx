@@ -6,20 +6,50 @@ import { UseFormReturn } from 'react-hook-form';
 import { WorkflowAction } from '@botmate/platform';
 import { Input, Label, Textarea } from '@botmate/ui';
 
+import { useOutsideClick } from '../../hooks/utils';
+import { useWorkflowActions } from '../../hooks/workflows';
+
 type Props = {
   form: UseFormReturn;
+  editMode?: boolean;
 };
-function WorkflowArea({ form }: Props) {
+function WorkflowArea({ form, editMode }: Props) {
   const [actions, setActions] = useState<WorkflowAction[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    const steps = form.getValues('steps');
-    const values = form.getValues('values');
+  const ref = useOutsideClick(() => {
+    setEditingIndex(null);
+  });
 
-    console.log(steps);
-    console.log(values);
-  }, []);
+  useEffect(() => {
+    if (!editMode) {
+      setEditingIndex(null);
+    }
+  }, [editMode]);
+
+  const actionList = useWorkflowActions();
+
+  const steps = form.getValues('steps');
+  const values = form.getValues('values');
+
+  useEffect(() => {
+    if (steps?.length > 0) {
+      const _actions = steps.map((step: string, index: number) => {
+        const action = actionList.find((a) => a.id === step);
+        if (!action) return null;
+        return action;
+      });
+      setActions(_actions.filter((a) => a !== null) as WorkflowAction[]);
+
+      values?.forEach((value: Record<string, any>, index: number) => {
+        Object.entries(value).forEach(([key, val]) => {
+          form.setValue(`values.${index}.${key}`, val);
+        });
+      });
+    } else {
+      setActions([]);
+    }
+  }, [steps, values]);
 
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: 'ACTION',
@@ -41,7 +71,7 @@ function WorkflowArea({ form }: Props) {
         <input value={id} {...form.register(`steps.${index}`)} type="hidden" />
       ))}
       {actions.length > 0 && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2" ref={ref}>
           {actions.map((action, index) => {
             const inputs = action.parameters.map((parameter) => {
               return (
@@ -52,12 +82,14 @@ function WorkflowArea({ form }: Props) {
                       placeholder={parameter.description}
                       rows={6}
                       {...form.register(`values.${index}.${parameter.id}`)}
+                      disabled={!editMode}
                     />
                   ) : (
                     <Input
                       type="text"
                       placeholder={parameter.description}
                       {...form.register(`values.${index}.${parameter.id}`)}
+                      disabled={!editMode}
                     />
                   )}
                 </div>
@@ -67,7 +99,9 @@ function WorkflowArea({ form }: Props) {
               <div key={`${action.id}-${index}`}>
                 <div
                   key={`${action.id}-${index}`}
-                  className={`p-4 bg-muted/50 border-2 rounded-xl relative group cursor-pointer ${
+                  className={`p-4 bg-muted/50 border-2 rounded-xl relative group ${
+                    editMode ? 'cursor-pointer' : ''
+                  } ${
                     editingIndex === index
                       ? 'border-orange-400'
                       : 'border-transparent'

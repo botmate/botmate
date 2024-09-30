@@ -13,15 +13,20 @@ export type IBot = {
 
 export type SafeBot = IBot & { _id: string };
 
-export const botSchema = new Schema<IBot>({
-  name: { type: String, required: true },
-  id: { type: String, required: true, unique: true },
-  platformType: { type: String, required: true },
-  raw: { type: Object, required: true },
-  credentials: { type: Object, required: true },
-  config: { type: Object, default: {} },
-  avatar: { type: String },
-  enabled: { type: Boolean, default: true },
-});
+export const botSchema = new Schema<IBot>(
+  {
+    name: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
+    platformType: { type: String, required: true },
+    raw: { type: Object, required: true },
+    credentials: { type: Object, required: true },
+    config: { type: Object, default: {} },
+    avatar: { type: String },
+    enabled: { type: Boolean, default: true },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 export const BotModel = model<IBot>('bots', botSchema);

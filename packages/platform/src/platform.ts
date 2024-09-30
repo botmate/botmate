@@ -1,5 +1,7 @@
 import type mongoose from 'mongoose';
 
+import type { IWorkflow } from '../../server/src/models/workflows.model';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type BotInfo = {
   id: string;
@@ -43,8 +45,18 @@ export abstract class Platform<TInstance = unknown> {
   abstract name: string;
   abstract instance: TInstance;
 
+  abstract init(): Promise<void>;
   abstract getBotInfo(): Promise<BotInfo>;
   abstract start(): Promise<void>;
   abstract stop(): Promise<void>;
-  abstract init(db: typeof mongoose): void;
+
+  abstract workflows: Map<
+    string,
+    {
+      botId: string;
+      event: string;
+      steps: string[];
+      values: Array<Record<string, string>>;
+    }
+  >;
 }

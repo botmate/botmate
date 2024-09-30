@@ -23,14 +23,13 @@ export class BotManager {
         bot.credentials as Record<string, string>,
         bot,
       );
-      this._bots.set(bot.id, botInstance);
+      await botInstance.init();
+      this._bots.set(bot._id.toString(), botInstance);
     }
   }
 
   async findById(id: string) {
-    return BotModel.findOne({
-      id,
-    });
+    return BotModel.findById(id);
   }
 
   get bots() {

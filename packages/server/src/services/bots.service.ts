@@ -38,6 +38,13 @@ export class BotsService {
     //
   }
 
+  /**
+   * Retrieves a bot by its Model ID.
+   *
+   * @param botId - The mongoDB unique identifier of the bot to retrieve.
+   * @returns A promise that resolves to the bot if found, cast to a `SafeBot` type.
+   * @throws An error if the bot is not found.
+   */
   async getBot(botId: string) {
     const bot = await BotModel.findById(botId);
     if (bot) {

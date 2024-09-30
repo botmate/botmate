@@ -156,7 +156,7 @@ export class Application {
   async connectToDatabase() {
     const mongoose = await connectToDatabase(this.options.dbString);
     return async () => {
-      // await mongoose.disconnect();
+      await mongoose.disconnect();
     };
   }
 
@@ -196,6 +196,7 @@ export class Application {
 
     await this.botManager.init();
     await this.pluginManager.init();
+    await this.workflowManager.init();
 
     const totalUsers = await this._users.countUsers();
 

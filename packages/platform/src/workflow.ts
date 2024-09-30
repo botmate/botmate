@@ -1,21 +1,29 @@
-type BaseActionParameters = {
-  title: string;
+type WorkflowInputBase = {
+  id: string;
+  label: string;
+  type: 'string' | 'number' | 'boolean' | 'select';
   description: string;
-  type: 'string' | 'number' | 'boolean' | 'object' | 'array';
-  required?: boolean;
+  multiline?: boolean;
 };
 
-export type WorkflowAction = {
-  name: string;
+type WorkflowSelectInput = WorkflowInputBase & {
+  type: 'select';
+  options: string[];
+};
+
+type WorkflowInput = WorkflowInputBase | WorkflowSelectInput;
+
+export type WorkflowAction<ID = string> = {
+  id: ID;
+  label: string;
   description: string;
   applyTo?: string[];
-  parameters: {
-    [key: string]: BaseActionParameters & Record<string, unknown>;
-  };
+  parameters: WorkflowInput[];
 };
 
-export type WorkflowEvent = {
-  name: string;
+export type WorkflowEvent<ID = string> = {
+  id: ID;
+  label: string;
   description: string;
   applyTo?: string[];
 };

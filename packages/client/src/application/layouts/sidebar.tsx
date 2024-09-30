@@ -23,11 +23,9 @@ export function SidebarLayout({
         {actions}
       </div>
       <div className="flex flex-1 overflow-auto">
-        <div className="flex flex-col w-72  space-y-6 bg-card border-r h-full">
-          <div className="flex flex-col gap-1 overflow-auto p-4">
-            {items.map((item, index) => (
-              <div key={index}>{item}</div>
-            ))}
+        <div className="flex flex-col w-72 space-y-6 bg-card border-r h-full">
+          <div className="flex flex-col gap-1 overflow-auto p-4 h-full">
+            {items}
           </div>
           {footer ? (
             <>

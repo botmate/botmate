@@ -25,7 +25,7 @@ export function usePlugins() {
  */
 export function useBotPlugins() {
   const bot = useCurrentBot();
-  const { data: plugins } = trpc.getBotPlugins.useQuery(bot.id);
+  const { data: plugins } = trpc.getBotPlugins.useQuery(bot._id);
   return plugins || [];
 }
 
@@ -49,7 +49,7 @@ export function usePluginRPC<T extends Record<string, (params?: any) => any>>(
   const bot = useCurrentBot();
   const plugin = useCurrentPlugin();
   const { data: store } = trpc.invokePluginRPCQuery.useQuery({
-    botId: bot.id, // todo: make this to use _id
+    botId: bot._id, // todo: make this to use _id
     pluginName: plugin.name,
     name: name as string,
     params,
@@ -71,7 +71,7 @@ export function usePluginRPCMutation<
   return {
     mutateAsync: async (params?: Parameters<T[typeof name]>[0]) => {
       return invoke.mutateAsync({
-        botId: bot.id,
+        botId: bot._id,
         pluginName: plugin.name,
         name: name as string,
         params,
@@ -116,7 +116,7 @@ export function createPluginRPC<
         return {
           useQuery: (...params: Parameters<T[typeof methodName]>) => {
             const q = trpc.invokePluginRPCQuery.useQuery({
-              botId: bot.id,
+              botId: bot._id,
               pluginName: plugin.name,
               name: methodName,
               params,
@@ -130,7 +130,7 @@ export function createPluginRPC<
               const response = await trpc.invokePluginRPCMutation
                 .useMutation()
                 .mutateAsync({
-                  botId: bot.id,
+                  botId: bot._id,
                   pluginName: plugin.name,
                   name: methodName,
                   params,

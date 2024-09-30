@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { Application } from '../application';
-import { BotModel, IBot } from '../models/bots.model';
+import { IBot } from '../models/bots.model';
 import { Plugin } from '../plugin';
 
 export enum BotStatus {
@@ -24,7 +24,7 @@ export class Bot {
   logger: winston.Logger = createLogger({ name: Bot.name });
   plugins = new Map<string, Plugin>();
 
-  private _bot?: Platform;
+  private _platform?: Platform;
 
   constructor(
     private type: PlatformType,
@@ -33,13 +33,13 @@ export class Bot {
   ) {}
 
   instance<T>() {
-    return this._bot?.instance as T;
+    return this._platform?.instance as T;
   }
 
-  async init(app: Application) {
+  async init() {
     const platform = await Bot.importPlatform(this.type);
-    this._bot = new platform(this.credentials) as Platform;
-    await this._bot.init();
+    this._platform = new platform(this.credentials) as Platform;
+    await this._platform.init();
   }
 
   get data() {
@@ -75,8 +75,8 @@ export class Bot {
 
   async start() {
     try {
-      if (this._bot) {
-        await this._bot.start();
+      if (this._platform) {
+        await this._platform.start();
         this.status = BotStatus.ACTIVE;
       }
     } catch (error) {
@@ -87,8 +87,8 @@ export class Bot {
 
   async stop() {
     try {
-      if (this._bot) {
-        await this._bot.stop();
+      if (this._platform) {
+        await this._platform.stop();
         this.status = BotStatus.INACTIVE;
       }
     } catch (error) {
@@ -99,16 +99,20 @@ export class Bot {
 
   async restart() {
     try {
-      if (this._bot) {
-        await this._bot.stop();
+      if (this._platform) {
+        await this._platform.stop();
         this.status = BotStatus.INACTIVE;
 
-        await this._bot.start();
+        await this._platform.start();
         this.status = BotStatus.ACTIVE;
       }
     } catch (error) {
       console.error(error);
       this.logger.error(`Error restarting bot: ${this.data?.id}`);
     }
+  }
+
+  get workflows() {
+    return this._platform?.workflows;
   }
 }

@@ -159,21 +159,21 @@ export class PluginManager {
       throw new Error(`Bot ${botId} not found`);
     }
 
-    let bot = this.app.botManager.bots.get(botData.id);
+    let bot = this.app.botManager.bots.get(botData._id.toString());
 
     if (!bot?.instance()) {
       try {
-        this.logger.debug(`creating bot instance ${botData.id}`);
+        this.logger.debug(`creating bot instance ${botData._id.toString()}`);
         bot = new Bot(
           botData.platformType as PlatformType,
           botData.credentials as Record<string, string>,
           botData,
         );
-        await bot.init(this.app);
-        this.app.botManager.bots.set(botData.id, bot);
+        await bot.init();
+        this.app.botManager.bots.set(botData._id.toString(), bot);
       } catch (e) {
         console.error(e);
-        this.logger.error(`Error initializing bot ${botData.id}`);
+        this.logger.error(`Error initializing bot ${botData._id.toString()}`);
       }
     }
 

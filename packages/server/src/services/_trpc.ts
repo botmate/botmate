@@ -3,6 +3,7 @@ import { initTRPC } from '@trpc/server';
 import { Application } from '../application';
 import { IUser } from '../models/users.model';
 import { PlatformAnalyticsService } from './analytics.service';
+import { WorkflowService } from './workflow.service';
 
 type Context = {
   token?: string;
@@ -27,6 +28,7 @@ export function initTrpc(app: Application) {
     ...app.authService.getRoutes(),
     ...app.usersService.getRoutes(),
     ...new PlatformAnalyticsService(app).getRoutes(),
+    ...new WorkflowService(app).getRoutes(),
   });
 
   return appRouter;

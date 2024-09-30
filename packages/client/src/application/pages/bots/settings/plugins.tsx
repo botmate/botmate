@@ -96,12 +96,12 @@ function PluginSettingsPage() {
                 if (data) {
                   if (data.enabled) {
                     await disablePlugin.mutateAsync({
-                      botId: bot.id,
+                      botId: bot._id,
                       name: plugin.name,
                     });
                   } else {
                     await enablePlugin.mutateAsync({
-                      botId: bot.id,
+                      botId: bot._id,
                       name: plugin.name,
                     });
                   }
@@ -109,7 +109,7 @@ function PluginSettingsPage() {
                   utils.getBotPlugins.invalidate();
                 } else {
                   await installPlugin.mutateAsync({
-                    botId: bot.id,
+                    botId: bot._id,
                     name: plugin.name,
                   });
                   window.location.reload();
@@ -159,7 +159,7 @@ function PluginSettingsPage() {
                   className="bg-red-500 text-white cursor-pointer hover:bg-red-400"
                   onClick={async () => {
                     await uninstallPlugin.mutateAsync({
-                      botId: bot.id,
+                      botId: bot._id,
                       name: plugin.name,
                     });
                     window.location.reload();

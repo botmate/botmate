@@ -12,15 +12,20 @@ export interface IPlugin {
   enabled: boolean;
 }
 
-export const pluginSchema = new Schema<IPlugin>({
-  name: { type: String, required: true },
-  displayName: { type: String, required: true },
-  version: { type: String, required: true },
-  description: { type: String, required: true },
-  dependencies: { type: Object, required: true },
-  botId: { type: String, required: true },
-  config: { type: Object, default: {} },
-  enabled: { type: Boolean, default: true },
-});
+export const pluginSchema = new Schema<IPlugin>(
+  {
+    name: { type: String, required: true },
+    displayName: { type: String, required: true },
+    version: { type: String, required: true },
+    description: { type: String, required: true },
+    dependencies: { type: Object, required: true },
+    botId: { type: String, required: true },
+    config: { type: Object, default: {} },
+    enabled: { type: Boolean, default: true },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 export const PluginModel = model<IPlugin>('plugins', pluginSchema);

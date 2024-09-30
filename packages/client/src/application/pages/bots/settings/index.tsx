@@ -32,7 +32,7 @@ function GeneralSettingsPage() {
             {[
               {
                 title: 'ID',
-                value: bot.id,
+                value: bot._id,
               },
               {
                 title: 'Name',
@@ -66,7 +66,7 @@ function GeneralSettingsPage() {
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => {
-                  deleteBot(bot.id)
+                  deleteBot(bot._id)
                     .unwrap()
                     .then(() => {
                       navigate('/');

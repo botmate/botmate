@@ -1,278 +1,174 @@
-import { Edit, SaveIcon, Share2, Trash2 } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-
-import { WorkflowEvent } from '@botmate/platform';
 import {
-  Button,
-  Input,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@botmate/ui';
-import { toast } from 'sonner';
+  Background,
+  Connection,
+  Controls,
+  Edge,
+  Node,
+  NodeTypes,
+  Panel,
+  ReactFlow,
+  ReactFlowInstance,
+  ReactFlowProvider,
+  addEdge,
+  useEdgesState,
+  useNodesState,
+  useReactFlow,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { useCallback, useMemo, useState } from 'react';
+import { DndProvider, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import WorkflowArea from '../../../components/workflows/area';
-import WorkflowSidebar from '../../../components/workflows/sidebar';
-import { useCurrentBot } from '../../../hooks/bots';
-import { useBotWorkflows, useWorkflowEvents } from '../../../hooks/workflows';
-import { SidebarItem, SidebarLayout } from '../../../layouts/sidebar';
-import { trpc } from '../../../trpc';
+import { WorkflowAction, WorkflowEvent } from '@botmate/platform';
+import { AnimatePresence } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
-// TODO: REFACTOR COMPLETE WORKFLOW PAGE :)
+import WorkflowEditor from './editor';
+import BaseNode from './node';
+import WorkflowPanel from './panel';
 
-function WorkflowsPage() {
-  const form = useForm();
-  const bot = useCurrentBot();
-  const workflows = useBotWorkflows();
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+let id = 0;
+const getId = () => `${id++}`;
 
-  const utils = trpc.useUtils();
+type DnDItem =
+  | { type: 'event'; event: WorkflowEvent }
+  | { type: 'action' | 'condition'; action: WorkflowAction };
 
-  const createWorkflow = trpc.createWorkflow.useMutation();
-  const updateWorkflow = trpc.updateWorkflow.useMutation();
-  const deleteWorkflow = trpc.deleteWorkflow.useMutation();
+function WorkflowPage() {
+  const { theme } = useTheme();
+  const { screenToFlowPosition } = useReactFlow();
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
 
-  const [selectedEvent, setSelectedEvent] = useState<WorkflowEvent | null>(
-    null,
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  const [values, setValues] = useState<Record<string, string>>({});
+
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [],
   );
-  const events = useWorkflowEvents();
-  const wfId = searchParams.get('id');
-  const [isEditing, setIsEditing] = useState(false);
 
-  // Memoized list of workflow items
-  const items = useMemo(() => {
-    return [
-      <h1
-        key="title"
-        className="text-gray-600 dark:text-neutral-500 text-sm uppercase"
-      >
-        Your Workflows
-      </h1>,
-      ...(workflows.data?.map((workflow) => (
-        <Link
-          key={workflow._id}
-          to={`/bots/${bot._id}/workflows?id=${workflow._id}`}
-        >
-          <SidebarItem
-            title={workflow.name}
-            description="Last run 4 days ago"
-            active={wfId === workflow._id}
-          />
-        </Link>
-      )) || []),
-    ];
-  }, [workflows.data, bot._id, wfId]);
+  const [, drop] = useDrop(() => ({
+    accept: 'WORKFLOW_ITEM',
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+    drop(item, monitor) {
+      const offset = monitor.getClientOffset()!;
 
-  // Reset form and event selection based on the workflow ID
-  useEffect(() => {
-    if (wfId) {
-      const workflow = workflows.data?.find((wf) => wf._id === wfId);
-      if (workflow) {
-        form.reset({
-          name: workflow.name,
-          event: workflow.event,
-          steps: workflow.steps,
-          values: workflow.values,
+      const i = item as DnDItem;
+      if (i.type === 'event') {
+        const { event } = i;
+        const position = screenToFlowPosition({
+          x: offset.x,
+          y: offset.y,
         });
-        const event = events.find((event) => event.id === workflow.event);
-        setSelectedEvent(event || null);
-      }
-    } else {
-      form.reset();
-      setSelectedEvent(null);
-    }
-    setIsEditing(false);
-  }, [wfId, workflows.data, events, form]);
-
-  // Handle submit for creating or updating workflows
-  const handleSubmit = useCallback(
-    async (data: Record<string, any>) => {
-      if (!selectedEvent) return;
-
-      if (wfId) {
-        // Update existing workflow
-        const mutationData = {
-          _id: wfId,
-          name: data.name,
-          botId: bot._id,
-          steps: data.steps,
-          values: data.values,
-          enabled: true,
-          event: selectedEvent?.id,
+        const newNode: Node = {
+          id: getId(),
+          type: 'event',
+          position,
+          data: {
+            label: event.label,
+            event,
+          },
         };
-
-        utils.listWorkflows.invalidate(bot._id);
-
-        try {
-          await updateWorkflow.mutateAsync(mutationData);
-          toast.success('Workflow updated');
-          setIsEditing(false);
-        } catch (error) {
-          toast.error('Failed to update workflow');
-        }
-      } else {
-        // Create new workflow
-        const mutationData = {
-          name: data.name,
-          botId: bot._id,
-          steps: data.steps,
-          values: data.values,
-          enabled: true,
-          event: selectedEvent?.id,
+        setNodes((prev) => [...prev, newNode]);
+      } else if (i.type === 'action' || i.type === 'condition') {
+        const { action } = i;
+        const position = screenToFlowPosition({
+          x: offset.x,
+          y: offset.y,
+        });
+        const newNode: Node = {
+          id: getId(),
+          type: i.type,
+          position,
+          data: {
+            label: action.label,
+            action,
+          },
         };
-
-        await utils.listWorkflows.invalidate(bot._id);
-
-        try {
-          const response = await createWorkflow.mutateAsync(mutationData);
-          toast.success('Workflow created');
-          navigate(`/bots/${bot._id}/workflows?id=${response._id}`);
-          setIsEditing(false);
-        } catch (error) {
-          toast.error('Failed to create workflow');
-        }
+        setNodes((prev) => [...prev, newNode]);
       }
     },
-    [bot._id, wfId, selectedEvent, updateWorkflow, createWorkflow, navigate],
+  }));
+
+  const nodeTypes: NodeTypes = useMemo(
+    () => ({
+      event: (props) => <BaseNode {...props} values={values} />,
+      action: (props) => <BaseNode {...props} values={values} />,
+      condition: (props) => <BaseNode {...props} values={values} />,
+    }),
+    [values],
   );
 
-  // Handle workflow deletion
-  const handleDelete = useCallback(async () => {
-    await utils.listWorkflows.invalidate(bot._id);
-    if (wfId) {
-      try {
-        await deleteWorkflow.mutateAsync(wfId);
-        toast.success('Workflow deleted');
-        navigate(`/bots/${bot._id}/workflows`);
-      } catch (error) {
-        toast.error('Failed to delete workflow');
-      }
-    }
-  }, [deleteWorkflow, wfId, bot._id, navigate]);
-
   return (
-    <div className="flex-1">
-      <SidebarLayout
-        actions={
-          <div className="flex">
-            {isEditing ? (
-              <>
-                <Button
-                  variant="ghost"
-                  tooltip="Save"
-                  onClick={form.handleSubmit(handleSubmit)}
-                >
-                  <SaveIcon size={18} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  tooltip="Cancel"
-                  onClick={() => setIsEditing(false)}
-                >
-                  Cancel
-                </Button>
-              </>
-            ) : wfId ? (
-              <>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    form.reset();
-                    navigate(`/bots/${bot._id}/workflows`);
-                    setIsEditing(true);
-                  }}
-                >
-                  Create Workflow
-                </Button>
-                <div className="w-4"></div>
-                <Button
-                  variant="ghost"
-                  tooltip="Edit"
-                  onClick={() => setIsEditing(true)}
-                  type="button"
-                >
-                  <Edit size={18} />
-                </Button>
-                <Button variant="ghost" tooltip="Delete" onClick={handleDelete}>
-                  <Trash2 size={18} />
-                </Button>
-                <Button variant="ghost" tooltip="Share">
-                  <Share2 size={18} />
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="outline" onClick={() => setIsEditing(true)}>
-                  Create Workflow
-                </Button>
-              </>
-            )}
-          </div>
-        }
-        items={items}
-        title="Workflows"
-      >
-        <DndProvider backend={HTML5Backend}>
-          <div className="flex h-full">
-            <div className="flex-1 flex flex-col overflow-auto">
-              <div className="flex items-center justify-between px-4 border-b">
-                <h1 className="h-16 font-medium flex items-center">
-                  {isEditing ? (
-                    <Input
-                      {...form.register('name')}
-                      placeholder="Workflow name"
-                    />
-                  ) : (
-                    form.watch('name') || 'My workflow'
-                  )}
-                </h1>
-                <div className="h-16 flex items-center">
-                  <Select
-                    value={selectedEvent?.id}
-                    onValueChange={(id) => {
-                      const event = events.find((event) => event.id === id);
-                      setSelectedEvent(event || null);
-                      form.setValue('event', id);
-                    }}
-                    disabled={!isEditing}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select an event" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Events</SelectLabel>
-                        {events.map((event) => (
-                          <SelectItem key={event.id} value={event.id}>
-                            {event.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="flex-1">
-                <WorkflowArea form={form} editMode={isEditing} />
-              </div>
-            </div>
-            <div className="w-[26rem] border-l overflow-auto">
-              <WorkflowSidebar event={selectedEvent} />
-            </div>
-          </div>
-        </DndProvider>
-      </SidebarLayout>
+    <div className="flex-1 flex flex-col">
+      <div className="min-h-20 flex items-center justify-between px-4 border-b">
+        <div>
+          <h1 className="text-xl font-medium">Workflows</h1>
+        </div>
+      </div>
+      <div className="flex-1 flex">
+        <div className="w-72 h-full border-r">{/* SIDEBAR */}</div>
+        <div className="flex-1">
+          <ReactFlow
+            draggable
+            fitView
+            ref={drop}
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onInit={(x) => {
+              setRfInstance(x);
+            }}
+            colorMode={theme === 'dark' ? 'dark' : 'light'}
+            onNodeClick={(_, node) => {
+              setSelectedNode(node);
+            }}
+            onPaneClick={() => {
+              setSelectedNode(null);
+            }}
+            nodeTypes={nodeTypes}
+          >
+            <Background />
+            <Controls />
+            <Panel position="top-right">
+              <AnimatePresence>
+                {!selectedNode ? (
+                  <WorkflowPanel />
+                ) : (
+                  <WorkflowEditor
+                    id={selectedNode.id}
+                    event={selectedNode.data?.event as WorkflowEvent}
+                    action={selectedNode.data?.action as WorkflowAction}
+                    values={values}
+                    setValues={setValues}
+                  />
+                )}
+              </AnimatePresence>
+            </Panel>
+          </ReactFlow>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default WorkflowsPage;
+function Page() {
+  return (
+    <ReactFlowProvider>
+      <DndProvider backend={HTML5Backend}>
+        <WorkflowPage />
+      </DndProvider>
+    </ReactFlowProvider>
+  );
+}
+
+export default Page;

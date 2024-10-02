@@ -1,49 +1,118 @@
 import { Handle, NodeProps, Position } from '@xyflow/react';
 
+import { WorkflowInput } from '@botmate/platform';
+import {
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+  Textarea,
+} from '@botmate/ui';
+
+import {
+  useWorkflowActions,
+  useWorkflowEvents,
+} from '../../../hooks/workflows';
+
 type BaseNodeProps = NodeProps & {
   data: Record<string, any>;
   type: 'action' | 'condition' | 'event';
-  values?: Record<string, string>;
+  values: Record<string, string>;
+  onValuesChange: (key: string, value: string) => void;
 };
 
 const NO_PREVIEW = 'No preview';
 
-function BaseNode({ id, data, type, values }: BaseNodeProps) {
-  function getPreview() {
-    const templ = data.event?.preview ?? data.action?.preview ?? NO_PREVIEW;
-    if (!values) return templ;
+function BaseNode({
+  id,
+  data,
+  type,
+  values = {},
+  onValuesChange,
+}: BaseNodeProps) {
+  const events = useWorkflowEvents();
+  const actions = useWorkflowActions();
 
-    const matches = templ.match(/{(.*?)}/g);
-    if (!matches) return templ;
+  const event = events.find((e) => e.id === data.event);
+  const action = actions.find((a) => a.id === data.action);
 
-    let result = templ;
-    matches.forEach((match: string) => {
-      const key = match.replace(/{|}/g, '');
-      const value = values[`${id}_${key}`];
-      console.log('value', value);
-      result = result.replace(match, value ?? '');
-    });
+  const inputs = ((data.event ? event?.parameters : action?.parameters) ??
+    []) as WorkflowInput[];
 
-    return result;
-  }
-
-  const preview = getPreview();
+  const getId = (key: string) => `${id}.${key}`;
 
   return (
     <>
-      <div className="dark:bg-muted bg-white border border-neutral-500 rounded-md">
-        <div className="px-2 py-1 border-b border-neutral-400">
-          <p className="text-[10px]">{data.label}</p>
+      <div className="dark:bg-neutral-900 bg-white border border-neutral-700 rounded-md min-w-[250px]">
+        <div className="px-2 py-3 border-b border-muted-foreground font-medium">
+          <p className="text-sm">{data.label}</p>
         </div>
 
-        <div className="px-2 py-1">
-          <p
-            className={`text-[8px] mt-1 ${
-              preview === NO_PREVIEW ? 'text-muted-foreground' : ''
-            }`}
-          >
-            {preview}
-          </p>
+        <div className="px-2 py-4">
+          {inputs.map((input) => {
+            return (
+              <div key={input.id} className="mb-4">
+                <Label htmlFor={input.id} className="block text-xs">
+                  {input.label}
+                </Label>
+                {input.type === 'text' ? (
+                  input.multiline ? (
+                    <Textarea
+                      id={getId(input.id)}
+                      name={input.id}
+                      defaultValue={values[getId(input.id)]}
+                      onChange={(e) => {
+                        onValuesChange(getId(input.id), e.target.value);
+                      }}
+                      rows={4}
+                      className="w-full mt-1 border rounded-md no-drag"
+                    />
+                  ) : (
+                    <Input
+                      id={getId(input.id)}
+                      name={input.id}
+                      type="text"
+                      defaultValue={values[getId(input.id)]}
+                      onChange={(e) => {
+                        onValuesChange(getId(input.id), e.target.value);
+                      }}
+                      className="w-full mt-1 border rounded-md no-drag"
+                    />
+                  )
+                ) : input.type === 'select' ? (
+                  <Select
+                    defaultValue={values[getId(input.id)]}
+                    onValueChange={(val) => {
+                      onValuesChange(getId(input.id), val);
+                    }}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select value" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {input.options.map((option) => (
+                          <SelectItem value={option}>
+                            <SelectLabel className="font-normal">
+                              {option}
+                            </SelectLabel>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                ) : null}
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {input.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -59,8 +128,22 @@ function BaseNode({ id, data, type, values }: BaseNodeProps) {
       ) : type === 'condition' ? (
         <>
           <Handle position={Position.Top} type="source" />
-          <Handle position={Position.Right} type="target" id="true" />
-          <Handle position={Position.Left} type="target" id="false" />
+          <Handle
+            position={Position.Right}
+            type="target"
+            id="true"
+            style={{
+              backgroundColor: 'green',
+            }}
+          />
+          <Handle
+            position={Position.Left}
+            type="target"
+            id="false"
+            style={{
+              backgroundColor: 'red',
+            }}
+          />
         </>
       ) : null}
     </>

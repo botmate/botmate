@@ -1,3 +1,15 @@
+## 1.2.2 (2024-10-02)
+
+
+### 🩹 Fixes
+
+- use hooks inside the function ([e33dc4f](https://github.com/botmate/botmate/commit/e33dc4f))
+- vite dts ([05d87ef](https://github.com/botmate/botmate/commit/05d87ef))
+
+### ❤️  Thank You
+
+- mxvsh @mxvsh
+
 ## 1.2.1 (2024-09-30)
 
 This was a version bump only, there were no code changes.

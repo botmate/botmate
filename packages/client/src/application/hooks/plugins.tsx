@@ -106,15 +106,15 @@ export function createPluginRPC<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Record<string, (params?: any) => any>,
 >() {
-  const bot = useCurrentBot();
-  const plugin = useCurrentPlugin();
-
   return new Proxy(
     {},
     {
       get(_, methodName: string) {
         return {
           useQuery: (...params: Parameters<T[typeof methodName]>) => {
+            const bot = useCurrentBot();
+            const plugin = useCurrentPlugin();
+
             const q = trpc.invokePluginRPCQuery.useQuery({
               botId: bot._id,
               pluginName: plugin.name,
@@ -127,6 +127,8 @@ export function createPluginRPC<
             mutateAsync: async (
               params?: Parameters<T[typeof methodName]>[0],
             ) => {
+              const bot = useCurrentBot();
+              const plugin = useCurrentPlugin();
               const response = await trpc.invokePluginRPCMutation
                 .useMutation()
                 .mutateAsync({

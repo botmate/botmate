@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [
     dts({
       insertTypesEntry: true,
-      entryRoot: 'src/index.ts',
+      entryRoot: 'src',
     }),
   ],
   build: {

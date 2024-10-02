@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 
-import { IPlugin } from '@botmate/server';
+import type { IPlugin } from '@botmate/server';
 
 import { Application, MainSidebarItem } from './application';
 

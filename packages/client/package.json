@@ -1,6 +1,6 @@
 {
   "name": "@botmate/client",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Frontned client for BotMate",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
@@ -17,7 +17,7 @@
     "public"
   ],
   "dependencies": {
-    "@botmate/ui": "1.2.1",
+    "@botmate/ui": "1.2.2",
     "@loadable/component": "^5.16.4",
     "@react-rxjs/core": "^0.10.7",
     "@react-rxjs/utils": "^0.9.7",

@@ -352,3 +352,4 @@ export type { AppRouter } from './services/_trpc';
 export type { IBot } from './models/bots.model';
 export type { IUser } from './models/users.model';
 export type { IPlugin } from './models/plugins.model';
+export type { IWorkflow } from './models/workflows.model';

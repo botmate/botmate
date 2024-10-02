@@ -18,10 +18,8 @@ export class WorkflowManager {
         const botWf = botInstance?.workflows;
         if (botWf) {
           botWf.set(wf._id.toString(), {
-            botId: bot._id.toString(),
-            event: wf.event,
-            steps: wf.steps,
-            values: wf.values,
+            botId: wf.botId,
+            events: wf.events,
           });
         }
       }

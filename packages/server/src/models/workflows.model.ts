@@ -4,20 +4,18 @@ export interface IWorkflow {
   _id: string;
   name: string;
   botId: string;
-  steps: string[];
-  event: string;
-  values: Array<Record<string, any>>;
+  events: Array<Record<string, any>>;
   enabled: boolean;
+  reactflow: Record<string, unknown>;
 }
 
 export const workflowSchema = new Schema<IWorkflow>(
   {
     name: { type: String, required: true },
     botId: { type: String, required: true },
-    steps: { type: [String], required: true },
-    values: { type: Schema.Types.Mixed, required: true },
-    event: { type: String, required: true },
+    events: { type: [{ type: Schema.Types.Mixed }], required: true },
     enabled: { type: Boolean, required: true, default: true },
+    reactflow: { type: Schema.Types.Mixed, required: true },
   },
   {
     timestamps: true,

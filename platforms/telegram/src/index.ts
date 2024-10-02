@@ -30,9 +30,14 @@ export class Telegram extends Platform<Bot> {
     string,
     {
       botId: string;
-      event: string;
-      steps: string[];
-      values: Array<Record<string, string>>;
+      events: {
+        id: Event;
+        values: Record<string, string>;
+        actions: {
+          action: Action;
+          values: Record<string, string>;
+        }[];
+      }[];
     }
   > = new Map();
 
@@ -113,15 +118,12 @@ export class Telegram extends Platform<Bot> {
 
       // workflows
       for (const [, value] of this.workflows) {
-        const event = value.event as Event;
-        switch (event) {
-          case 'message': {
-            if (ctx.message.text) {
-              const steps = value.steps as Action[];
-              let c = 0;
-              for (const step of steps) {
-                await runAction(step, value.values[c]);
-                c++;
+        const events = value.events;
+        for (const event of events) {
+          if (event.id === 'command') {
+            if (ctx.message?.text?.startsWith(event.values.command)) {
+              for (const action of event.actions) {
+                await runAction(action.action, action.values);
               }
             }
           }

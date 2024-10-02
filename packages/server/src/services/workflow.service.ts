@@ -1,3 +1,4 @@
+import { WorkflowEvent } from '@botmate/platform';
 import { z } from 'zod';
 
 import { Application } from '../application';
@@ -22,12 +23,11 @@ export class WorkflowService {
         .input(
           z.object({
             _id: z.string().optional(),
-            event: z.string(),
             name: z.string(),
             botId: z.string(),
-            steps: z.array(z.string()),
-            values: z.array(z.record(z.any())),
             enabled: z.boolean(),
+            events: z.array(z.record(z.any())),
+            reactflow: z.any(),
           }),
         )
         .mutation(async ({ input }) => {
@@ -35,11 +35,9 @@ export class WorkflowService {
           const bot = this.app.botManager.bots.get(input.botId);
           bot?.workflows?.set(workflow._id, {
             botId: input.botId,
-            event: input.event,
-            steps: input.steps,
-            values: input.values,
+            events: input.events,
+            reactflow: input.reactflow,
           });
-          return workflow.toJSON();
         }),
 
       listWorkflows: publicProcedure
@@ -53,12 +51,11 @@ export class WorkflowService {
         .input(
           z.object({
             _id: z.string(),
-            event: z.string(),
             name: z.string(),
             botId: z.string(),
-            steps: z.array(z.string()),
-            values: z.array(z.record(z.any())),
             enabled: z.boolean(),
+            events: z.array(z.record(z.any())),
+            reactflow: z.any(),
           }),
         )
         .mutation(async ({ input }) => {
@@ -70,9 +67,8 @@ export class WorkflowService {
           const bot = this.app.botManager.bots.get(input.botId);
           bot?.workflows?.set(input._id, {
             botId: input.botId,
-            event: input.event,
-            steps: input.steps,
-            values: input.values,
+            events: input.events,
+            reactflow: input.reactflow,
           });
           return workflow?.toObject();
         }),
@@ -91,7 +87,7 @@ export class WorkflowService {
         .input(z.string())
         .query(async ({ input }) => {
           const events = await this.app.workflowManager.getEvents(input);
-          return events;
+          return [...(events || [])] as WorkflowEvent[];
         }),
       getWorkflowActions: publicProcedure
         .input(z.string())
